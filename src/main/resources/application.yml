@@ -1,0 +1,42 @@
+server:
+  port: ${i18n.server.port:8080}
+
+logging:
+  level:
+    ROOT: info
+    org.springframework.security: debug
+    org.springframework.web.servlet: debug
+    org.springframework.beans.factory.annotation: debug
+    com.zaxxer.hikari.HikariConfig: debug
+    #com.zaxxer.hikari.pool: debug
+    win.doyto.i18n.mapper: debug
+
+spring:
+  resources:
+    chain:
+      enabled: true
+  application:
+    name: generator
+  datasource:
+    driver-class-name: com.mysql.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${jdbc.host:localhost}:${jdbc.port:3306}/i18n?autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    username: ${jdbc.username:i18n}
+    password: ${jdbc.password:i18n_pass}
+    hikari:
+      jdbc-url: ${spring.datasource.url}
+  http:
+    encoding:
+      force: true
+
+mybatis:
+  config-location: classpath:mybatis.xml
+  executor-type: reuse
+
+
+---
+#spring:
+#  profiles: test
+#server:
+#  port: 8088
+
