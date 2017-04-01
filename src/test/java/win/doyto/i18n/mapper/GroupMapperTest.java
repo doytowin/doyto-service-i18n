@@ -17,19 +17,19 @@ import win.doyto.i18n.common.Constant;
 @Slf4j
 public class GroupMapperTest extends I18nAppTest {
     @Resource
-    private GroupLocaleMapper groupLocaleMapper;
+    private I18nMapper i18nMapper;
 
     private String group = Constant.SYSTEM_GROUP;
 
     @Test
     public void langByGroup() throws Exception {
-        List ret = groupLocaleMapper.langByGroup(group);
+        List ret = i18nMapper.langByGroup(group);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
     public void langByGroupAndLocale() throws Exception {
-        List ret = groupLocaleMapper.langByGroupAndLocale(group, "zh_CN");
+        List ret = i18nMapper.langByGroupAndLocale(group, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 

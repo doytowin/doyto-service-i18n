@@ -19,16 +19,4 @@ public interface GroupService extends IService<Group> {
 
     GroupMapper getIMapper();
 
-    List query(String group);
-
-    List<Lang> query(String group, String locale);
-
-    void checkGroup(String group) throws BusinessException;
-
-    void checkGroupAndLocale(String group, String locale) throws BusinessException;
-
-    String addLocaleOnGroup(String group, String locale);
-
-    List<Lang> saveTranslation(String group, String locale, Map<String, String> langMap);
-
 }

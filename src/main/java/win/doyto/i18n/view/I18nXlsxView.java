@@ -16,12 +16,12 @@ import org.springframework.web.servlet.view.document.AbstractXlsxView;
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_STRING_ARRAY;
 
 /**
- * GroupXlsxView
+ * I18nXlsxView
  *
  * @author f0rb on 2017-03-30.
  */
 @Slf4j
-public class GroupXlsxView extends AbstractXlsxView {
+public class I18nXlsxView extends AbstractXlsxView {
 
     private static final int TITLE_ROW_IDX = 0;
 
@@ -78,8 +78,8 @@ public class GroupXlsxView extends AbstractXlsxView {
     private void setResponseFilename(String filename, HttpServletRequest request, HttpServletResponse response) {
         //String filename = String.valueOf(model.get(FILENAME));
         if (filename != null && filename.length() > 0) {
-            if (!filename.endsWith(".xls")) {
-                filename = filename + ".xls";
+            if (!filename.endsWith(".xls") || !filename.endsWith(".xlsx")) {
+                filename = filename + ".xlsx";
             }
             try {
                 String userAgent = request.getHeader("User-Agent");

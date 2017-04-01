@@ -13,9 +13,9 @@ public class Group extends PageableModel<Group> {
 
     private Integer id;
 
-    private String label;
+    private String name;
 
-    private String value;
+    private String locales;
 
     private String memo;
 

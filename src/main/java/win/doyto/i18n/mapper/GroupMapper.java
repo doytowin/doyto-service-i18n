@@ -57,8 +57,8 @@ public interface GroupMapper extends IMapper<Group> {
             return new SQL() {{
                 SELECT(query ? "*" : "COUNT(*)");
                 FROM(Table);
-                if (record.getLabel() != null) {
-                    WHERE("label like CONCAT(#{label},'%')");
+                if (record.getName() != null) {
+                    WHERE("name like CONCAT(#{name},'%')");
                 }
             }}.toString() + (query && record.needPaging() ? _LIMIT_OFFSET : "");
         }
@@ -74,12 +74,12 @@ public interface GroupMapper extends IMapper<Group> {
         public String update(final Group record) {
             return new SQL() {{
                 UPDATE(Table);
-                if (record.getLabel() != null) {
-                    SET("`label` = #{label,jdbcType=VARCHAR}");
+                if (record.getName() != null) {
+                    SET("`name` = #{name,jdbcType=VARCHAR}");
                 }
-                if (record.getValue() != null) {
-                    SET("`value` = #{value,jdbcType=VARCHAR}");
-                }
+                //if (record.getValue() != null) {
+                //    SET("`value` = #{value,jdbcType=VARCHAR}");
+                //}
                 if (record.getMemo() != null) {
                     SET("`memo` = #{memo,jdbcType=VARCHAR}");
                 }

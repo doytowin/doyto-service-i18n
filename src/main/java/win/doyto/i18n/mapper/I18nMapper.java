@@ -11,14 +11,14 @@ import static win.doyto.web.service.IMapper.LIST_;
 import static win.doyto.web.service.IMapper._LIMIT_1;
 
 /**
- * GroupLocaleMapper
+ * I18nMapper
  *
  * @author f0rb on 2017-03-30.
  */
 @Mapper
-public interface GroupLocaleMapper {
+public interface I18nMapper {
 
-    String GROUP_FORMAT = "i18n_group_${group}";
+    String GROUP_FORMAT = "i18n_i18n_${group}";
 
     @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
     @Results({
@@ -30,7 +30,7 @@ public interface GroupLocaleMapper {
     })
     List<LinkedHashMap<String, ?>> langByGroup(@Param("group") String group);
 
-    @Select("SELECT label, locale_${locale} as value FROM " + GROUP_FORMAT)
+    @Select("SELECT label, IF(locale_${locale} IS NULL, value, locale_${locale}) AS value FROM " + GROUP_FORMAT)
     List<Lang> langByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
 
     @Insert({
@@ -47,7 +47,7 @@ public interface GroupLocaleMapper {
     @Update({
             "ALTER TABLE",
             GROUP_FORMAT,
-            "ADD locale_${locale} TEXT NOT NULL"
+            "ADD locale_${locale} TEXT"
     })
     void addLocaleOnGroup(@Param("group") String group, @Param("locale") String locale);
 
