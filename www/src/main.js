@@ -68,7 +68,7 @@ new Vue({
   },
   methods: {
     switchLang (lang) {
-      this.$http.get('http://localhost:9001/api/i18n/i18n/' + lang + '.json').then(res => {
+      this.$http.get('http://localhost:9001/openapi/i18n/i18n/' + lang + '.json').then(res => {
         Vue.locale(lang, res.body)
         Vue.config.lang = lang
         if (!this.lang) {

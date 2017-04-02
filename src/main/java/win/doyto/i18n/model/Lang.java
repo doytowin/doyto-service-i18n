@@ -12,5 +12,6 @@ import lombok.Setter;
 @Setter
 public class Lang {
     private String label;
+    private String defaults;
     private String value;
 }

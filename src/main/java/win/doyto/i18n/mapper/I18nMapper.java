@@ -30,8 +30,25 @@ public interface I18nMapper {
     })
     List<LinkedHashMap<String, ?>> langByGroup(@Param("group") String group);
 
-    @Select("SELECT label, IF(locale_${locale} IS NULL, value, locale_${locale}) AS value FROM " + GROUP_FORMAT)
+    /**
+     * 如果locale_${locale}为null, 则以默认值替代
+     *
+     * @param group 资源分组名
+     * @param locale 语种
+     * @return {label,value}
+     */
+    @Select("SELECT label, IF(locale_${locale} IS NULL, defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
     List<Lang> langByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
+
+    /**
+     * 查询标签, 默认值, 语种对应的翻译
+     *
+     * @param group 资源分组名
+     * @param locale 语种
+     * @return {label,value,defaults}
+     */
+    @Select("SELECT label, defaults, locale_${locale} AS value FROM " + GROUP_FORMAT)
+    List<Lang> langWithDefaultsByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
 
     @Insert({
             "<script>",

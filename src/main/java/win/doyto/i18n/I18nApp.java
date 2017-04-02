@@ -33,8 +33,9 @@ public class I18nApp {
         return new WebMvcConfigurerAdapter() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
+                registry.addMapping("/openapi/**").allowedOrigins("*");
                 registry.addMapping("/api/**").allowedOrigins("http://localhost:8080");
-                registry.addMapping("/api/i18n/i18n/zh_CN").allowedOrigins("http://localhost:8080");
+                //registry.addMapping("/api/i18n/i18n/zh_CN").allowedOrigins("http://localhost:8080");
             }
 
             ///*

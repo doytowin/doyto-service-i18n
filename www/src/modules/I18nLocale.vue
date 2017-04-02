@@ -6,6 +6,7 @@
         <tr class="text-center">
           <th>#</th>
           <th v-t>标签</th>
+          <th v-t>默认翻译</th>
           <th v-t>文本</th>
           <th v-t>操作</th>
         </tr>
@@ -14,6 +15,7 @@
         <tr v-for="(r, $index) in crud.p.list">
           <td>{{$index+1}}</td>
           <td>{{r.label}}</td>
+          <td>{{r.defaults}}</td>
           <td>{{r.value}}</td>
           <td>
             <a @click="crud.edit(r)" v-t>编辑</a>

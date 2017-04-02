@@ -37,6 +37,12 @@ public class DefaultI18nService implements I18nService {
     }
 
     @Override
+    public List<Lang> queryWithDefaults(String group, String locale) {
+        checkGroup(group);
+        return i18nMapper.langWithDefaultsByGroupAndLocale(group, locale);
+    }
+
+    @Override
     public void checkGroup(String group) {
         try {
             i18nMapper.existGroup(group);

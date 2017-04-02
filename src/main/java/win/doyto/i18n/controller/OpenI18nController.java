@@ -22,22 +22,10 @@ import win.doyto.i18n.view.I18nXlsxView;
  */
 @Slf4j
 @Controller
-@RequestMapping("/api/i18n")
-public class I18nController {
+@RequestMapping("/openapi/i18n")
+public class OpenI18nController {
     @Resource
     private I18nService i18nService;
-
-    //importFromExcel
-    //importFromJSON
-    //importFromProperties
-
-    @RequestMapping(value = "{group}", method = RequestMethod.GET)
-    @ResponseBody
-    public Object exportAll(@PathVariable("group") String group) {
-        i18nService.checkGroup(group);
-        List data = i18nService.query(group);
-        return data;
-    }
 
     /**
      * 导出所有的标签和语言
@@ -53,15 +41,40 @@ public class I18nController {
         return new I18nXlsxView();
     }
 
-    @RequestMapping(value = "{group}/{locale}", method = RequestMethod.GET)
+    @RequestMapping(value = "{group}/{locale}.json", method = RequestMethod.GET)
     @ResponseBody
-    public Object exportByLocale(ModelAndView mav, @PathVariable("group") String group,
-                                 @PathVariable("locale") String locale,
-                                 @PathVariable(value = "format", required = false) String format) {
+    public Object exportToJsonByLocale(@PathVariable("group") String group,
+                                 @PathVariable("locale") String locale) {
         i18nService.checkGroupAndLocale(group, locale);
-        List<Lang> data = i18nService.queryWithDefaults(group, locale);
+        List<Lang> langList = i18nService.query(group, locale);
 
-        return data;
+        JSONObject root = new JSONObject();
+
+        for (Lang lang : langList) {
+            nestedJson(root, lang.getLabel().split("\\."), 0, lang.getValue());
+        }
+
+        return root;
+    }
+
+    /**
+     * 处理嵌套的JSON参数
+     *
+     * @param parent 上级json
+     * @param params 参数名
+     * @param deep   递归深度
+     * @param arg    待处理的参数
+     */
+    private static void nestedJson(JSONObject parent, String[] params, int deep, Object arg) {
+        String param = params[deep];
+        if (deep == params.length - 1) {
+            parent.put(params[deep], arg);
+            return;
+        }
+        if (!parent.containsKey(param)) {
+            parent.put(param, new JSONObject());
+        }
+        nestedJson(parent.getJSONObject(param), params, deep + 1, arg);
     }
 
     @ExceptionHandler({BusinessNotFoundException.class})

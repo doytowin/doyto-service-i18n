@@ -17,6 +17,8 @@ public interface I18nService {
 
     List<Lang> query(String group, String locale);
 
+    List<Lang> queryWithDefaults(String group, String locale);
+
     void checkGroup(String group) throws BusinessException;
 
     void checkGroupAndLocale(String group, String locale) throws BusinessException;
