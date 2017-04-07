@@ -20,8 +20,7 @@
 
     <div id="alert-list">
       <div v-for="(a, $i) in alerts">
-        <b-alert :show="a.timeout" :state="a.type">
-          <!--<b-alert v-for="(a, $i) in alerts" :key="$i" :show="a.dismissCountDown" dismissible :state="a.state" @dismiss-count-down="countDownChanged">-->
+        <b-alert :show="a.timeout" :state="a.type" v-on:dismissed="alerts.splice($i, 1)">
           {{a.content}}
         </b-alert>
       </div>
@@ -60,9 +59,11 @@
       })
 
       bus.$on('alert', function (al) {
-        let a = {content: al.content, timeout: al.timeout || 3, state: al.type || 'info'}
-        vm.$set(vm.alerts, vm.alerts.length, a)
-          // this.alerts.unshift(a)
+        let a = {content: al.content, timeout: 3, state: al.type || 'info'}
+        if (typeof (al.timeout) === 'number' && al.timeout > 0) {
+          a.timeout = al.timeout
+        }
+        vm.alerts.push(a)
       })
     }
   }
@@ -71,6 +72,7 @@
 <style lang="scss">
   $west-width:280px;
   $maskZIndex: 999;
+  $appZIndex: 10;
 
   #app {
     -webkit-font-smoothing:antialiased;
@@ -123,14 +125,14 @@
       overflow:auto;
       height:40px;
       line-height:40px;
-      z-index:13;
+      z-index:$appZIndex + 3;
       border-radius:0;
     }
     #west {
       left:0;
       width:$west-width;
       background-color:#d9edf7;
-      z-index:11;
+      z-index:$appZIndex + 1;
       padding:42px 1px;
     }
 
@@ -138,13 +140,14 @@
       padding:50px 10px 10px;
       left:$west-width;
       right:0;
-      z-index:9;
+      z-index:$appZIndex - 1;
     }
 
     #alert-list{
       position:fixed;
       top:50px;
       right:22px;
+      z-index:$maskZIndex + 1;
     }
 
     /* !!fix */
