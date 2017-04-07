@@ -1,9 +1,9 @@
 package win.doyto.i18n.controller;
 
 import java.util.List;
+import java.util.Map;
 import javax.annotation.Resource;
 
-import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -60,6 +60,24 @@ public class I18nController {
                                  @PathVariable(value = "format", required = false) String format) {
         i18nService.checkGroupAndLocale(group, locale);
         List<Lang> data = i18nService.queryWithDefaults(group, locale);
+
+        return data;
+    }
+
+    /**
+     * 保存翻译文本
+     *
+     */
+    @RequestMapping(value = "{group}/{locale}", method = RequestMethod.POST)
+    @ResponseBody
+    public Object saveText(ModelAndView mav,
+                           @PathVariable("group") String group,
+                           @PathVariable("locale") String locale,
+                           @RequestBody Map<String, String> map
+    ) {
+        i18nService.checkGroupAndLocale(group, locale);
+
+        List<Lang> data = i18nService.saveTranslation(group, locale, map);
 
         return data;
     }

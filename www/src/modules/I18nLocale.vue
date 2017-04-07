@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div id="i18n-locale">
     <section>
       <table class="table table-hover" style="margin-bottom:0">
         <thead>
@@ -8,7 +8,6 @@
           <th v-t>标签</th>
           <th v-t>默认翻译</th>
           <th v-t>文本</th>
-          <th v-t>操作</th>
         </tr>
         </thead>
         <tbody>
@@ -16,28 +15,66 @@
           <td>{{$index+1}}</td>
           <td>{{r.label}}</td>
           <td>{{r.defaults}}</td>
-          <td>{{r.value}}</td>
-          <td>
-            <a @click="crud.edit(r)" v-t>编辑</a>
-            <!--<a @click="crud.remove(r)" v-t>删除</a>-->
+          <td class="dw-editor">
+            <input v-model="r.value" @blur="r._origin_ && r._origin_!=r.value && save(r)" :tabindex="$index + 1000"
+                   type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
+            <div v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
+              <button @click="r.value = r._origin_" class="btn btn-default btn-sm" style="margin-right:10px" v-t>取消</button>
+              <button @click="save(r)" type="button" class="btn btn-primary btn-sm" v-t>保存</button>
+            </div>
           </td>
         </tr>
         </tbody>
       </table>
     </section>
+    <div class="alert-list">
+      <div v-for="(a, $i) in alerts">
+        <b-alert :show="a.timeout" :state="a.state">
+        <!--<b-alert v-for="(a, $i) in alerts" :key="$i" :show="a.dismissCountDown" dismissible :state="a.state" @dismiss-count-down="countDownChanged">-->
+          {{a.content}}
+        </b-alert>
+      </div>
+    </div>
   </div>
 </template>
 <style lang="scss">
+
+  #i18n-locale {
+    /*position:relative;*/
+
+    >.alert-list{
+      position:fixed;
+      top:50px;
+      right:22px;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+      padding: 0.25rem;
+      /*border-top: 1px solid #eceeef;*/
+    }
+  }
+  .dw-editor {
+    position:relative;
+    >.dw-button {
+      position:absolute;
+      right:20px;
+      /*top: calc( (100% - 27px)/2 )*/
+      top:50%;
+      margin-top:-13px;
+    }
+  }
 </style>
 <script type="text/javascript">
+  import Cons from '../components/Cons'
 
   export default {
     data () {
       return {
-        loading: false,
         crud: {
           p: {}
-        }
+        },
+        showDismissibleAlert: false,
+        alerts: []
       }
     },
     components: {},
@@ -52,18 +89,60 @@
     },
     methods: {
       init () {
-        this.loading = true
+        this.$parent.$emit('loading')
 
-        var group = this.$route.params.group
-        var locale = this.$route.params.locale
-        this.$http.get('http://localhost:9001/api/i18n/' + group + '/' + locale).then(response => {
+        this.group = this.$route.params.group
+        this.locale = this.$route.params.locale
+        var url = '{host}api/i18n/{group}/{locale}'
+                .replace(/{host}/, Cons.apiHost)
+                .replace(/{group}/, this.group)
+                .replace(/{locale}/, this.locale)
+
+        this.$http.get(url).then(response => {
           // get body data
-          this.crud.p = response.body
-          this.loading = false
+          let json = response.body
+          for (let i = 0; i < json.list.length; i++) {
+            let resource = json.list[i]
+            resource._origin_ = resource.value
+          }
+          this.crud.p = json
+          this.$parent.$emit('loaded')
         }, response => {
           // error callback
-          this.loading = false
+          this.$parent.$emit('loaded')
         })
+      },
+      save (r) {
+        this.$parent.$emit('loading')
+        let params = {}
+        params[r.label] = r.value
+
+        let url = '{host}api/i18n/{group}/{locale}'
+                .replace(/{host}/, Cons.apiHost)
+                .replace(/{group}/, this.group)
+                .replace(/{locale}/, this.locale)
+        this.$http.post(url, params).then(response => {
+          // get body data
+          let json = response.body
+          console.log(json)
+          for (let i = 0; i < json.list.length; i++) {
+            let resource = json.list[i]
+            resource._origin_ = resource.value
+            console.log(resource)
+          }
+          this.crud.p.list = json.list
+          this.$parent.$emit('loaded')
+          this.showAlert('标签保存成功: ' + r.label, 'success')
+        }, response => {
+          // error callback
+          this.$parent.$emit('loaded')
+          this.showAlert('保存失败[' + r.label + ']', 'warning')
+        })
+      },
+      showAlert (content, state, timeout) {
+        var a = {content: content, timeout: timeout || 3, state: state || 'info'}
+        this.$set(this.alerts, this.alerts.length, a)
+        // this.alerts.unshift(a)
       }
     }
   }

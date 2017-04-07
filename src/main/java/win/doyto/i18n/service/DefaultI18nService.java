@@ -83,7 +83,7 @@ public class DefaultI18nService implements I18nService {
     public List<Lang> saveTranslation(String group, String locale, Map<String, String> langMap) {
         addLocaleOnGroup(group, locale);
         int ret = i18nMapper.saveTranslation(group, locale, langMap);
-        List<Lang> returnList = i18nMapper.langByGroupAndLocale(group, locale);
+        List<Lang> returnList = i18nMapper.langWithDefaultsByGroupAndLocale(group, locale);
         return returnList;
     }
 }
