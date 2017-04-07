@@ -57,14 +57,6 @@
             'rank': 1,
             'sequence': 1,
             'sub': [{
-              'id': 6,
-              'parentId': 2,
-              'label': '国际化管理',
-              'name': 'i18n',
-              'url': '/i18n/i18n',
-              'rank': 1,
-              'sequence': 1
-            }, {
               'id': 34,
               'parentId': 2,
               'label': '资源管理',
@@ -92,6 +84,9 @@
           }]
         }]
       }
+    },
+    mounted () {
+      this.$root.$emit('collapse::toggle', 'menu-2')
     }
   }
 </script>
