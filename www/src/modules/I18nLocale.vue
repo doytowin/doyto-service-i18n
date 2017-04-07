@@ -15,7 +15,7 @@
         <td>{{r.label}}</td>
         <td>{{r.defaults}}</td>
         <td class="dw-editor">
-          <input v-model="r.value" @keypress.enter="save(r)" @focus="save(lastEdit);lastEdit=r" :tabindex="$index + 1000"
+          <input v-model="r.value" @keypress.enter="save(r)" @focus="save(lastEdit)" @blur="lastEdit=r" :tabindex="$index + 1000"
                  type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
           <span v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
               <button @click="r.value = r._origin_" class="btn btn-secondary btn-sm" style="margin-right:10px" v-t>取消</button>
