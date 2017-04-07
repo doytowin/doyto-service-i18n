@@ -2,3 +2,4 @@
 target/
 *.iml
 /temp*
+npm-debug.log
