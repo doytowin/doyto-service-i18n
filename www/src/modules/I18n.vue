@@ -15,17 +15,12 @@
         <tr class="text-center">
           <th>#</th>
           <th v-for="(v, k) in crud.p.list[0]"><t>{{k == 'value' ? '默认值' : k}}</t></th>
-          <th v-t>操作</th>
         </tr>
         </thead>
         <tbody>
         <tr v-for="(group, $index) in crud.p.list">
           <td>{{$index+1}}</td>
           <td v-for="(v, k) in crud.p.list[0]">{{group[k]}}</td>
-          <td>
-            <a @click="crud.edit(r)" v-t>编辑</a>
-            <!--<a @click="crud.remove(r)" v-t>删除</a>-->
-          </td>
         </tr>
         </tbody>
       </table>
@@ -64,6 +59,7 @@
 <script type="text/javascript">
   import Crud from '../components/Crud'
   import Util from '../components/Util'
+  import Cons from '../components/Cons'
 
   export default {
     data () {
@@ -85,7 +81,7 @@
     methods: {
       init () {
         this.loading = true
-        this.crud = new Crud(this.$resource('http://localhost:9001/api/i18n/' + this.$route.params.group), function (data) {
+        this.crud = new Crud(this.$resource(Cons.apiHost + 'api/i18n/' + this.$route.params.group), function (data) {
           if (data.success) {
             this.crud.p.load()
           } else {

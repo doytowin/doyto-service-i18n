@@ -2,6 +2,7 @@
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 import Vue from 'vue'
 import App from './App'
+import Cons from './components/Cons'
 import router from './router'
 import VueResource from 'vue-resource'
 /** bootstrap-vue **/
@@ -68,7 +69,7 @@ new Vue({
   },
   methods: {
     switchLang (lang) {
-      this.$http.get('http://localhost:9001/openapi/i18n/i18n/' + lang + '.json').then(res => {
+      this.$http.get(Cons.apiHost + 'openapi/i18n/i18n/' + lang + '.json').then(res => {
         Vue.locale(lang, res.body)
         Vue.config.lang = lang
         if (!this.lang) {
