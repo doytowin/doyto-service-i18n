@@ -16,12 +16,12 @@
           <td>{{r.label}}</td>
           <td>{{r.defaults}}</td>
           <td class="dw-editor">
-            <input v-model="r.value" @blur="r._origin_ && r._origin_!=r.value && save(r)" :tabindex="$index + 1000"
+            <input v-model="r.value" @focus="save(lastEdit);lastEdit=r" :tabindex="$index + 1000"
                    type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
-            <div v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
-              <button @click="r.value = r._origin_" class="btn btn-default btn-sm" style="margin-right:10px" v-t>取消</button>
+            <span v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
+              <button @click="r.value = r._origin_" class="btn btn-secondary btn-sm" style="margin-right:10px" v-t>取消</button>
               <button @click="save(r)" type="button" class="btn btn-primary btn-sm" v-t>保存</button>
-            </div>
+            </span>
           </td>
         </tr>
         </tbody>
@@ -58,9 +58,8 @@
     >.dw-button {
       position:absolute;
       right:20px;
-      /*top: calc( (100% - 27px)/2 )*/
-      top:50%;
-      margin-top:-13px;
+      top: 50%;
+      transform: translate(0, -50%);
     }
   }
 </style>
@@ -73,8 +72,8 @@
         crud: {
           p: {}
         },
-        showDismissibleAlert: false,
-        alerts: []
+        alerts: [],
+        lastEdit: undefined
       }
     },
     components: {},
@@ -89,7 +88,7 @@
     },
     methods: {
       init () {
-        this.$parent.$emit('loading')
+        window.bus.$emit('loading')
 
         this.group = this.$route.params.group
         this.locale = this.$route.params.locale
@@ -106,14 +105,17 @@
             resource._origin_ = resource.value
           }
           this.crud.p = json
-          this.$parent.$emit('loaded')
+          window.bus.$emit('loaded')
         }, response => {
           // error callback
-          this.$parent.$emit('loaded')
+          window.bus.$emit('loaded')
         })
       },
       save (r) {
-        this.$parent.$emit('loading')
+        if (!r || r.value === r._origin_) {
+          return
+        }
+        window.bus.$emit('loading')
         let params = {}
         params[r.label] = r.value
 
@@ -131,11 +133,11 @@
             console.log(resource)
           }
           this.crud.p.list = json.list
-          this.$parent.$emit('loaded')
+          window.bus.$emit('loaded')
           this.showAlert('标签保存成功: ' + r.label, 'success')
         }, response => {
           // error callback
-          this.$parent.$emit('loaded')
+          window.bus.$emit('loaded')
           this.showAlert('保存失败[' + r.label + ']', 'warning')
         })
       },

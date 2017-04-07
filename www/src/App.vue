@@ -13,7 +13,7 @@
       </transition>
     </div>
 
-    <div v-if="loading">
+    <div v-if="loading > 0">
       <div class="mask"></div>
       <div class="loader"></div>
     </div>
@@ -35,12 +35,17 @@
       DwLeftMenu,
       DwLang
     },
-    mounted () {
-      this.$on('loading', function () {
-        this.loading++
+    created () {
+      let vm = this
+      window.bus.$on('loading', function () {
+        // console.log('loading1 ' + vm.loading)
+        vm.loading++
+        console.log('loading ' + vm.loading)
       })
-      this.$on('loaded', function () {
-        this.loading--
+      window.bus.$on('loaded', function () {
+        // console.log('loaded1 ' + vm.loading)
+        vm.loading--
+        console.log('loaded ' + vm.loading)
       })
     }
   }
