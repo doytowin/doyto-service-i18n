@@ -78,7 +78,7 @@
           'label': '国际化系统',
           'name': 'system_i18n',
           'sub': [{
-            'label': '概况',
+            'label': '概览',
             'name': 'i18n',
             'url': '/i18n/i18n'
           }, {
