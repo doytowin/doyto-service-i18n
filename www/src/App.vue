@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div id="north" class="card card-inverse card-info">
-      <div class="card-header" style="padding:0.5rem 1.25rem" v-t>国际化管理系统</div>
+      <div class="card-header" style="padding:0 1.25rem" v-t>国际化管理系统</div>
     </div>
     <div id="west">
       <dw-left-menu></dw-left-menu>
@@ -17,6 +17,15 @@
       <div class="mask"></div>
       <div class="loader"></div>
     </div>
+
+    <div id="alert-list">
+      <div v-for="(a, $i) in alerts">
+        <b-alert :show="a.timeout" :state="a.type">
+          <!--<b-alert v-for="(a, $i) in alerts" :key="$i" :show="a.dismissCountDown" dismissible :state="a.state" @dismiss-count-down="countDownChanged">-->
+          {{a.content}}
+        </b-alert>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -28,7 +37,8 @@
     name: 'app',
     data () {
       return {
-        loading: 0
+        loading: 0,
+        alerts: []
       }
     },
     components: {
@@ -37,22 +47,30 @@
     },
     created () {
       let vm = this
-      window.bus.$on('loading', function () {
+      let bus = window.bus
+      bus.$on('loading', function () {
         // console.log('loading1 ' + vm.loading)
         vm.loading++
         console.log('loading ' + vm.loading)
       })
-      window.bus.$on('loaded', function () {
+      bus.$on('loaded', function () {
         // console.log('loaded1 ' + vm.loading)
         vm.loading--
         console.log('loaded ' + vm.loading)
+      })
+
+      bus.$on('alert', function (al) {
+        let a = {content: al.content, timeout: al.timeout || 3, state: al.type || 'info'}
+        vm.$set(vm.alerts, vm.alerts.length, a)
+          // this.alerts.unshift(a)
       })
     }
   }
 </script>
 
 <style lang="scss">
-  $west-width:220px;
+  $west-width:280px;
+  $maskZIndex: 999;
 
   #app {
     -webkit-font-smoothing:antialiased;
@@ -60,7 +78,6 @@
     color:#2c3e50;
     /*margin-top:60px;*/
 
-  $maskZIndex: 999;
     .mask {
       position: fixed;
       z-index: $maskZIndex;
@@ -105,6 +122,7 @@
       bottom:0;
       overflow:auto;
       height:40px;
+      line-height:40px;
       z-index:13;
       border-radius:0;
     }
@@ -121,6 +139,12 @@
       left:$west-width;
       right:0;
       z-index:9;
+    }
+
+    #alert-list{
+      position:fixed;
+      top:50px;
+      right:22px;
     }
 
     /* !!fix */

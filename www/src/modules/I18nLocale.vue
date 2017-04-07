@@ -1,40 +1,30 @@
 <template>
   <div id="i18n-locale">
-    <section>
-      <table class="table table-hover" style="margin-bottom:0">
-        <thead>
-        <tr class="text-center">
-          <th>#</th>
-          <th v-t>标签</th>
-          <th v-t>默认翻译</th>
-          <th v-t>文本</th>
-        </tr>
-        </thead>
-        <tbody>
-        <tr v-for="(r, $index) in crud.p.list">
-          <td>{{$index+1}}</td>
-          <td>{{r.label}}</td>
-          <td>{{r.defaults}}</td>
-          <td class="dw-editor">
-            <input v-model="r.value" @focus="save(lastEdit);lastEdit=r" :tabindex="$index + 1000"
-                   type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
-            <span v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
+    <table class="table table-hover" style="margin-bottom:0">
+      <thead>
+      <tr class="text-center">
+        <th>#</th>
+        <th v-t>标签</th>
+        <th v-t>默认翻译</th>
+        <th v-t>文本</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr v-for="(r, $index) in crud.p.list">
+        <td>{{$index+1}}</td>
+        <td>{{r.label}}</td>
+        <td>{{r.defaults}}</td>
+        <td class="dw-editor">
+          <input v-model="r.value" @keypress.enter="save(r)" @focus="save(lastEdit);lastEdit=r" :tabindex="$index + 1000"
+                 type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
+          <span v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
               <button @click="r.value = r._origin_" class="btn btn-secondary btn-sm" style="margin-right:10px" v-t>取消</button>
               <button @click="save(r)" type="button" class="btn btn-primary btn-sm" v-t>保存</button>
             </span>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </section>
-    <div class="alert-list">
-      <div v-for="(a, $i) in alerts">
-        <b-alert :show="a.timeout" :state="a.state">
-        <!--<b-alert v-for="(a, $i) in alerts" :key="$i" :show="a.dismissCountDown" dismissible :state="a.state" @dismiss-count-down="countDownChanged">-->
-          {{a.content}}
-        </b-alert>
-      </div>
-    </div>
+        </td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </template>
 <style lang="scss">
@@ -42,29 +32,32 @@
   #i18n-locale {
     /*position:relative;*/
 
-    >.alert-list{
-      position:fixed;
-      top:50px;
-      right:22px;
-    }
     .table th, .table td {
-      vertical-align: middle;
-      padding: 0.25rem;
+      vertical-align:middle;
+      padding:0.25rem;
       /*border-top: 1px solid #eceeef;*/
     }
   }
   .dw-editor {
     position:relative;
-    >.dw-button {
+    > .dw-button {
       position:absolute;
       right:20px;
-      top: 50%;
-      transform: translate(0, -50%);
+      top:50%;
+      transform:translate(0, -50%);
     }
   }
 </style>
 <script type="text/javascript">
   import Cons from '../components/Cons'
+
+  // 保存每条数据的原始值, 需要尝试在v-for中完成
+  function _recordOrigin (json) {
+    for (let i = 0; i < json.list.length; i++) {
+      let resource = json.list[i]
+      resource._origin_ = resource.value
+    }
+  }
 
   export default {
     data () {
@@ -72,7 +65,6 @@
         crud: {
           p: {}
         },
-        alerts: [],
         lastEdit: undefined
       }
     },
@@ -100,10 +92,7 @@
         this.$http.get(url).then(response => {
           // get body data
           let json = response.body
-          for (let i = 0; i < json.list.length; i++) {
-            let resource = json.list[i]
-            resource._origin_ = resource.value
-          }
+          _recordOrigin(json)
           this.crud.p = json
           window.bus.$emit('loaded')
         }, response => {
@@ -112,10 +101,11 @@
         })
       },
       save (r) {
+        let bus = window.bus
         if (!r || r.value === r._origin_) {
           return
         }
-        window.bus.$emit('loading')
+        bus.$emit('loading')
         let params = {}
         params[r.label] = r.value
 
@@ -126,25 +116,25 @@
         this.$http.post(url, params).then(response => {
           // get body data
           let json = response.body
-          console.log(json)
-          for (let i = 0; i < json.list.length; i++) {
-            let resource = json.list[i]
-            resource._origin_ = resource.value
-            console.log(resource)
-          }
+          _recordOrigin(json)
           this.crud.p.list = json.list
-          window.bus.$emit('loaded')
-          this.showAlert('标签保存成功: ' + r.label, 'success')
+          // 重新加载列表后清理上次编辑的记录
+          this.lastEdit = undefined
+          bus.$emit('loaded')
+          bus.$emit('alert', {
+            content: '标签保存成功: ' + r.label,
+            type: 'success',
+            timeout: 1
+          })
         }, response => {
           // error callback
-          window.bus.$emit('loaded')
-          this.showAlert('保存失败[' + r.label + ']', 'warning')
+          bus.$emit('loaded')
+          bus.$emit('alert', {
+            content: '保存失败[' + r.label + ']',
+            type: 'warning',
+            timeout: 1
+          })
         })
-      },
-      showAlert (content, state, timeout) {
-        var a = {content: content, timeout: timeout || 3, state: state || 'info'}
-        this.$set(this.alerts, this.alerts.length, a)
-        // this.alerts.unshift(a)
       }
     }
   }
