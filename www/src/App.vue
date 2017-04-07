@@ -12,6 +12,11 @@
         <router-view></router-view>
       </transition>
     </div>
+
+    <div v-if="loading">
+      <div class="mask"></div>
+      <div class="loader"></div>
+    </div>
   </div>
 </template>
 
@@ -22,11 +27,21 @@
   export default {
     name: 'app',
     data () {
-      return {}
+      return {
+        loading: 0
+      }
     },
     components: {
       DwLeftMenu,
       DwLang
+    },
+    mounted () {
+      this.$on('loading', function () {
+        this.loading++
+      })
+      this.$on('loaded', function () {
+        this.loading--
+      })
     }
   }
 </script>
@@ -39,6 +54,37 @@
     -moz-osx-font-smoothing:grayscale;
     color:#2c3e50;
     /*margin-top:60px;*/
+
+  $maskZIndex: 999;
+    .mask {
+      position: fixed;
+      z-index: $maskZIndex;
+      left:0;
+      top:0;
+      bottom:0;
+      right:0;
+      background-color:#000;
+      opacity:0.2;
+    }
+    .loader {
+      border: 16px solid #f3f3f3; /* Light grey */
+      border-top: 16px solid #3498db; /* Blue */
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      margin-top: -60px;
+      margin-left: -60px;
+      z-index: $maskZIndex + 1;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
 
     #west, #east {
       position:fixed;
