@@ -1,11 +1,14 @@
 <template>
   <div id="i18n-locale">
+    <div class="clearfix" style="margin-bottom:10px">
+      <b-btn @click="add" variant="success" class="float-right" v-t>添加</b-btn>
+    </div>
     <table class="table table-hover" style="margin-bottom:0">
       <thead>
       <tr class="text-center">
         <th>#</th>
         <th v-t>标签</th>
-        <th v-t>默认翻译</th>
+        <th v-t>默认文本</th>
         <th v-t>文本</th>
       </tr>
       </thead>
@@ -17,7 +20,7 @@
         <td class="dw-editor">
           <input v-model="r.value" @keypress.enter="save(r)" @focus="save(lastEdit)" @blur="lastEdit=r" :tabindex="$index + 1000"
                  type="text" class="form-control mb-2 mr-sm-2 mb-sm-0" :placeholder="r.defaults">
-          <span v-if="r._origin_ && r._origin_!=r.value" class="dw-button">
+          <span v-if="(r._origin_!==r.value)" class="dw-button">
               <button @click="r.value = r._origin_" class="btn btn-secondary btn-sm" style="margin-right:10px" v-t>取消</button>
               <button @click="save(r)" type="button" class="btn btn-primary btn-sm" v-t>保存</button>
             </span>
@@ -25,12 +28,26 @@
       </tr>
       </tbody>
     </table>
+    <b-modal id="addLabelModal" :title="$t('添加标签')" @ok="save(lastAdd)" @shown="beforeAdd"
+             :ok-title="$t('保存')" :close-title="$t('关闭')">
+      <form @submit.stop.prevent="submit">
+        <b-form-input type="text" :placeholder="$t('标签')" v-model="lastAdd.label" class="mb-2"></b-form-input>
+        <!--<b-form-input type="text" placeholder="默认值" v-model="lastAdd.value"></b-form-input>-->
+        <b-form-input type="text" :placeholder="$t('翻译')" v-model="lastAdd.value"></b-form-input>
+      </form>
+    </b-modal>
   </div>
 </template>
 <style lang="scss">
 
   #i18n-locale {
     /*position:relative;*/
+
+    @media (min-width:576px) {
+      .modal-dialog {
+        margin-top:80px;
+      }
+    }
 
     .table th, .table td {
       vertical-align:middle;
@@ -55,6 +72,9 @@
   function _recordOrigin (json) {
     for (let i = 0; i < json.list.length; i++) {
       let resource = json.list[i]
+      if (!resource.value) {
+        resource.value = ''
+      }
       resource._origin_ = resource.value
     }
   }
@@ -65,6 +85,7 @@
         crud: {
           p: {}
         },
+        lastAdd: {},
         lastEdit: undefined
       }
     },
@@ -101,6 +122,7 @@
         })
       },
       save (r) {
+        // console.log(r)
         let bus = window.bus
         if (!r || r.value === r._origin_) {
           return
@@ -135,6 +157,14 @@
             timeout: 1
           })
         })
+      },
+      beforeAdd () {
+        this.lastAdd = {}
+      },
+      add () {
+        this.$root.$emit('show::modal', 'addLabelModal')
+        this.save(this.lastEdit)
+        this.lastEdit = {}
       }
     }
   }

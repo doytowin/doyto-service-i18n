@@ -37,7 +37,7 @@ public interface I18nMapper {
      * @param locale 语种
      * @return {label,value}
      */
-    @Select("SELECT label, IF(locale_${locale} IS NULL, defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
+    @Select("SELECT label, IF(locale_${locale} IS NULL OR locale_${locale} = '', defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
     List<Lang> langByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
 
     /**
@@ -50,15 +50,20 @@ public interface I18nMapper {
     @Select("SELECT label, defaults, locale_${locale} AS value FROM " + GROUP_FORMAT)
     List<Lang> langWithDefaultsByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
 
-    @Insert({
+    @Update({
             "<script>",
-            "<foreach collection='map' index='key' item='value' separator=';'>",
-            "UPDATE",
+            "INSERT INTO",
             GROUP_FORMAT,
-            "SET locale_${locale} = #{value} WHERE label = #{key}",
+            "(label, defaults, locale_${locale})",
+            "VALUES",
+            "<foreach collection='map' index='key' item='value' separator=','>",
+            "(#{key}, #{key}, #{value})",
             "</foreach>",
+            "ON DUPLICATE KEY UPDATE",
+            "locale_${locale} = #{value}",
             "</script>"
     })
+    @Options
     int saveTranslation(@Param("group") String group, @Param("locale") String locale, @Param("map") Map<String, String> langMap);
 
     @Update({
