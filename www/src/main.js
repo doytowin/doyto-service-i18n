@@ -70,6 +70,7 @@ new Vue({
   },
   methods: {
     switchLang (lang) {
+      window.bus.$emit('loading')
       this.$http.get(Cons.apiHost + 'openapi/i18n/i18n/' + lang + '.json').then(res => {
         Vue.locale(lang, res.body)
         Vue.config.lang = lang
@@ -94,6 +95,7 @@ new Vue({
           // })
         }
         this.lang = localStorage.lang = lang
+        window.bus.$emit('loaded')
       })
     }
   },
