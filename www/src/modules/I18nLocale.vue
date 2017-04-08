@@ -13,7 +13,7 @@
       </tr>
       </thead>
       <tbody>
-      <tr v-for="(r, $index) in crud.p.list">
+      <tr v-for="(r, $index) in list">
         <td>{{$index+1}}</td>
         <td>{{r.label}}</td>
         <td>{{r.defaults}}</td>
@@ -82,9 +82,10 @@
   export default {
     data () {
       return {
-        crud: {
-          p: {}
-        },
+        // crud: {
+        //   p: {}
+        // },
+        list: undefined,
         lastAdd: {},
         lastEdit: undefined
       }
@@ -114,7 +115,7 @@
           // get body data
           let json = response.body
           _recordOrigin(json)
-          this.crud.p = json
+          this.list = json.list
           window.bus.$emit('loaded')
         }, response => {
           // error callback
@@ -139,7 +140,7 @@
           // get body data
           let json = response.body
           _recordOrigin(json)
-          this.crud.p.list = json.list
+          this.list = json.list
           // 重新加载列表后清理上次编辑的记录
           this.lastEdit = undefined
           bus.$emit('loaded')
@@ -150,6 +151,7 @@
           })
         }, response => {
           // error callback
+          // console.log(response)
           bus.$emit('loaded')
           bus.$emit('alert', {
             content: '保存失败[' + r.label + ']',

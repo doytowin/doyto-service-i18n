@@ -2,7 +2,6 @@ import Page from './Page'
 
 var Crud = function (R, successFunc, errorFunc) {
   var defaultErrorMessage = '访问错误'
-  var loading = false
 
   function simpleCopy (source) {
     var destination = {}
@@ -16,7 +15,7 @@ var Crud = function (R, successFunc, errorFunc) {
   }
 
   var onSuccess = function (data) {
-    loading = false
+    this.p.loading = false
     if (typeof successFunc === 'function') {
       successFunc(data)
     } else {
@@ -27,7 +26,7 @@ var Crud = function (R, successFunc, errorFunc) {
   }
 
   var onError = function (ret) {
-    loading = false
+    this.p.loading = false
     if (typeof errorFunc === 'function') {
       errorFunc(ret)
     } else {
@@ -52,10 +51,10 @@ var Crud = function (R, successFunc, errorFunc) {
   }
 
   this.save = function (record) {
-    if (loading) {
+    if (this.p.loading) {
       return
     }
-    loading = true
+    this.p.loading = true
     R.save(record, onSuccess, onError)
   }
 

@@ -44,6 +44,7 @@ let Page = function (queryFunc) {
     }
   }
 
+  this.loading = false
   this.q = {}
   this.isQueryChanged = function () {
     return !Vue.util.equals(this.q, qo)
@@ -53,8 +54,10 @@ let Page = function (queryFunc) {
     q.page = page || 1
     q.limit = limit
     qo = JSON.parse(JSON.stringify(q))
+    self.loading = true
     queryFunc(q).then(response => {
       SuccessCallback.call(self, response.body)
+      self.loading = false
     })
     return this
   }

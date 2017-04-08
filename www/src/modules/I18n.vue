@@ -5,7 +5,8 @@
       <b-btn v-t>打包JSON格式</b-btn>
       <b-btn v-t>打包Properties格式</b-btn>
       <b-btn v-t>从Excel文件导入</b-btn>
-      <b-btn class="btn-success float-right" v-t>添加</b-btn>
+      <b-btn class="btn-success float-right ml-2" v-t>添加标签</b-btn>
+      <b-btn class="btn-success float-right" v-t>添加语种</b-btn>
     </div>
     <section>
       <table class="table table-hover" style="margin-bottom:0">
@@ -23,7 +24,7 @@
         </tbody>
       </table>
     </section>
-    <footer>
+    <!--<footer>
       <div v-if="crud.p.pages" class="flow page-ul dropup">
         <div class="btn-group">
           <button class="btn btn-default" @click="crud.p.first"><i class="fa fa-step-backward"></i></button>
@@ -49,7 +50,7 @@
           条
         </div>
       </div>
-    </footer>
+    </footer>-->
   </div>
 </template>
 <style lang="scss">
@@ -62,7 +63,6 @@
   export default {
     data () {
       return {
-        loading: false,
         openapi: Cons.apiHost,
         group: this.$route.params.group,
         crud: null
@@ -72,23 +72,27 @@
     created () {
       // 组件创建完后获取数据，
       // 此时 data 已经被 observed 了
-      this.group = this.$route.params.group
       this.init()
     },
     watch: {
       // 如果路由有变化，会再次执行该方法
-      '$route': 'init'
+      '$route': 'init',
+      'crud.p.loading' () {
+        if (this.crud.p.loading) {
+          window.bus.$emit('loading')
+        } else {
+          window.bus.$emit('loaded')
+        }
+      }
     },
     methods: {
       init () {
-        this.loading = true
         this.crud = new Crud(this.$resource(this.openapi + 'api/i18n/' + this.group), function (data) {
           if (data.success) {
             this.crud.p.load()
           } else {
             Util.handleFailure(data)
           }
-          this.loading = false
         })
       }
     }
