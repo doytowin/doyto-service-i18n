@@ -1,13 +1,11 @@
 <template>
   <div>
-    <div>
-      <b-btn v-t>导出Excel</b-btn>
+    <div class="mb-2">
+      <a class="btn btn-secondary" :href="openapi + '/openapi/i18n/' + group + '.xlsx'" v-t>导出Excel</a>
       <b-btn v-t>打包JSON格式</b-btn>
       <b-btn v-t>打包Properties格式</b-btn>
       <b-btn v-t>从Excel文件导入</b-btn>
-    </div>
-    <div>
-      <b-btn v-t>添加</b-btn>
+      <b-btn class="btn-success float-right" v-t>添加</b-btn>
     </div>
     <section>
       <table class="table table-hover" style="margin-bottom:0">
@@ -65,6 +63,8 @@
     data () {
       return {
         loading: false,
+        openapi: Cons.apiHost,
+        group: this.$route.params.group,
         crud: null
       }
     },
@@ -72,6 +72,7 @@
     created () {
       // 组件创建完后获取数据，
       // 此时 data 已经被 observed 了
+      this.group = this.$route.params.group
       this.init()
     },
     watch: {
@@ -81,7 +82,7 @@
     methods: {
       init () {
         this.loading = true
-        this.crud = new Crud(this.$resource(Cons.apiHost + 'api/i18n/' + this.$route.params.group), function (data) {
+        this.crud = new Crud(this.$resource(this.openapi + 'api/i18n/' + this.group), function (data) {
           if (data.success) {
             this.crud.p.load()
           } else {
