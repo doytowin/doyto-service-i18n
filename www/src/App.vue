@@ -75,6 +75,22 @@
   $appZIndex: 10;
 
   #app {
+
+    ::-webkit-input-placeholder { /* WebKit browsers */
+      color:    #ccc;
+    }
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color:    #ccc;
+      opacity:  1;
+    }
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color:    #ccc;
+      opacity:  1;
+    }
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+      color:    #ccc;
+    }
+
     -webkit-font-smoothing:antialiased;
     -moz-osx-font-smoothing:grayscale;
     color:#2c3e50;
