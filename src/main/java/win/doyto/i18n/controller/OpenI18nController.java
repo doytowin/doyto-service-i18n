@@ -8,9 +8,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.exception.BusinessNotFoundException;
+import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
@@ -77,8 +76,8 @@ public class OpenI18nController {
         nestedJson(parent.getJSONObject(param), params, deep + 1, arg);
     }
 
-    @ExceptionHandler({BusinessNotFoundException.class})
-    public void handleNotFound(BusinessNotFoundException e) {
+    @ExceptionHandler({RestNotFoundException.class})
+    public void handleNotFound(RestNotFoundException e) {
         throw e;
     }
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import win.doyto.i18n.model.Lang;
-import win.doyto.web.service.BusinessException;
+import win.doyto.web.RestException;
 
 /**
  * I18nService
@@ -19,9 +19,9 @@ public interface I18nService {
 
     List<Lang> queryWithDefaults(String group, String locale);
 
-    void checkGroup(String group) throws BusinessException;
+    void checkGroup(String group) throws RestException;
 
-    void checkGroupAndLocale(String group, String locale) throws BusinessException;
+    void checkGroupAndLocale(String group, String locale) throws RestException;
 
     String addLocaleOnGroup(String group, String locale);
 

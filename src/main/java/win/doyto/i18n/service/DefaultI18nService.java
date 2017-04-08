@@ -8,7 +8,7 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import win.doyto.i18n.exception.BusinessNotFoundException;
+import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.mapper.I18nMapper;
 import win.doyto.i18n.model.Lang;
 
@@ -47,14 +47,14 @@ public class DefaultI18nService implements I18nService {
         try {
             i18nMapper.existGroup(group);
         } catch (Exception e) {
-            throw new BusinessNotFoundException("多语言分组未配置: " + group);
+            throw new RestNotFoundException("多语言分组未配置: " + group);
         }
     }
 
     @Override
     public void checkGroupAndLocale(String group, String locale) {
         if (!existLocale(group, locale)){
-            throw new BusinessNotFoundException("多语言分组[" + group + "]未配置语种: " + locale);
+            throw new RestNotFoundException("多语言分组[" + group + "]未配置语种: " + locale);
         }
     }
 
