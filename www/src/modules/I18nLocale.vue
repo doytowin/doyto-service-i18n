@@ -31,7 +31,7 @@
     <b-modal id="addLabelModal" :title="$t('添加标签')" @ok="save(lastAdd)" @shown="beforeAdd"
              :ok-title="$t('保存')" :close-title="$t('关闭')">
       <form @submit.stop.prevent="submit">
-        <b-form-input type="text" :placeholder="$t('标签')" v-model="lastAdd.label" class="mb-2"></b-form-input>
+        <b-form-input type="text" :placeholder="$t('标签')" v-model="lastAdd.label" ref="newLabel" class="mb-2"></b-form-input>
         <!--<b-form-input type="text" placeholder="默认值" v-model="lastAdd.value"></b-form-input>-->
         <b-form-input type="text" :placeholder="$t('翻译')" v-model="lastAdd.value"></b-form-input>
       </form>
@@ -160,6 +160,10 @@
       },
       beforeAdd () {
         this.lastAdd = {}
+        var el = this.$refs.newLabel.$el
+        Vue.default.nextTick(function () {
+          el.focus()
+        })
       },
       add () {
         this.$root.$emit('show::modal', 'addLabelModal')
