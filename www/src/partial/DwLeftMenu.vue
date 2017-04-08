@@ -2,7 +2,7 @@
   <aside id="leftMenu">
     <div style="margin-bottom:10px">
       <div v-for="(menu, $i) in sysMenu.sub" style="margin-top:5px">
-        <b-btn v-b-toggle="'menu-' + menu.id" variant="info" style="width:100%;border-radius:0;" v-t>{{menu.label}}</b-btn>
+        <b-btn v-b-toggle="'menu-' + menu.id" variant="info" v-t>{{menu.label}}</b-btn>
         <b-collapse :id="'menu-' + menu.id">
           <div class="list-group">
             <router-link v-for="sub in menu.sub" :key="sub.id" :to="sub.url" class="list-group-item list-group-item-action"
@@ -15,7 +15,7 @@
     </div>
 
     <div v-for="(menu, $i) in i18nMenus" style="margin-bottom:10px">
-      <b-btn v-b-toggle="'menu-' + menu.id" variant="info" style="width:100%;border-radius:0;">{{menu.label}}</b-btn>
+      <b-btn v-b-toggle="'menu-' + menu.id" variant="info">{{menu.label}}</b-btn>
       <b-collapse :id="'menu-' + menu.id">
         <div class="list-group">
           <router-link v-for="sub in menu.sub" :key="sub.id" :to="sub.url" class="list-group-item list-group-item-action"
@@ -34,6 +34,11 @@
         border-top-left-radius:0;
         border-top-right-radius:0;
       }
+    }
+    .btn {
+      width:100%;
+      border-radius:0;
+      text-align:left
     }
   }
 </style>
