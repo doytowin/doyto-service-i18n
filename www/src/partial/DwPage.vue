@@ -19,7 +19,7 @@
         <b-dropdown-item v-for="(s, $i) in [5,10,20,30,50]" :key="$i" @click="p.size(s)" class="text-right">{{s}}</b-dropdown-item>
       </b-dropdown>
       条
-      <span v-for="(a, $i) in p.list"></span>
+      <span v-for="a in p"></span>
     </div>
   </div>
 </template>
@@ -45,7 +45,7 @@
   }
 </style>
 <script type="text/javascript">
-  import Page from './Page'
+  import Page from '../components/Page'
   export default{
     props: {
       p: {

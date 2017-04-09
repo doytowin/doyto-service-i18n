@@ -25,28 +25,7 @@
       </table>
     </section>
     <footer class="page-footer">
-      <pager :p="crud.p"></pager>
-      <!--<div v-if="crud.p.pages" class="flow page-footer">
-        <div class="btn-group btn-group-sm">
-          <button class="btn btn-secondary" @click="crud.p.first"><i class="fa fa-step-backward"></i></button>
-          <button class="btn btn-secondary" @click="crud.p.prev"><i class="fa fa-backward"></i></button>
-          <b-dropdown size="sm" :text="crud.p.page + ' / ' + crud.p.pages" dropup class="page-number">
-            <b-dropdown-item v-for="(s, $i) in crud.p.pages" :key="$i" @click="crud.p.goto($i+1)">
-              {{$i+1}} / {{crud.p.pages}}
-            </b-dropdown-item>
-          </b-dropdown>
-          <button class="btn btn-secondary" @click="crud.p.next"><i class="fa fa-forward"></i></button>
-          <button class="btn btn-secondary" @click="crud.p.last"><i class="fa fa-step-forward"></i></button>
-          <button class="btn btn-secondary" @click="crud.p.load"><i class="fa fa-refresh"></i></button>
-        </div>
-        <div class="pull-right">
-          <span class="hidden-xs">共有{{crud.p.total}}条数据，显示第{{crud.p.from}}条到第{{crud.p.to}}条，每页</span>
-          <b-dropdown size="sm" :text="crud.p.limit + ''" dropup :right="true" class="page-size">
-            <b-dropdown-item v-for="(s, $i) in [5,10,20,30,50]" :key="$i" @click="crud.p.size(s)" class="text-right">{{s}}</b-dropdown-item>
-          </b-dropdown>
-          条
-        </div>
-      </div>-->
+      <dw-page :p="crud.p"></dw-page>
     </footer>
   </div>
 </template>
@@ -64,7 +43,7 @@
   import Crud from '../components/Crud'
   import Util from '../components/Util'
   import Cons from '../components/Cons'
-  import Pager from '../components/Pager'
+  import DwPage from '../partial/DwPage'
 
   export default {
     data () {
@@ -78,7 +57,7 @@
       }
     },
     components: {
-      Pager
+      DwPage
     },
     created () {
       // 组件创建完后获取数据，
@@ -95,13 +74,6 @@
     watch: {
       // 如果路由有变化，会再次执行该方法
       '$route': 'init'
-      // 'crud.p.loading' () {
-      //   if (this.crud.p.loading) {
-      //     window.bus.$emit('loading')
-      //   } else {
-      //     window.bus.$emit('loaded')
-      //   }
-      // }
     },
     methods: {
       init () {
