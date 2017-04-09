@@ -24,8 +24,9 @@
         </tbody>
       </table>
     </section>
-    <footer>
-      <div v-if="crud.p.pages" class="flow page-footer">
+    <footer class="page-footer">
+      <pager :p="crud.p"></pager>
+      <!--<div v-if="crud.p.pages" class="flow page-footer">
         <div class="btn-group btn-group-sm">
           <button class="btn btn-secondary" @click="crud.p.first"><i class="fa fa-step-backward"></i></button>
           <button class="btn btn-secondary" @click="crud.p.prev"><i class="fa fa-backward"></i></button>
@@ -45,7 +46,7 @@
           </b-dropdown>
           条
         </div>
-      </div>
+      </div>-->
     </footer>
   </div>
 </template>
@@ -57,31 +58,13 @@
     left:0;
     right:0;
     bottom:-40px;
-
-    .page-size {
-      .dropdown-toggle, .dropdown-menu {
-        min-width:85px;
-      }
-    }
-    .page-number {
-      .dropdown-toggle, .dropdown-item, .dropdown-menu  {
-        min-width:80px;
-      }
-      .dropdown-item {
-        padding:3px 0.75rem;
-        /*text-align:right;*/
-      }
-      .dropdown-menu {
-        max-height:200px;
-        overflow-y:scroll;
-      }
-    }
   }
 </style>
 <script type="text/javascript">
   import Crud from '../components/Crud'
   import Util from '../components/Util'
   import Cons from '../components/Cons'
+  import Pager from '../components/Pager'
 
   export default {
     data () {
@@ -94,7 +77,9 @@
         }
       }
     },
-    components: {},
+    components: {
+      Pager
+    },
     created () {
       // 组件创建完后获取数据，
       // 此时 data 已经被 observed 了
@@ -109,14 +94,14 @@
     },
     watch: {
       // 如果路由有变化，会再次执行该方法
-      '$route': 'init',
-      'crud.p.loading' () {
-        if (this.crud.p.loading) {
-          window.bus.$emit('loading')
-        } else {
-          window.bus.$emit('loaded')
-        }
-      }
+      '$route': 'init'
+      // 'crud.p.loading' () {
+      //   if (this.crud.p.loading) {
+      //     window.bus.$emit('loading')
+      //   } else {
+      //     window.bus.$emit('loaded')
+      //   }
+      // }
     },
     methods: {
       init () {

@@ -54,12 +54,20 @@
       })
       bus.$on('loaded', function () {
         // console.log('loaded1 ' + vm.loading)
-        vm.loading--
-        console.log('loaded ' + vm.loading)
+        if (vm.loading > 0) {
+          vm.loading--
+          console.log('loaded ' + vm.loading)
+        } else {
+          console.log('WARN:  ' + vm.loading)
+        }
       })
 
       bus.$on('alert', function (al) {
-        let a = {content: al.content, timeout: 3, state: al.type || 'info'}
+        let a = {
+          content: al.content,
+          timeout: 3,
+          state: al.type || 'info'
+        }
         if (typeof (al.timeout) === 'number' && al.timeout > 0) {
           a.timeout = al.timeout
         }

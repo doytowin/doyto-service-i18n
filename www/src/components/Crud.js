@@ -65,7 +65,7 @@ var Crud = function (R, successFunc, errorFunc) {
     R.remove({}, {id: record.id}, onSuccess, onError)
   }
 
-  this.p = new Page(R.query).load()
+  this.p = new Page(R.query)// .load()
 }
 
 export default Crud
