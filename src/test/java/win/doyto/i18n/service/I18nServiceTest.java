@@ -9,6 +9,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
+import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 
 import static org.junit.Assert.assertEquals;
@@ -37,6 +38,15 @@ public class I18nServiceTest extends I18nAppTest {
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
+    @Test
+    public void pageAllLanguage() throws Exception {
+        I18n query = new I18n();
+        query.setGroup(SYSTEM_GROUP);
+        query.setLimit(10);
+        query.setPage(2);
+        List ret = i18nService.query(query);
+        log.info("结果\n{}", JSON.toJSONString(ret, true));
+    }
 
     @Test
     //@org.springframework.test.annotation.Commit

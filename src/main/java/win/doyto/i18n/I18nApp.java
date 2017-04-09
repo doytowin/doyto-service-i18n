@@ -2,6 +2,7 @@ package win.doyto.i18n;
 
 import javax.servlet.Filter;
 
+import org.apache.ibatis.plugin.Interceptor;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import win.doyto.web.WebContextFilter;
+import win.doyto.web.mybatis.MysqlPaginationInterceptor;
 
 /**
  * I18nApp
@@ -91,4 +93,9 @@ public class I18nApp {
     //public Interceptor configMyBatisInterceptor() {
     //    return new CachingExecutorInterceptor();
     //}
+
+    @Bean
+    public Interceptor configMyBatisInterceptor() {
+        return new MysqlPaginationInterceptor();
+    }
 }

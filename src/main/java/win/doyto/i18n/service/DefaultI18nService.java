@@ -1,5 +1,6 @@
 package win.doyto.i18n.service;
 
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.mapper.I18nMapper;
+import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
+import win.doyto.web.PageList;
 
 /**
  * I18nService
@@ -31,6 +34,15 @@ public class DefaultI18nService implements I18nService {
     }
 
     @Override
+    public List query(I18n i18n) {
+        checkGroup(i18n.getGroup());
+        PageList<LinkedHashMap<String, ?>> pageList = new PageList<>();
+        pageList.setList(i18nMapper.query(i18n));
+        pageList.setTotal(i18nMapper.count(i18n));
+        return pageList;
+    }
+
+    @Override
     public List<Lang> query(String group, String locale) {
         checkGroup(group);
         return i18nMapper.langByGroupAndLocale(group, locale);
@@ -38,7 +50,7 @@ public class DefaultI18nService implements I18nService {
 
     @Override
     public List<Lang> queryWithDefaults(String group, String locale) {
-        checkGroup(group);
+        checkGroupAndLocale(group, locale);
         return i18nMapper.langWithDefaultsByGroupAndLocale(group, locale);
     }
 

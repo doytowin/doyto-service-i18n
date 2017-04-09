@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import win.doyto.i18n.exception.RestNotFoundException;
+import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
@@ -33,9 +34,9 @@ public class I18nController {
 
     @RequestMapping(value = "{group}", method = RequestMethod.GET)
     @ResponseBody
-    public Object exportAll(@PathVariable("group") String group) {
-        i18nService.checkGroup(group);
-        List data = i18nService.query(group);
+    public Object exportAll(I18n i18n) {
+        //i18nService.checkGroup(i18n.getGroup());
+        List data = i18nService.query(i18n);
         return data;
     }
 
@@ -47,7 +48,7 @@ public class I18nController {
      */
     @RequestMapping(value = "{group}.xlsx", method = RequestMethod.GET)
     public View exportAllToExcel(Model model, @PathVariable("group") String group) {
-        i18nService.checkGroup(group);
+        //i18nService.checkGroup(group);
         List data = i18nService.query(group);
         model.addAttribute("data", data);
         return new I18nXlsxView();
@@ -58,9 +59,7 @@ public class I18nController {
     public Object exportByLocale(ModelAndView mav, @PathVariable("group") String group,
                                  @PathVariable("locale") String locale,
                                  @PathVariable(value = "format", required = false) String format) {
-        i18nService.checkGroupAndLocale(group, locale);
         List<Lang> data = i18nService.queryWithDefaults(group, locale);
-
         return data;
     }
 

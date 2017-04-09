@@ -5,8 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
+import org.apache.ibatis.session.RowBounds;
+import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 
+import static win.doyto.web.service.IMapper.COUNT_;
 import static win.doyto.web.service.IMapper.LIST_;
 import static win.doyto.web.service.IMapper._LIMIT_1;
 
@@ -21,7 +24,7 @@ public interface I18nMapper {
     String GROUP_FORMAT = "i18n_i18n_${group}";
 
     @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
-    @Results({
+    @Results(id = "localeMap", value = {
             @Result(column = "id"),
             @Result(column = "memo"),
             @Result(column = "createTime"),
@@ -30,10 +33,21 @@ public interface I18nMapper {
     })
     List<LinkedHashMap<String, ?>> langByGroup(@Param("group") String group);
 
+    @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
+    @ResultMap("localeMap")
+    List<LinkedHashMap<String, ?>> pageLangByGroup(@Param("group") String group, RowBounds rowBounds);
+
+    @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
+    @ResultMap("localeMap")
+    List<LinkedHashMap<String, ?>> query(I18n i18n);
+
+    @Select({COUNT_, GROUP_FORMAT, " WHERE valid = true"})
+    long count(I18n i18n);
+
     /**
      * 如果locale_${locale}为null, 则以默认值替代
      *
-     * @param group 资源分组名
+     * @param group  资源分组名
      * @param locale 语种
      * @return {label,value}
      */
@@ -43,7 +57,7 @@ public interface I18nMapper {
     /**
      * 查询标签, 默认值, 语种对应的翻译
      *
-     * @param group 资源分组名
+     * @param group  资源分组名
      * @param locale 语种
      * @return {label,value,defaults}
      */

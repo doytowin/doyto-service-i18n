@@ -24,36 +24,46 @@
         </tbody>
       </table>
     </section>
-    <!--<footer>
-      <div v-if="crud.p.pages" class="flow page-ul dropup">
+    <footer>
+      <div v-if="crud.p.pages" class="flow page-ul">
         <div class="btn-group">
-          <button class="btn btn-default" @click="crud.p.first"><i class="fa fa-step-backward"></i></button>
-          <button class="btn btn-default" @click="crud.p.prev"><i class="fa fa-backward"></i></button>
-          <b-dropdown :text="crud.p.page + ' / ' + crud.p.pages">
-            <ul slot="dropdown-menu" class="dropdown-menu" style="max-height: 200px;overflow-y:scroll;">
-              <li v-for="(s, $index) in crud.p.pages">
-                <a @click="crud.p.goto($index+1)">{{$index+1}} / {{crud.p.pages}}</a>
-              </li>
-            </ul>
+          <button class="btn btn-secondary" @click="crud.p.first"><i class="fa fa-step-backward"></i></button>
+          <button class="btn btn-secondary" @click="crud.p.prev"><i class="fa fa-backward"></i></button>
+          <b-dropdown :text="crud.p.page + ' / ' + crud.p.pages" dropup class="page-number">
+            <b-dropdown-item v-for="(s, $i) in crud.p.pages" :key="$i">
+              <a @click="crud.p.goto($i+1)">{{$i+1}} / {{crud.p.pages}}</a>
+            </b-dropdown-item>
           </b-dropdown>
-          <button class="btn btn-default" @click="crud.p.next"><i class="fa fa-forward"></i></button>
-          <button class="btn btn-default" @click="crud.p.last"><i class="fa fa-step-forward"></i></button>
-          <button class="btn btn-default" @click="crud.p.load"><i class="fa fa-refresh"></i></button>
+          <button class="btn btn-secondary" @click="crud.p.next"><i class="fa fa-forward"></i></button>
+          <button class="btn btn-secondary" @click="crud.p.last"><i class="fa fa-step-forward"></i></button>
+          <button class="btn btn-secondary" @click="crud.p.load"><i class="fa fa-refresh"></i></button>
         </div>
         <div class="pull-right">
           <span class="hidden-xs">共有{{crud.p.total}}条数据，显示第{{crud.p.from}}条到第{{crud.p.to}}条，每页</span>
-          <b-dropdown :text="crud.p.limit + ''">
-            <ul slot="dropdown-menu" class="dropdown-menu pull-right" style="min-width:55px;">
-              <li v-for="s in [5,10,20,30,50]" class="text-right"><a @click="crud.p.size(s)">{{s}}</a></li>
-            </ul>
+          <b-dropdown :text="crud.p.limit + ''" dropup :right="true" class="page-size">
+            <b-dropdown-item v-for="(s, $i) in [5,10,20,30,50]" :key="$i" class="text-right"><a @click="crud.p.size(s)">{{s}}</a></b-dropdown-item>
           </b-dropdown>
           条
         </div>
       </div>
-    </footer>-->
+    </footer>
   </div>
 </template>
 <style lang="scss">
+  .page-size {
+    .dropdown-toggle, .dropdown-menu {
+      min-width:85px;
+    }
+  }
+  .page-number {
+    .dropdown-toggle, .dropdown-menu {
+      min-width:115px;
+    }
+    .dropdown-menu {
+      max-height: 200px;
+      overflow-y:scroll;
+    }
+  }
 </style>
 <script type="text/javascript">
   import Crud from '../components/Crud'
