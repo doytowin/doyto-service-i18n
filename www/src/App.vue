@@ -1,9 +1,12 @@
 <template>
   <div id="app">
     <div id="north" class="card card-inverse card-info">
-      <div class="card-header" style="padding:0 1.25rem" v-t>国际化管理系统</div>
+      <div class="card-header" style="padding:0 1.25rem">
+        <i @click="showMenu = !showMenu"  class="fa fa-bars hidden-sm-up mr-2"></i>
+        <t>国际化管理系统</t>
+      </div>
     </div>
-    <div id="west">
+    <div id="west" ref="west" :style="{left: showMenu ? 0 : '-280px'}">
       <dw-left-menu></dw-left-menu>
       <dw-lang></dw-lang>
     </div>
@@ -16,6 +19,9 @@
     <div v-if="loading > 0">
       <div class="mask"></div>
       <div class="loader"></div>
+    </div>
+    <div v-if="showMenu">
+      <div @click="showMenu=false" class="menu-mask"></div>
     </div>
 
     <div id="alert-list">
@@ -37,6 +43,7 @@
     data () {
       return {
         loading: 0,
+        showMenu: true,
         alerts: []
       }
     },
@@ -44,7 +51,7 @@
       DwLeftMenu,
       DwLang
     },
-    created () {
+    mounted () {
       let vm = this
       let bus = window.bus
       bus.$on('loading', function () {
@@ -73,6 +80,13 @@
         }
         vm.alerts.push(a)
       })
+
+      vm.showMenu = document.body.clientWidth > 767
+      window.addEventListener('resize', function () {
+        vm.showMenu = document.body.clientWidth > 767
+      })
+    },
+    methods: {
     }
   }
 </script>
@@ -83,7 +97,6 @@
   $appZIndex: 10;
 
   #app {
-
     ::-webkit-input-placeholder { /* WebKit browsers */
       color:    #ccc;
     }
@@ -104,7 +117,7 @@
     color:#2c3e50;
     /*margin-top:60px;*/
 
-    .mask {
+    .mask, .menu-mask {
       position: fixed;
       z-index: $maskZIndex;
       left:0;
@@ -165,6 +178,7 @@
       left:$west-width;
       right:0;
       z-index:$appZIndex - 1;
+      background-color:#fff;
     }
 
     #alert-list{
@@ -177,6 +191,23 @@
     /* !!fix */
     input[type="button"], input[type="submit"], input[type="reset"], input[type="file"]::-webkit-file-upload-button, button {
       cursor:pointer;
+    }
+
+    .menu-mask {
+      display:none;
+    }
+    @media (max-width: 767px) {
+      #west {
+        left:-$west-width;
+      }
+      .menu-mask {
+        z-index:$appZIndex;
+        display:block;
+      }
+      #east {
+        left:0;
+      }
+
     }
   }
 </style>

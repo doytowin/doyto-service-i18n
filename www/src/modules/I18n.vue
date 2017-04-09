@@ -1,15 +1,21 @@
 <template>
   <div style="position:relative" ref="out">
-    <div class="mb-2">
+    <div class="mb-2 clearfix ">
       <a class="btn btn-secondary" :href="openapi + '/openapi/i18n/' + group + '.xlsx'" v-t>导出Excel</a>
       <b-btn v-t>打包JSON格式</b-btn>
       <b-btn v-t>打包Properties格式</b-btn>
       <b-btn v-t>从Excel文件导入</b-btn>
-      <b-btn class="btn-success float-right ml-2" v-t>添加标签</b-btn>
-      <b-btn class="btn-success float-right" v-t>添加语种</b-btn>
+      <div class="hidden-sm-up">
+        <b-btn class="btn-success mr-2" v-t>添加标签</b-btn>
+        <b-btn class="btn-success" v-t>添加语种</b-btn>
+      </div>
+      <div class="hidden-sm-down float-right">
+        <b-btn class="btn-success mr-2" v-t>添加标签</b-btn>
+        <b-btn class="btn-success" v-t>添加语种</b-btn>
+      </div>
     </div>
     <section style="overflow-y:auto" :style="{maxHeight: (tableHeight) + 'px'}">
-      <table class="table table-hover" style="margin-bottom:0;">
+      <table class="table table-hover table-responsive2" style="margin-bottom:0;">
         <thead>
         <tr class="text-center">
           <th>#</th>
@@ -30,6 +36,9 @@
   </div>
 </template>
 <style lang="scss">
+  .table td {
+    word-break: keep-all
+  }
   .page-footer {
     border-top:1px #eee solid;
     padding-top:6px;

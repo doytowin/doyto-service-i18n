@@ -13,7 +13,7 @@
       <button class="btn btn-secondary" @click="p.last"><i class="fa fa-step-forward"></i></button>
       <button class="btn btn-secondary" @click="p.load"><i class="fa fa-refresh"></i></button>
     </div>
-    <div class="pull-right">
+    <div class="hidden-sm-down pull-right">
       <span class="hidden-xs">共有{{p.total}}条数据，显示第{{p.from}}条到第{{p.to}}条，每页</span>
       <b-dropdown size="sm" :text="(p.limit || 10) + ''" dropup :right="true" class="page-size">
         <b-dropdown-item v-for="(s, $i) in [5,10,20,30,50]" :key="$i" @click="p.size(s)" class="text-right">{{s}}</b-dropdown-item>
