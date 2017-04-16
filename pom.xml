@@ -112,33 +112,10 @@
             <version>1.2.0</version>
         </dependency>
 
-        <!-- hazelcast -->
-        <!--<dependency>
-            <groupId>org.mybatis.caches</groupId>
-            <artifactId>mybatis-hazelcast</artifactId>
-            <version>1.1.2-SNAPSHOT</version>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.hazelcast</groupId>
-                    <artifactId>hazelcast-spring</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.hazelcast</groupId>
-            <artifactId>hazelcast-spring</artifactId>
-        </dependency>-->
-
         <!-- 数据库连接池 -->
         <dependency>
             <groupId>com.zaxxer</groupId>
             <artifactId>HikariCP</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>commons-dbutils</groupId>
-            <artifactId>commons-dbutils</artifactId>
-            <version>1.6</version>
         </dependency>
 
         <dependency>
