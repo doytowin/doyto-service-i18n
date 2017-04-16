@@ -3,3 +3,5 @@ target/
 *.iml
 /temp*
 npm-debug.log
+/src/main/resources/static/
+/src/main/dev/template/

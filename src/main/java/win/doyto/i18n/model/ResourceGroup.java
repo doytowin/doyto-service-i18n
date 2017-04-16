@@ -15,9 +15,7 @@ public class ResourceGroup extends PageableModel<ResourceGroup> {
 
     private String name;
 
-    private String locales;
-
-    private String memo;
+    private String owner;
 
     private Date createTime;
 

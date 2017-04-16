@@ -91,7 +91,9 @@
     methods: {}
   }
 </script>
-
+<style src="bootstrap/dist/css/bootstrap.css" lang="scss"></style>
+<style src="bootstrap-vue/dist/bootstrap-vue.css" lang="scss"></style>
+<style src="./assets/css/fix.scss" lang="scss"></style>
 <style lang="scss">
   $west-width:280px;
   $maskZIndex:999;
@@ -228,3 +230,4 @@
     }
   }
 </style>
+

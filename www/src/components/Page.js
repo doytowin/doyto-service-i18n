@@ -1,5 +1,5 @@
 import Vue from 'vue'
-import Util from 'Util'
+import Util from './Util'
 
 /**
  * 分页的处理类

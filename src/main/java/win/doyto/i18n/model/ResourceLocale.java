@@ -26,6 +26,9 @@ public class ResourceLocale extends PageableModel<ResourceLocale> {
 
     private Date updateTime;
 
-    private Boolean statu;
+    private Boolean status;
+
+    // POST
+    private String group;
 
 }

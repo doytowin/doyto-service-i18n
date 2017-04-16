@@ -3,6 +3,7 @@ package win.doyto.i18n.service;
 import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.mapper.ResourceGroupMapper;
@@ -29,6 +30,15 @@ public class DefaultResourceGroupService extends AbstractService<ResourceGroup> 
     public ResourceGroup getGroup(String groupName) {
         ResourceGroup group = groupMapper.getByName(groupName);
         if (group == null) {
+            throw new RestNotFoundException("资源分组未配置: " + groupName);
+        }
+        return group;
+    }
+
+    @Override
+    public ResourceGroup checkGroup(Integer id, String groupName) {
+        ResourceGroup group = groupMapper.get(id);
+        if (group == null || !StringUtils.equalsIgnoreCase(group.getName(), groupName)) {
             throw new RestNotFoundException("资源分组未配置: " + groupName);
         }
         return group;

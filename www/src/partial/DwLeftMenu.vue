@@ -66,11 +66,6 @@
                 'parentId': 2,
                 'label': '资源分组管理',
                 'url': '/resource/group'
-              },
-              {
-                'parentId': 2,
-                'label': '资源语种管理',
-                'url': '/resource/locale'
               }
             ]
           }]
@@ -89,7 +84,7 @@
               {
                 'label': '语种管理',
                 'name': 'locale',
-                'url': '/resource/i18n/locale'
+                'url': '/resource/1/i18n/locale'
               },
               {
                 'label': '中文',
@@ -115,7 +110,7 @@
               {
                 'label': '语种管理',
                 'name': 'locale',
-                'url': '/resource/d1m/locale'
+                'url': '/resource/2/d1m/locale'
               },
               {
                 'label': '中文',

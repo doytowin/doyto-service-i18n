@@ -81,12 +81,6 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
                 if (record.getName() != null) {
                     SET("`name` = #{name,jdbcType=VARCHAR}");
                 }
-                //if (record.getValue() != null) {
-                //    SET("`value` = #{value,jdbcType=VARCHAR}");
-                //}
-                if (record.getMemo() != null) {
-                    SET("`memo` = #{memo,jdbcType=VARCHAR}");
-                }
                 /*if (record.getUpdateTime() != null) {
                     SET("`updateTime` = #{updateTime,jdbcType=TIMESTAMP}");
                 }*/

@@ -25,9 +25,9 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
     @Insert({
             "insert into",
             Table,
-            "(`group_id`,`locale`,`statu`)",
+            "(`groupId`,`locale`,`status`)",
             "values",
-            "(#{group_id},#{locale},#{statu})"
+            "(#{groupId},#{locale},1)"
     })
     @Options(useGeneratedKeys = true)
     int insert(ResourceLocale record);
@@ -60,8 +60,8 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
                 //if (record.getName() != null) {
                 //    WHERE("name like CONCAT(#{name},'%')");
                 //}
-                if (record.getGroup() != null) {
-                    WHERE("group_id = (SELECT id FROM " + ResourceGroupMapper.Table + " WHERE name = #{group})");
+                if (record.getGroupId() != null) {
+                    WHERE("groupId = #{groupId}");
                 }
             }}.toString();// + (query && record.needPaging() ? _LIMIT_OFFSET : "");
         }
@@ -78,7 +78,7 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
             return new SQL() {{
                 UPDATE(Table);
                 if (record.getGroupId() != null) {
-                    SET("`group_id` = #{group_id,jdbcType=INTEGER}");
+                    SET("`groupId` = #{groupId,jdbcType=INTEGER}");
                 }
                 if (record.getLocale() != null) {
                     SET("`locale` = #{locale,jdbcType=VARCHAR}");
@@ -86,8 +86,8 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
                 if (record.getUpdateTime() != null) {
                     SET("`updateTime` = #{updateTime,jdbcType=TIMESTAMP}");
                 }
-                if (record.getStatu() != null) {
-                    SET("`statu` = #{statu,jdbcType=BIT}");
+                if (record.getStatus() != null) {
+                    SET("`status` = #{status,jdbcType=BIT}");
                 }
                 WHERE("id = #{id,jdbcType=INTEGER}");
             }}.toString();

@@ -16,4 +16,5 @@ public interface ResourceGroupService extends IService<ResourceGroup> {
 
     ResourceGroup getGroup(String groupName);
 
+    ResourceGroup checkGroup(Integer id, String groupName);
 }

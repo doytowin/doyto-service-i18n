@@ -6,12 +6,10 @@
       <b-btn v-t>打包Properties格式</b-btn>
       <b-btn v-t>从Excel文件导入</b-btn>
       <div class="hidden-sm-up">
-        <b-btn class="btn-success mr-2" v-t>添加标签</b-btn>
-        <b-btn class="btn-success" v-t>添加语种</b-btn>
+        <b-btn class="btn-success mr-2" v-t>添加条目</b-btn>
       </div>
       <div class="hidden-sm-down float-right">
-        <b-btn class="btn-success mr-2" v-t>添加标签</b-btn>
-        <b-btn class="btn-success" v-t>添加语种</b-btn>
+        <b-btn class="btn-success mr-2" v-t>添加条目</b-btn>
       </div>
     </div>
     <section style="overflow-y:auto" :style="{maxHeight: (tableHeight) + 'px'}">
@@ -94,9 +92,9 @@
             Util.handleFailure(data)
           }
         })
-        this.$nextTick(function () {
-          this.crud.p.load()
-        })
+        // this.$nextTick(function () {
+        //   this.crud.p.load()
+        // })
       },
       handleTableHeight () {
         this.tableHeight = this.$el.parentElement.clientHeight - 50 - 60 - 45

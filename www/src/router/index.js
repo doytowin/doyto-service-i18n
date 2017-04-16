@@ -16,7 +16,7 @@ export default new Router({
       component: ResourceGroup
     },
     {
-      path: '/resource/:group/locale',
+      path: '/resource/:groupId/:group/locale',
       name: 'ResourceLocale',
       component: ResourceLocale
     },

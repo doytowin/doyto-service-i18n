@@ -41,27 +41,19 @@
 <style lang="scss">
 
   #i18n-locale {
-    /*position:relative;*/
-
-    @media (min-width:576px) {
-      .modal-dialog {
-        margin-top:80px;
-      }
-    }
-
     .table th, .table td {
       vertical-align:middle;
       padding:0.25rem;
       /*border-top: 1px solid #eceeef;*/
     }
-  }
-  .dw-editor {
-    position:relative;
-    > .dw-button {
-      position:absolute;
-      right:20px;
-      top:50%;
-      transform:translate(0, -50%);
+    .dw-editor {
+      position:relative;
+      > .dw-button {
+        position:absolute;
+        right:20px;
+        top:50%;
+        transform:translate(0, -50%);
+      }
     }
   }
 </style>

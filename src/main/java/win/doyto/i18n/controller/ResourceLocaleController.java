@@ -20,7 +20,7 @@ import win.doyto.web.service.IMapper;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/resource/{group}/locale")
+@RequestMapping("/api/resource/{groupId}_{group}/locale")
 public class ResourceLocaleController extends AbstractController<ResourceLocale> {
     @Resource
     private ResourceLocaleService resourceLocaleService;
@@ -45,18 +45,33 @@ public class ResourceLocaleController extends AbstractController<ResourceLocale>
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Object add(@RequestBody @Valid ResourceLocale resourceLocale, BindingResult result) {
+    public Object add(
+            @RequestBody @Valid ResourceLocale resourceLocale, BindingResult result,
+            @PathVariable("groupId") Integer groupId,
+            @PathVariable("group") String group
+    ) {
         if (result.hasErrors()) {
             return result;
         }
+        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, group);
+        resourceLocale.setGroupId(resourceGroup.getId());
+        resourceLocale.setGroup(group);
         return resourceLocaleService.add(resourceLocale);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST)
-    public Object save(@RequestBody @Valid ResourceLocale resourceLocale, BindingResult result) {
+    public Object save(
+            @RequestBody @Valid ResourceLocale resourceLocale,
+            BindingResult result,
+            @PathVariable("groupId") Integer groupId,
+            @PathVariable("group") String group,
+            @PathVariable(value = "id", required = false) String id
+    ) {
         if (result.hasErrors()) {
             return result;
         }
+        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, group);
+        resourceLocale.setGroupId(resourceGroup.getId());
         return resourceLocaleService.save(resourceLocale);
     }
 

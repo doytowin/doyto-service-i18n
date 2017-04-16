@@ -61,6 +61,9 @@
       this.p.load()
     },
     watch: {
+      'p' () {
+        this.p.load()
+      },
       'p.loading' () {
         if (this.p.loading) {
           window.bus.$emit('loading')
