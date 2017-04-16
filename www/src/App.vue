@@ -2,12 +2,14 @@
   <div id="app">
     <div id="north" class="card card-inverse card-info">
       <div class="card-header" style="padding:0 1.25rem">
-        <i @click="showMenu = !showMenu"  class="fa fa-bars hidden-sm-up mr-2"></i>
+        <i @click="showMenu = !showMenu" class="fa fa-bars hidden-sm-up mr-2"></i>
         <t>国际化管理系统</t>
       </div>
     </div>
     <div id="west" ref="west" :style="{left: showMenu ? 0 : '-280px'}">
-      <dw-left-menu></dw-left-menu>
+      <div class="west-wrapper">
+        <dw-left-menu></dw-left-menu>
+      </div>
       <dw-lang></dw-lang>
     </div>
     <div id="east">
@@ -86,30 +88,29 @@
         vm.showMenu = document.body.clientWidth > 767
       })
     },
-    methods: {
-    }
+    methods: {}
   }
 </script>
 
 <style lang="scss">
   $west-width:280px;
-  $maskZIndex: 999;
-  $appZIndex: 10;
+  $maskZIndex:999;
+  $appZIndex:10;
 
   #app {
     ::-webkit-input-placeholder { /* WebKit browsers */
-      color:    #ccc;
+      color:#ccc;
     }
     :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-      color:    #ccc;
-      opacity:  1;
+      color:#ccc;
+      opacity:1;
     }
     ::-moz-placeholder { /* Mozilla Firefox 19+ */
-      color:    #ccc;
-      opacity:  1;
+      color:#ccc;
+      opacity:1;
     }
     :-ms-input-placeholder { /* Internet Explorer 10+ */
-      color:    #ccc;
+      color:#ccc;
     }
 
     -webkit-font-smoothing:antialiased;
@@ -118,8 +119,8 @@
     /*margin-top:60px;*/
 
     .mask, .menu-mask {
-      position: fixed;
-      z-index: $maskZIndex;
+      position:fixed;
+      z-index:$maskZIndex;
       left:0;
       top:0;
       bottom:0;
@@ -128,23 +129,27 @@
       opacity:0.2;
     }
     .loader {
-      border: 16px solid #f3f3f3; /* Light grey */
-      border-top: 16px solid #3498db; /* Blue */
-      border-radius: 50%;
-      width: 120px;
-      height: 120px;
-      animation: spin 2s linear infinite;
-      position: fixed;
-      top: 50%;
-      left: 50%;
-      margin-top: -60px;
-      margin-left: -60px;
-      z-index: $maskZIndex + 1;
+      border:16px solid #f3f3f3; /* Light grey */
+      border-top:16px solid #3498db; /* Blue */
+      border-radius:50%;
+      width:120px;
+      height:120px;
+      animation:spin 2s linear infinite;
+      position:fixed;
+      top:50%;
+      left:50%;
+      margin-top:-60px;
+      margin-left:-60px;
+      z-index:$maskZIndex + 1;
     }
 
     @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
+      0% {
+        transform:rotate(0deg);
+      }
+      100% {
+        transform:rotate(360deg);
+      }
     }
 
     #west, #east {
@@ -171,6 +176,18 @@
       background-color:#d9edf7;
       z-index:$appZIndex + 1;
       padding:42px 1px;
+      > div.west-wrapper {
+        position:relative;
+        height:100%;
+        max-height:100%;
+        overflow-y:auto;
+        .dw-lang {
+          position:absolute;
+          bottom:0;
+          left:0;
+          right:0;
+        }
+      }
     }
 
     #east {
@@ -181,7 +198,7 @@
       background-color:#fff;
     }
 
-    #alert-list{
+    #alert-list {
       position:fixed;
       top:50px;
       right:22px;
@@ -196,7 +213,7 @@
     .menu-mask {
       display:none;
     }
-    @media (max-width: 767px) {
+    @media (max-width:767px) {
       #west {
         left:-$west-width;
       }

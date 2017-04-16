@@ -1,18 +1,24 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
-import Group from '@/modules/Group'
 import I18n from '@/modules/I18n'
 import I18nLocale from '@/modules/I18nLocale'
+import ResourceGroup from '@/modules/ResourceGroup'
+import ResourceLocale from '@/modules/ResourceLocale'
 
 Vue.use(Router)
 
 export default new Router({
   routes: [
     {
-      path: '/group',
-      name: 'Group',
-      component: Group
+      path: '/resource/group',
+      name: 'ResourceGroup',
+      component: ResourceGroup
+    },
+    {
+      path: '/resource/:group/locale',
+      name: 'ResourceLocale',
+      component: ResourceLocale
     },
     {
       path: '/i18n/:group',

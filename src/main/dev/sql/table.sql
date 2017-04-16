@@ -27,9 +27,7 @@ CREATE TABLE i18n.i18n_i18n_d1m
     CONSTRAINT UNIQUE INDEX i18n_group_i18n_label_index (label)
 );
 
-
-
-CREATE TABLE i18n.i18n_group
+CREATE TABLE i18n.i18n_resource_group
 (
     id         INT(11)      NOT NULL AUTO_INCREMENT,
     name       VARCHAR(100) NOT NULL,
@@ -40,7 +38,7 @@ CREATE TABLE i18n.i18n_group
     CONSTRAINT UNIQUE INDEX i18n_group (name)
 );
 
-CREATE TABLE i18n.i18n_group_locale
+CREATE TABLE i18n.i18n_resource_locale
 (
     id INT(11) NOT NULL AUTO_INCREMENT,
     group_id INT(11) NOT NULL,

@@ -13,6 +13,6 @@ import win.doyto.i18n.I18nAppTest;
 @Slf4j
 public class GroupServiceTest extends I18nAppTest {
     @Resource
-    private GroupService groupService;
+    private ResourceGroupService groupService;
 
 }

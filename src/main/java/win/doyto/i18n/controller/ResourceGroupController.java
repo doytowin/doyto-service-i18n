@@ -6,8 +6,8 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.i18n.model.Group;
-import win.doyto.i18n.service.GroupService;
+import win.doyto.i18n.model.ResourceGroup;
+import win.doyto.i18n.service.ResourceGroupService;
 
 /**
  * GroupController
@@ -16,13 +16,13 @@ import win.doyto.i18n.service.GroupService;
  */
 @Slf4j
 @RestController
-@RequestMapping("/api/group")
-public class GroupController {
+@RequestMapping("/api/resource-group")
+public class ResourceGroupController {
     @Resource
-    private GroupService groupService;
+    private ResourceGroupService groupService;
 
     @RequestMapping(method = RequestMethod.GET)
-    public Object query(Group group) {
+    public Object query(ResourceGroup group) {
         return groupService.query(group);
     }
 
@@ -32,7 +32,7 @@ public class GroupController {
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Object add(@RequestBody @Valid Group group, BindingResult result) {
+    public Object add(@RequestBody @Valid ResourceGroup group, BindingResult result) {
         if (result.hasErrors()) {
             return result;
         }
@@ -40,7 +40,7 @@ public class GroupController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.POST)
-    public Object save(@RequestBody @Valid Group group, BindingResult result) {
+    public Object save(@RequestBody @Valid ResourceGroup group, BindingResult result) {
         if (result.hasErrors()) {
             return result;
         }
@@ -49,7 +49,7 @@ public class GroupController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable("id") Integer id) {
-        Group deleted = groupService.delete(id);
+        ResourceGroup deleted = groupService.delete(id);
         return deleted != null ? id : null;
     }
 

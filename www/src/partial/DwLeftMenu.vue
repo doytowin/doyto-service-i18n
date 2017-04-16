@@ -30,7 +30,7 @@
 <style lang="scss">
   #leftMenu {
     .list-group {
-      .list-group-item:first-child{
+      .list-group-item:first-child {
         border-top-left-radius:0;
         border-top-right-radius:0;
       }
@@ -61,33 +61,74 @@
             'name': 'sysconf',
             'rank': 1,
             'sequence': 1,
-            'sub': [{
-              'id': 34,
-              'parentId': 2,
-              'label': '资源管理',
-              'url': '/group',
-              'rank': 1,
-              'sequence': 2
-            }]
+            'sub': [
+              {
+                'parentId': 2,
+                'label': '资源分组管理',
+                'url': '/resource/group'
+              },
+              {
+                'parentId': 2,
+                'label': '资源语种管理',
+                'url': '/resource/locale'
+              }
+            ]
           }]
         },
-        i18nMenus: [{
-          'label': '国际化系统',
-          'name': 'system_i18n',
-          'sub': [{
-            'label': '概览',
-            'name': 'i18n',
-            'url': '/i18n/i18n'
-          }, {
-            'label': '中文',
-            'name': 'i18n_zh_CN',
-            'url': '/i18n/i18n/zh_CN'
-          }, {
-            'label': 'English',
-            'name': 'i18n_en_US',
-            'url': '/i18n/i18n/en_US'
-          }]
-        }]
+        i18nMenus: [
+          {
+            'id': 21,
+            'label': '国际化系统',
+            'name': 'system_i18n',
+            'sub': [
+              {
+                'label': '概览',
+                'name': 'i18n',
+                'url': '/i18n/i18n'
+              },
+              {
+                'label': '语种管理',
+                'name': 'locale',
+                'url': '/resource/i18n/locale'
+              },
+              {
+                'label': '中文',
+                'name': 'i18n_zh_CN',
+                'url': '/i18n/i18n/zh_CN'
+              },
+              {
+                'label': 'English',
+                'name': 'i18n_en_US',
+                'url': '/i18n/i18n/en_US'
+              }]
+          },
+          {
+            'id': 22,
+            'label': 'd1m国际化系统',
+            'name': 'resource_d1m',
+            'sub': [
+              {
+                'label': '概览',
+                'name': 'i18n',
+                'url': '/i18n/d1m'
+              },
+              {
+                'label': '语种管理',
+                'name': 'locale',
+                'url': '/resource/d1m/locale'
+              },
+              {
+                'label': '中文',
+                'name': 'i18n_zh_CN',
+                'url': '/i18n/d1m/zh_CN'
+              },
+              {
+                'label': 'English',
+                'name': 'i18n_en_US',
+                'url': '/i18n/d1m/en_US'
+              }]
+          }
+        ]
       }
     },
     mounted () {

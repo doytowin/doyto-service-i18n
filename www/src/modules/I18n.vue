@@ -86,12 +86,16 @@
     },
     methods: {
       init () {
+        this.group = this.$route.params.group
         this.crud = new Crud(this.$resource(this.openapi + 'api/i18n/' + this.group), function (data) {
           if (data.success) {
             this.crud.p.load()
           } else {
             Util.handleFailure(data)
           }
+        })
+        this.$nextTick(function () {
+          this.crud.p.load()
         })
       },
       handleTableHeight () {
