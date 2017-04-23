@@ -28,7 +28,7 @@
 
     <div id="alert-list">
       <div v-for="(a, $i) in alerts">
-        <b-alert :show="a.timeout" :state="a.type" v-on:dismissed="alerts.splice($i, 1)">
+        <b-alert :show="a.timeout" :state="a.state" v-on:dismissed="alerts.splice($i, 1)">
           {{a.content}}
         </b-alert>
       </div>
@@ -75,7 +75,7 @@
         let a = {
           content: al.content,
           timeout: 3,
-          state: al.type || 'info'
+          state: al.state || 'success'
         }
         if (typeof (al.timeout) === 'number' && al.timeout > 0) {
           a.timeout = al.timeout

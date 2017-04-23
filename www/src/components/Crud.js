@@ -33,7 +33,7 @@ let Crud = function (R, successFunc, errorFunc) {
     if (typeof errorFunc === 'function') {
       errorFunc(ret)
     } else {
-      if (typeof ret === 'object') {
+      if (ret !== null && typeof ret === 'object') {
         alert('Status[' + ret.status + ']: ' + (ret.data.info || ret.statusText || defaultErrorMessage))
       } else {
         alert(typeof ret === 'string' ? ret : defaultErrorMessage)

@@ -13,7 +13,7 @@
         <thead>
         <tr class="text-center">
           <th>#</th>
-          <th v-t>语种2</th>
+          <th v-t>语种</th>
           <th v-t>操作</th>
         </tr>
         </thead>

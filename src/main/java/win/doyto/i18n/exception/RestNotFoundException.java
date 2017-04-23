@@ -9,7 +9,7 @@ import win.doyto.web.RestException;
  *
  * @author f0rb on 2017-03-30.
  */
-@ResponseStatus(value = HttpStatus.NOT_FOUND)
+@ResponseStatus(value = HttpStatus.OK)
 public class RestNotFoundException extends RestException {
     public RestNotFoundException(String message) {
         super(message);

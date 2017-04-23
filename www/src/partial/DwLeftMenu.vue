@@ -87,14 +87,9 @@
                 'url': '/resource/1/i18n/locale'
               },
               {
-                'label': '中文',
+                'label': '资源翻译',
                 'name': 'i18n_zh_CN',
                 'url': '/i18n/i18n/zh_CN'
-              },
-              {
-                'label': 'English',
-                'name': 'i18n_en_US',
-                'url': '/i18n/i18n/en_US'
               }]
           },
           {
@@ -113,14 +108,9 @@
                 'url': '/resource/2/d1m/locale'
               },
               {
-                'label': '中文',
+                'label': '资源翻译',
                 'name': 'i18n_zh_CN',
-                'url': '/i18n/d1m/zh_CN'
-              },
-              {
-                'label': 'English',
-                'name': 'i18n_en_US',
-                'url': '/i18n/d1m/en_US'
+                'url': '/i18n/i18n/zh_CN'
               }]
           }
         ]

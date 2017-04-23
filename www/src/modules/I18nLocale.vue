@@ -9,7 +9,16 @@
         <th>#</th>
         <th v-t>标签</th>
         <th v-t>默认文本</th>
-        <th v-t>文本</th>
+        <th>
+          <b-dropdown :text="$t('locale_' + locale)" variant="secondary">
+            <b-dropdown-item>
+              <router-link :to="'zh_CN'" exact v-t>locale_zh_CN</router-link>
+            </b-dropdown-item>
+            <b-dropdown-item>
+              <router-link :to="'en_US'" exact v-t>locale_en_US</router-link>
+            </b-dropdown-item>
+          </b-dropdown>
+        </th>
       </tr>
       </thead>
       <tbody>
@@ -103,16 +112,29 @@
                 .replace(/{group}/, this.group)
                 .replace(/{locale}/, this.locale)
 
-        this.$http.get(url).then(response => {
-          // get body data
-          let json = response.body
-          _recordOrigin(json)
-          this.list = json.list
-          window.bus.$emit('loaded')
-        }, response => {
-          // error callback
-          window.bus.$emit('loaded')
-        })
+        this.$http.get(url).then(
+          response => {
+            // get body data
+            let json = response.body
+            if (json.success) {
+              _recordOrigin(json)
+              this.list = json.list
+            } else {
+              this.list = []
+              window.bus.$emit('alert', {
+                content: this.$t(json.info) + ':' + this.locale,
+                state: 'danger',
+                timeout: 3
+              })
+            }
+            window.bus.$emit('loaded')
+          },
+          response => {
+            // error callback
+            // let json = response.body
+            window.bus.$emit('loaded')
+          }
+        )
       },
       save (r) {
         // console.log(r)
@@ -138,7 +160,7 @@
           bus.$emit('loaded')
           bus.$emit('alert', {
             content: '标签保存成功: ' + r.label,
-            type: 'success',
+            state: 'success',
             timeout: 1
           })
         }, response => {
@@ -147,7 +169,7 @@
           bus.$emit('loaded')
           bus.$emit('alert', {
             content: '保存失败[' + r.label + ']',
-            type: 'warning',
+            state: 'warning',
             timeout: 1
           })
         })
