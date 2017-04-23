@@ -16,6 +16,9 @@
       .dropdown-toggle, .dropdown-menu {
         width:100%;
       }
+      .dropdown-toggle {
+        border-radius:0;
+      }
       .dropdown-menu {
         max-height:200px;
         text-align:right;
