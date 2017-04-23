@@ -1,5 +1,5 @@
 server:
-  port: ${i18n.server.port:8080}
+  port: 9018
 
 logging:
   level:

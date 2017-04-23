@@ -60,8 +60,10 @@ Util.handleFailure = function (data) {
     if (data.code === 1) {
       location.href = 'login?redirect=' + encodeURIComponent(location.href)
     } else {
-      alert(data.info || '访问错误')
+      alert(data.info || '服务访问出错')
     }
+  } else {
+    alert('服务访问出错')
   }
 }
 

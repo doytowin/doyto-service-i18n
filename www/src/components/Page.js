@@ -15,6 +15,7 @@ let Page = function (queryFunc) {
   let qo
 
   function SuccessCallback (data) {
+    let p = this
     if (data.success) {
       if (typeof data.total === 'number') {
         total = data.total
@@ -23,14 +24,13 @@ let Page = function (queryFunc) {
           pages = newPages
           if (page > newPages) { // 当前页号page大于总页数时，是没有数据的，需要修正page然后重新加载
             page = Math.min(newPages, 1)
-            this && this.load()
+            p.load()
             return
           }
         }
         if (!page && pages) {
           page = 1
         }
-        let p = this
         p.page = page
         p.limit = limit
         p.pages = pages
@@ -38,7 +38,7 @@ let Page = function (queryFunc) {
         p.from = Math.max((page - 1) * limit + 1, 0)
         p.to = Math.min(page * limit, total)
       }
-      this.list = data.list
+      p.list = data.list
     } else {
       Util.handleFailure(data)
     }
@@ -58,6 +58,10 @@ let Page = function (queryFunc) {
     queryFunc(q).then(response => {
       SuccessCallback.call(self, response.body)
       self.loading = false
+    }, response => {
+      console.log(response)
+      self.loading = false
+      Util.handleFailure(response.body)
     })
     return this
   }

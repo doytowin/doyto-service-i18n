@@ -36,7 +36,7 @@ public class I18nApp {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
                 registry.addMapping("/openapi/**").allowedOrigins("*");
-                registry.addMapping("/api/**").allowedOrigins("http://localhost:8080");
+                registry.addMapping("/api/**").allowedOrigins("http://localhost:9017");
                 //registry.addMapping("/api/i18n/i18n/zh_CN").allowedOrigins("http://localhost:8080");
             }
 
