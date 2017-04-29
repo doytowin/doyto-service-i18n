@@ -110,7 +110,7 @@
               {
                 'label': '资源翻译',
                 'name': 'i18n_zh_CN',
-                'url': '/i18n/i18n/zh_CN'
+                'url': '/i18n/d1m/zh_CN'
               }]
           }
         ]
