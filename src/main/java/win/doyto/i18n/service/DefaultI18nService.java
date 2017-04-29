@@ -128,8 +128,13 @@ public class DefaultI18nService implements I18nService {
         for (Lang lang : langList) {
             if (StringUtils.isBlank(lang.getValue())) {
                 BaiduTran baiduTran = baiduTranApi.getTrans(lang.getDefaults(), "auto", to);
+                if (baiduTran.fail()) {
+                    log.error("翻译接口调用失败: {}[{}]", baiduTran.getErrorMsg(), baiduTran.getErrorCode());
+                }
                 try {
-                    translationMap.put(lang.getLabel(), baiduTran.getTransResult()[0].getDst());
+                    if (baiduTran.getTransResult() != null) {
+                        translationMap.put(lang.getLabel(), baiduTran.getTransResult()[0].getDst());
+                    }
                 } catch (Exception e) {
                     log.error("获取翻译失败: lang.getLabel()", e);
                 }
