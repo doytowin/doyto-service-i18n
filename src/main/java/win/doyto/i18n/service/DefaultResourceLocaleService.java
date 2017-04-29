@@ -1,5 +1,6 @@
 package win.doyto.i18n.service;
 
+import java.util.Date;
 import java.util.List;
 import javax.annotation.Resource;
 
@@ -60,12 +61,12 @@ public class DefaultResourceLocaleService extends AbstractService<ResourceLocale
         if (origin == null) {
             return null;
         }
-        //origin.setGroup_id(resourceLocale.getGroup_id());
-        //origin.setLocale(resourceLocale.getLocale());
-        //origin.setStatu(resourceLocale.getStatu());
+        origin.setLocale(resourceLocale.getLocale());
+        origin.setLanguage(resourceLocale.getLanguage());
+        origin.setBaiduTranLang(resourceLocale.getBaiduTranLang());
 
         //origin.setUpdateUserId(AppContext.getLoginUserId());
-        //origin.setUpdateTime(new Date());
+        origin.setUpdateTime(new Date());
         resourceLocaleMapper.update(origin);
         return origin;
     }

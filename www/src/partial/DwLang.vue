@@ -3,6 +3,8 @@
     <b-dropdown v-if="$root.lang" :text="$t('语言') + ': ' + $t('locale_' + $root.lang)" dropup variant="primary">
       <b-dropdown-item @click="$root.switchLang('zh_CN')">简体中文</b-dropdown-item>
       <b-dropdown-item @click="$root.switchLang('en_US')">English(US)</b-dropdown-item>
+      <b-dropdown-item @click="$root.switchLang('kr')">한국의</b-dropdown-item>
+      <b-dropdown-item @click="$root.switchLang('fr')">Français</b-dropdown-item>
     </b-dropdown>
   </div>
 </template>

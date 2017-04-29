@@ -78,6 +78,6 @@ public class ResourceLocaleController extends AbstractController<ResourceLocale>
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public Object delete(@PathVariable("id") Integer id) {
         ResourceLocale deleted = resourceLocaleService.delete(id);
-        return deleted != null ? id : null;
+        return deleted != null ? "语种删除成功: " + deleted.getLocale()    : null;
     }
 }

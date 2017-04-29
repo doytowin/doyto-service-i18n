@@ -59,12 +59,22 @@ new Vue({
   router,
   data () {
     return {
-      lang: undefined
+      lang: undefined,
+      languages: []
     }
   },
   template: '<App/>',
   mounted () {
     this.switchLang(localStorage.lang || 'zh_CN')
+
+    this.$http.get(Cons.apiHost + 'api/resource/1_i18n/locale').then(
+      response => {
+        let json = response.body
+        if (json.success) {
+          this.languages = json.list
+        }
+      }
+    )
   },
   methods: {
     switchLang (lang) {

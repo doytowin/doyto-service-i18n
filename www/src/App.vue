@@ -4,13 +4,19 @@
       <div class="card-header" style="padding:0 1.25rem">
         <i @click="showMenu = !showMenu" class="fa fa-bars hidden-sm-up mr-2"></i>
         <t>国际化管理系统</t>
+        <div class="float-right mr-2">
+          <!--<b-form-select :options="$root.languages" :text-field="'language'" :value-field="'locale'" class="mr-2"></b-form-select>-->
+          <select  @change="$root.switchLang($event.target.value)">
+            <option v-for="option in $root.languages" :selected='$root.lang == option.locale' :value="option.locale" v-html="option.language"></option>
+          </select>
+        </div>
       </div>
     </div>
     <div id="west" ref="west" :style="{left: showMenu ? 0 : '-280px'}">
       <div class="west-wrapper">
         <dw-left-menu></dw-left-menu>
       </div>
-      <dw-lang></dw-lang>
+      <!--<dw-lang></dw-lang>-->
     </div>
     <div id="east">
       <transition>
@@ -166,7 +172,7 @@
       left:0;
       right:0;
       bottom:0;
-      overflow:auto;
+      /*overflow:auto;*/
       height:40px;
       line-height:40px;
       z-index:$appZIndex + 3;

@@ -15,7 +15,8 @@ let Crud = function (R, successFunc, errorFunc) {
     return destination
   }
 
-  let onSuccess = function (data) {
+  let onSuccess = function (response) {
+    let data = response.body
     self.p.loading = false
     if (typeof successFunc === 'function') {
       successFunc(data)
@@ -59,21 +60,14 @@ let Crud = function (R, successFunc, errorFunc) {
     }
     self.p.loading = true
     // R.save(record, onSuccess, onError)
-    R.save({id: record.id}, record)
-      .then(response => {
-        // success callback
-        onSuccess(response.body)
-      }, response => {
-        onError(response.body)
-      }
-    )
+    R.save({id: record.id}, record).then(onSuccess, onError)
   }
 
   self.remove = function (record, message) {
     if (!confirm(message || '确定要删除这条记录吗?')) {
       return
     }
-    R.remove({}, {id: record.id}, onSuccess, onError)
+    R.remove({id: record.id}).then(onSuccess, onError)
   }
 
   self.p = new Page(R.query)// .load()

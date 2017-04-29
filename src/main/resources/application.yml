@@ -33,14 +33,18 @@ mybatis:
   config-location: classpath:mybatis.xml
   executor-type: reuse
 
-baidu:
-  fanyi:
-    langMap:
-      fr: fra
-      de: de
-      th: th
-      ko_KR: kor
-      ja_JP: ja
+#baidu:
+#  fanyi:
+#    langMap:
+#      fr: fra
+#      de: de
+#      th: th
+#      ko_KR: kor
+#      ja_JP: ja
+
+management:
+  security:
+    enabled: false
 
 
 ---
