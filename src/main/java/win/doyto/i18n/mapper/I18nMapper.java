@@ -74,7 +74,7 @@ public interface I18nMapper {
             "(#{key}, #{key}, #{value})",
             "</foreach>",
             "ON DUPLICATE KEY UPDATE",
-            "locale_${locale} = #{value}",
+            "locale_${locale} = VALUES(locale_${locale})",
             "</script>"
     })
     @Options
