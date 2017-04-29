@@ -34,7 +34,7 @@ public class OpenI18nController {
      */
     @RequestMapping(value = "{group}.xlsx", method = RequestMethod.GET)
     public View exportAllToExcel(Model model, @PathVariable("group") String group) {
-        i18nService.checkGroup(group);
+        //i18nService.checkGroup(group);
         List data = i18nService.query(group);
         model.addAttribute("data", data);
         return new I18nXlsxView();
