@@ -83,7 +83,7 @@ public interface I18nMapper {
     @Update({
             "ALTER TABLE",
             GROUP_FORMAT,
-            "ADD locale_${locale} TEXT"
+            "ADD locale_${locale} VARCHAR(1000) NOT NULL DEFAULT ''"
     })
     void addLocaleOnGroup(@Param("group") String group, @Param("locale") String locale);
 
