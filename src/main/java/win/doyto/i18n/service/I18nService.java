@@ -28,5 +28,7 @@ public interface I18nService {
 
     String addLocaleOnGroup(String group, String locale);
 
-    List<Lang> saveTranslation(String group, String locale, Map<String, String> langMap);
+    void saveTranslation(String group, String locale, Map<String, String> translationMap);
+
+    void autoTranslate(String group, String locale);
 }

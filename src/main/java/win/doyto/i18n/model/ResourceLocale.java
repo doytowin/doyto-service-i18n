@@ -22,6 +22,8 @@ public class ResourceLocale extends PageableModel<ResourceLocale> {
 
     private String locale;
 
+    private String baiduTranLang;
+
     private Date createTime;
 
     private Date updateTime;

@@ -74,10 +74,25 @@ public class I18nController {
                            @PathVariable("locale") String locale,
                            @RequestBody Map<String, String> map
     ) {
-        i18nService.checkGroupAndLocale(group, locale);
+        //i18nService.checkGroupAndLocale(group, locale);
+        i18nService.saveTranslation(group, locale, map);
+        List<Lang> data = i18nService.queryWithDefaults(group, locale);
 
-        List<Lang> data = i18nService.saveTranslation(group, locale, map);
+        return data;
+    }
 
+    /**
+     * 保存翻译文本
+     *
+     */
+    @RequestMapping(value = "{group}/{locale}/auto", method = RequestMethod.POST)
+    @ResponseBody
+    public Object autoTranslate(ModelAndView mav,
+                           @PathVariable("group") String group,
+                           @PathVariable("locale") String locale
+    ) {
+        i18nService.autoTranslate(group, locale);
+        List<Lang> data = i18nService.queryWithDefaults(group, locale);
         return data;
     }
 

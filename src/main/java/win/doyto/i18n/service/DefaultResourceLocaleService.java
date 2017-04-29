@@ -1,5 +1,6 @@
 package win.doyto.i18n.service;
 
+import java.util.List;
 import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +27,23 @@ public class DefaultResourceLocaleService extends AbstractService<ResourceLocale
     @Override
     public ResourceLocaleMapper getIMapper() {
         return resourceLocaleMapper;
+    }
+
+    @Override
+    public ResourceLocale getByGroupAndLocale(Integer groupId, String locale) {
+        ResourceLocale query = new ResourceLocale();
+        query.setGroupId(groupId);
+        query.setLocale(locale);
+        List<ResourceLocale> list = resourceLocaleMapper.query(query);
+        ResourceLocale ret = null;
+        if (!list.isEmpty()) {
+            ret = list.get(0);
+
+            if (list.size() > 1) {
+                log.warn("发现多个ResourceLocale: groupId={}, locale={}", groupId, locale);
+            }
+        }
+        return ret;
     }
 
     @Override

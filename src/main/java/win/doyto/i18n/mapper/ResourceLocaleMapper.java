@@ -25,9 +25,9 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
     @Insert({
             "insert into",
             Table,
-            "(`groupId`,`locale`,`status`)",
+            "(`groupId`,`locale`,`baiduTranLang`,`status`)",
             "values",
-            "(#{groupId},#{locale},1)"
+            "(#{groupId},#{locale},#{baiduTranLang},1)"
     })
     @Options(useGeneratedKeys = true)
     int insert(ResourceLocale record);
@@ -63,6 +63,9 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
                 if (record.getGroupId() != null) {
                     WHERE("groupId = #{groupId}");
                 }
+                if (record.getLocale() != null) {
+                    WHERE("locale = #{locale}");
+                }
             }}.toString();// + (query && record.needPaging() ? _LIMIT_OFFSET : "");
         }
 
@@ -77,11 +80,11 @@ public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
         public String update(final ResourceLocale record) {
             return new SQL() {{
                 UPDATE(Table);
-                if (record.getGroupId() != null) {
-                    SET("`groupId` = #{groupId,jdbcType=INTEGER}");
-                }
                 if (record.getLocale() != null) {
                     SET("`locale` = #{locale,jdbcType=VARCHAR}");
+                }
+                if (record.getBaiduTranLang() != null) {
+                    SET("`baiduTranLang` = #{baiduTranLang,jdbcType=VARCHAR}");
                 }
                 if (record.getUpdateTime() != null) {
                     SET("`updateTime` = #{updateTime,jdbcType=TIMESTAMP}");

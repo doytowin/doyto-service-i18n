@@ -65,13 +65,15 @@ public class I18nServiceTest extends I18nAppTest {
         langMap = new HashMap<>();
         langMap.put("test_msg", "测试");
         langMap.put("user", "用户");
-        ret = i18nService.saveTranslation(group, "zh_CN", langMap);
+        i18nService.saveTranslation(group, "zh_CN", langMap);
+        ret = i18nService.queryWithDefaults(group, "zh_CN");
         log.info("test_zh_CN: \n{}", JSON.toJSONString(ret, true));
 
         langMap = new HashMap<>();
         langMap.put("test_msg", "test message");
         langMap.put("user", "user");
-        ret = i18nService.saveTranslation(group, "en_US", langMap);
+        i18nService.saveTranslation(group, "en_US", langMap);
+        ret = i18nService.queryWithDefaults(group, "en_US");
         log.info("test_en_US: \n{}", JSON.toJSONString(ret, true));
 
         for (Lang lang : ret) {

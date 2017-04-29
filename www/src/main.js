@@ -94,6 +94,9 @@ new Vue({
         }
         this.lang = localStorage.lang = lang
         window.bus.$emit('loaded')
+      }, res => {
+        alert('服务访问出错')
+        window.bus.$emit('loaded')
       })
     }
   },

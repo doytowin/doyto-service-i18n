@@ -13,4 +13,6 @@ public interface ResourceLocaleService extends IService<ResourceLocale> {
 
     ResourceLocaleMapper getIMapper();
 
+    ResourceLocale getByGroupAndLocale(Integer groupId, String locale);
+
 }

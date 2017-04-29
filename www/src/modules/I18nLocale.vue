@@ -2,6 +2,7 @@
   <div id="i18n-locale">
     <div class="clearfix" style="margin-bottom:10px">
       <b-btn @click="add" variant="success" class="float-right" v-t>添加</b-btn>
+      <b-btn @click="baiduTranslate" variant="primary" class="float-right mr-2" v-t>百度自动翻译</b-btn>
     </div>
     <table class="table table-hover" style="margin-bottom:0">
       <thead>
@@ -11,11 +12,8 @@
         <th v-t>默认文本</th>
         <th>
           <b-dropdown :text="$t('locale_' + locale)" variant="secondary">
-            <b-dropdown-item>
-              <router-link :to="'zh_CN'" exact v-t>locale_zh_CN</router-link>
-            </b-dropdown-item>
-            <b-dropdown-item>
-              <router-link :to="'en_US'" exact v-t>locale_en_US</router-link>
+            <b-dropdown-item v-for='l in locales' :key="l.locale">
+              <router-link :to="l.locale" exact v-t>locale_{{l.locale}}</router-link>
             </b-dropdown-item>
           </b-dropdown>
         </th>
@@ -55,6 +53,12 @@
       padding:0.25rem;
       /*border-top: 1px solid #eceeef;*/
     }
+    .table th {
+      .dropdown-menu {
+        max-height:200px;
+        overflow-y:scroll;
+      }
+    }
     .dw-editor {
       position:relative;
       > .dw-button {
@@ -86,6 +90,7 @@
         // crud: {
         //   p: {}
         // },
+        locales: undefined,
         list: undefined,
         lastAdd: {},
         lastEdit: undefined
@@ -96,6 +101,22 @@
       // 组件创建完后获取数据，
       // 此时 data 已经被 observed 了
       this.init()
+      var url = '{host}api/resource/{groupId}_{group}/locale/'
+              .replace(/{host}/, Cons.apiHost)
+              .replace(/{groupId}/, 1)
+              // .replace(/{groupId}/, this.groupId)
+              .replace(/{group}/, this.group)
+
+      // this.crud = new Crud(this.$resource(url))
+
+      this.$http.get(url).then(
+              response => {
+                let json = response.body
+                if (json.success) {
+                  this.locales = json.list
+                }
+              }
+      )
     },
     watch: {
       // 如果路由有变化，会再次执行该方法
@@ -185,6 +206,23 @@
         this.$root.$emit('show::modal', 'addLabelModal')
         this.save(this.lastEdit)
         this.lastEdit = {}
+      },
+      baiduTranslate () {
+        window.bus.$emit('loading')
+        let url = '{host}api/i18n/{group}/{locale}/auto'
+                .replace(/{host}/, Cons.apiHost)
+                .replace(/{group}/, this.group)
+                .replace(/{locale}/, this.locale)
+        this.$http.post(url).then(
+            response => {
+              let json = response.body
+              console.log(json)
+              window.bus.$emit('loaded')
+            },
+            response => {
+              window.bus.$emit('loaded')
+            }
+        )
       }
     }
   }
