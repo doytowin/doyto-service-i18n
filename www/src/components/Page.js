@@ -61,8 +61,8 @@ let Page = function (queryFunc) {
     }, response => {
       // console.log(response)
       // 出错时回退page/limit
-      page = self.page
-      limit = self.limit
+      page = self.page || page
+      limit = self.limit || limit
 
       self.loading = false
       Util.handleFailure(response.body)
