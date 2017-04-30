@@ -136,7 +136,7 @@ public class DefaultI18nService implements I18nService {
                         translationMap.put(lang.getLabel(), baiduTran.getTransResult()[0].getDst());
                     }
                 } catch (Exception e) {
-                    log.error("获取翻译失败: lang.getLabel()", e);
+                    log.error("获取翻译失败: " + lang.getLabel(), e);
                 }
             }
         }
