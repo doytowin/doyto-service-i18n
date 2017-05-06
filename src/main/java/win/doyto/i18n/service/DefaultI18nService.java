@@ -140,7 +140,7 @@ public class DefaultI18nService implements I18nService {
                 }
             }
         }
-        int ret = i18nMapper.saveTranslation(group, locale, translationMap);
+        int ret = translationMap.isEmpty() ? 0 : i18nMapper.saveTranslation(group, locale, translationMap);
         log.info("自动翻译完毕: {} / {}", ret, translationMap.size());
     }
 }
