@@ -5,7 +5,7 @@
         <b-btn class="btn-success" v-t>添加语种</b-btn>
       </div>
       <div class="hidden-sm-down float-right">
-        <b-btn @click="$root.$emit('show::modal', 'addLocaleModal')" class="btn-success" v-t>添加语种</b-btn>
+        <b-btn v-b-modal.addLocaleModal class="btn-success" v-t>添加语种</b-btn>
       </div>
     </div>
     <section>
@@ -26,8 +26,8 @@
           <td>{{r.language}}</td>
           <td>{{r.baiduTranLang}}</td>
           <td>
-            <a class="btn btn-link" @click="crud.edit(r);$root.$emit('show::modal', 'editLocaleModal')" v-t>编辑</a>
-            <a class="btn btn-link" @click="crud.remove(r)" v-t>删除</a>
+            <b-button size="sm" variant="link" @click="crud.edit(r);$root.$emit('show::modal', 'editLocaleModal')" v-t>编辑</b-button>
+            <b-button size="sm" variant="link" @click="crud.remove(r)" v-t>删除</b-button>
           </td>
         </tr>
         </tbody>

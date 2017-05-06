@@ -1,7 +1,7 @@
 <template>
   <div id="i18n-locale">
     <div class="clearfix" style="margin-bottom:10px">
-      <b-btn @click="add" variant="success" class="float-right" v-t>添加</b-btn>
+      <b-btn @click="add" v-b-modal.addLabelModal variant="success" class="float-right" v-t>添加</b-btn>
       <b-btn @click="baiduTranslate" variant="primary" class="float-right mr-2" v-t>百度自动翻译</b-btn>
     </div>
     <table class="table table-hover" style="margin-bottom:0">
@@ -199,11 +199,10 @@
         this.lastAdd = {}
         var el = this.$refs.newLabel.$el
         Vue.default.nextTick(function () {
-          el.focus()
+          el && el.focus()
         })
       },
       add () {
-        this.$root.$emit('show::modal', 'addLabelModal')
         this.save(this.lastEdit)
         this.lastEdit = {}
       },
