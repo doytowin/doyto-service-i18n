@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.alibaba.fastjson.JSON;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.apache.http.client.fluent.Request;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,7 @@ import org.springframework.stereotype.Component;
  *
  * @author f0rb on 2017-04-16.
  */
+@Slf4j
 @Component
 public class BaiduTranApi {
 
@@ -46,7 +48,7 @@ public class BaiduTranApi {
             ret = Request.Get(getUrlWithQueryString(TRANS_API_HOST, params))
                          .execute().returnContent().asString();
         } catch (IOException e) {
-            e.printStackTrace();
+            log.error("翻译接口调用错误", e);
         }
         return ret;
     }
