@@ -10,8 +10,6 @@ import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.i18n.service.ResourceGroupService;
 import win.doyto.i18n.service.ResourceLocaleService;
-import win.doyto.web.service.AbstractController;
-import win.doyto.web.service.IMapper;
 
 /**
  * ResourceLocaleController
@@ -21,16 +19,16 @@ import win.doyto.web.service.IMapper;
 @Slf4j
 @RestController
 @RequestMapping("/api/resource/{groupId}_{group}/locale")
-public class ResourceLocaleController extends AbstractController<ResourceLocale> {
+public class ResourceLocaleController {
     @Resource
     private ResourceLocaleService resourceLocaleService;
     @Resource
     private ResourceGroupService resourceGroupService;
 
-    @Override
-    protected IMapper<ResourceLocale> getIMapper() {
-        return resourceLocaleService.getIMapper();
-    }
+    //@Override
+    //protected IMapper<ResourceLocale> getIMapper() {
+    //    return resourceLocaleService.getIMapper();
+    //}
 
     @RequestMapping(method = RequestMethod.GET)
     public Object query(ResourceLocale resourceLocale, @PathVariable("group") String group) {
@@ -59,7 +57,7 @@ public class ResourceLocaleController extends AbstractController<ResourceLocale>
         return resourceLocaleService.add(resourceLocale);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.POST)
+    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
     public Object save(
             @RequestBody @Valid ResourceLocale resourceLocale,
             BindingResult result,

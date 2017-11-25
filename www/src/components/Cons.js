@@ -1,5 +1,5 @@
 
 export default {
   url: 'http://localhost:8080/',
-  apiHost: 'http://localhost/i18n/'
+  apiHost: 'http://i18n.host.local/'
 }

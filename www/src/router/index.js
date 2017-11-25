@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import Hello from '@/components/Hello'
 import I18n from '@/modules/I18n'
 import I18nLocale from '@/modules/I18nLocale'
 import ResourceGroup from '@/modules/ResourceGroup'
@@ -29,11 +28,6 @@ export default new Router({
       path: '/i18n/:group/:locale',
       name: 'I18nLocale',
       component: I18nLocale
-    },
-    {
-      path: '/',
-      name: 'Hello',
-      component: Hello
     }
   ]
 })

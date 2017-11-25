@@ -110,12 +110,12 @@
       // this.crud = new Crud(this.$resource(url))
 
       this.$http.get(url).then(
-              response => {
-                let json = response.body
-                if (json.success) {
-                  this.locales = json.list
-                }
-              }
+        response => {
+          let json = response.body
+          if (json.success) {
+            this.locales = json.list
+          }
+        }
       )
     },
     watch: {
