@@ -12,6 +12,8 @@ import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.common.Constant;
 
+import static win.doyto.i18n.common.Constant.DEFAULT_USER;
+
 /**
  * I18nMapperTest
  *
@@ -22,22 +24,22 @@ public class I18nMapperTest extends I18nAppTest {
     @Resource
     private I18nMapper i18nMapper;
 
-    private String group = Constant.SYSTEM_GROUP;
+    private String group = Constant.DEFAULT_GROUP;
 
     @Test
     public void langByGroup() throws Exception {
-        List ret = i18nMapper.langByGroup(group);
+        List ret = i18nMapper.langByGroup(DEFAULT_USER, group);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
     @Test
     public void pageLangByGroup() throws Exception {
-        List ret = i18nMapper.pageLangByGroup(group, new RowBounds(5, 10));
+        List ret = i18nMapper.pageLangByGroup(DEFAULT_USER, group, new RowBounds(5, 10));
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
     public void langByGroupAndLocale() throws Exception {
-        List ret = i18nMapper.langByGroupAndLocale(group, "zh_CN");
+        List ret = i18nMapper.langByGroupAndLocale(DEFAULT_USER, group, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
@@ -46,7 +48,7 @@ public class I18nMapperTest extends I18nAppTest {
         Map<String, String> map = new HashMap<>();
         map.put("添加", "添加");
         map.put("修改", "修改");
-        int ret = i18nMapper.saveTranslation(group, "zh_CN", map);
+        int ret = i18nMapper.saveTranslation(DEFAULT_USER, group, "zh_CN", map);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 

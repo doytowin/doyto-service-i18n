@@ -8,6 +8,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.service.ResourceGroupService;
+import win.doyto.web.spring.RestBody;
 
 /**
  * GroupController
@@ -15,6 +16,7 @@ import win.doyto.i18n.service.ResourceGroupService;
  * @author f0rb on 2017-03-29.
  */
 @Slf4j
+@RestBody
 @RestController
 @RequestMapping("/api/resource-group")
 public class ResourceGroupController {

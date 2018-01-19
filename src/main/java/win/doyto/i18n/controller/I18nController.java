@@ -15,6 +15,9 @@ import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
+import win.doyto.web.spring.RestBody;
+
+import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
 /**
  * I18nController
@@ -22,9 +25,11 @@ import win.doyto.i18n.view.I18nXlsxView;
  * @author f0rb on 2017-03-30.
  */
 @Slf4j
+@RestBody
 @Controller
 @RequestMapping("/api/i18n")
 public class I18nController {
+
     @Resource
     private I18nService i18nService;
 
@@ -36,6 +41,7 @@ public class I18nController {
     @ResponseBody
     public Object exportAll(I18n i18n) {
         //i18nService.checkGroup(i18n.getGroup());
+        i18n.setUser(DEFAULT_USER);
         List data = i18nService.query(i18n);
         return data;
     }
@@ -49,7 +55,7 @@ public class I18nController {
     @RequestMapping(value = "{group}.xlsx", method = RequestMethod.GET)
     public View exportAllToExcel(Model model, @PathVariable("group") String group) {
         //i18nService.checkGroup(group);
-        List data = i18nService.query(group);
+        List data = i18nService.query(DEFAULT_USER, group);
         model.addAttribute("data", data);
         return new I18nXlsxView();
     }
@@ -59,7 +65,7 @@ public class I18nController {
     public Object exportByLocale(ModelAndView mav, @PathVariable("group") String group,
                                  @PathVariable("locale") String locale,
                                  @PathVariable(value = "format", required = false) String format) {
-        List<Lang> data = i18nService.queryWithDefaults(group, locale);
+        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
         return data;
     }
 
@@ -75,8 +81,8 @@ public class I18nController {
                            @RequestBody Map<String, String> map
     ) {
         //i18nService.checkGroupAndLocale(group, locale);
-        i18nService.saveTranslation(group, locale, map);
-        List<Lang> data = i18nService.queryWithDefaults(group, locale);
+        i18nService.saveTranslation(DEFAULT_USER, group, locale, map);
+        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
 
         return data;
     }
@@ -91,8 +97,8 @@ public class I18nController {
                            @PathVariable("group") String group,
                            @PathVariable("locale") String locale
     ) {
-        i18nService.autoTranslate(group, locale);
-        List<Lang> data = i18nService.queryWithDefaults(group, locale);
+        i18nService.autoTranslate(DEFAULT_USER, group, locale);
+        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
         return data;
     }
 

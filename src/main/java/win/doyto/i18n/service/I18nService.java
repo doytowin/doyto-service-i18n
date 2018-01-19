@@ -14,21 +14,21 @@ import win.doyto.web.RestException;
  */
 public interface I18nService {
 
-    List query(String group);
+    List query(String user, String group);
 
     List query(I18n i18n);
 
-    List<Lang> query(String group, String locale);
+    List<Lang> query(String user, String group, String locale);
 
-    List<Lang> queryWithDefaults(String group, String locale);
+    List<Lang> queryWithDefaults(String user, String group, String locale);
 
-    void checkGroup(String group) throws RestException;
+    void checkGroup(String user, String group) throws RestException;
 
-    void checkGroupAndLocale(String group, String locale) throws RestException;
+    void checkGroupAndLocale(String user, String group, String locale) throws RestException;
 
-    String addLocaleOnGroup(String group, String locale);
+    String addLocaleOnGroup(String user, String group, String locale);
 
-    void saveTranslation(String group, String locale, Map<String, String> translationMap);
+    void saveTranslation(String user, String group, String locale, Map<String, String> translationMap);
 
-    void autoTranslate(String group, String locale);
+    void autoTranslate(String user, String group, String locale);
 }

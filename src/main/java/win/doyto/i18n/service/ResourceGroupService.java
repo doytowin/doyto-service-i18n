@@ -14,7 +14,7 @@ public interface ResourceGroupService extends IService<ResourceGroup> {
 
     ResourceGroupMapper getIMapper();
 
-    ResourceGroup getGroup(String groupName);
+    ResourceGroup getGroup(String user, String groupName);
 
-    ResourceGroup checkGroup(Integer id, String groupName);
+    ResourceGroup checkGroup(Integer id, String user, String groupName);
 }

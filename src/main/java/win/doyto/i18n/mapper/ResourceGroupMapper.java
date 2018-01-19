@@ -15,8 +15,8 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
 
     /*-------------------start--------------------------*/
 
-    @Select(LIST_ + Table + " WHERE name = #{name}")
-    ResourceGroup getByName(@Param("name") String name);
+    @Select(LIST_ + Table + " WHERE name = #{name} and owner = #{owner}")
+    ResourceGroup getByName(@Param("owner") String owner, @Param("name") String name);
 
     /*____________________end___________________________*/
 

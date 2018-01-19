@@ -21,6 +21,8 @@ import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.web.PageList;
 
+import static win.doyto.i18n.common.Constant.DEFAULT_USER;
+
 /**
  * I18nService
  *
@@ -44,14 +46,14 @@ public class DefaultI18nService implements I18nService {
     private ResourceLocaleService resourceLocaleService;
 
     @Override
-    public List query(String group) {
-        checkGroup(group);
-        return i18nMapper.langByGroup(group);
+    public List query(String user, String group) {
+        checkGroup(user, group);
+        return i18nMapper.langByGroup(user, group);
     }
 
     @Override
     public List query(I18n i18n) {
-        checkGroup(i18n.getGroup());
+        checkGroup(i18n.getUser(), i18n.getGroup());
         PageList<LinkedHashMap<String, ?>> pageList = new PageList<>();
         pageList.setList(i18nMapper.query(i18n));
         pageList.setTotal(i18nMapper.count(i18n));
@@ -59,36 +61,36 @@ public class DefaultI18nService implements I18nService {
     }
 
     @Override
-    public List<Lang> query(String group, String locale) {
-        checkGroup(group);
-        return i18nMapper.langByGroupAndLocale(group, locale);
+    public List<Lang> query(String user, String group, String locale) {
+        checkGroup(user, group);
+        return i18nMapper.langByGroupAndLocale(user, group, locale);
     }
 
     @Override
-    public List<Lang> queryWithDefaults(String group, String locale) {
-        checkGroupAndLocale(group, locale);
-        return i18nMapper.langWithDefaultsByGroupAndLocale(group, locale);
+    public List<Lang> queryWithDefaults(String user, String group, String locale) {
+        checkGroupAndLocale(user, group, locale);
+        return i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
     }
 
     @Override
-    public void checkGroup(String group) {
+    public void checkGroup(String user, String group) {
         try {
-            i18nMapper.existGroup(group);
+            i18nMapper.existGroup(user, group);
         } catch (Exception e) {
             throw new RestNotFoundException("多语言分组未配置: " + group);
         }
     }
 
     @Override
-    public void checkGroupAndLocale(String group, String locale) {
-        if (!existLocale(group, locale)){
+    public void checkGroupAndLocale(String user, String group, String locale) {
+        if (!existLocale(user, group, locale)){
             throw new RestNotFoundException("多语言分组[" + group + "]未配置语种: " + locale);
         }
     }
 
-    private boolean existLocale(String group, String locale) {
+    private boolean existLocale(String user, String group, String locale) {
         try {
-            i18nMapper.existLocaleOnGroup(group, locale);
+            i18nMapper.existLocaleOnGroup(user, group, locale);
         } catch (Exception e) {
             log.info("多语言分组[{}]不存在语种: {}", group, locale);
             return false;
@@ -98,29 +100,29 @@ public class DefaultI18nService implements I18nService {
 
     @Override
     @Transactional
-    public String addLocaleOnGroup(String group, String locale) {
-        checkGroup(group);
-        if (!existLocale(group, locale)) {
-            i18nMapper.addLocaleOnGroup(group, locale);
+    public String addLocaleOnGroup(String user, String group, String locale) {
+        checkGroup(user, group);
+        if (!existLocale(user, group, locale)) {
+            i18nMapper.addLocaleOnGroup(user, group, locale);
         }
         return locale;
     }
 
     @Override
     @Transactional
-    public void saveTranslation(String group, String locale, Map<String, String> translationMap) {
-        addLocaleOnGroup(group, locale);
-        int ret = i18nMapper.saveTranslation(group, locale, translationMap);
+    public void saveTranslation(String user, String group, String locale, Map<String, String> translationMap) {
+        addLocaleOnGroup(user, group, locale);
+        int ret = i18nMapper.saveTranslation(user, group, locale, translationMap);
         log.info("保存翻译完毕: {} / {}", ret, translationMap.size());
     }
 
     @Override
-    public void autoTranslate(String group, String locale) {
-        checkGroupAndLocale(group, locale);
+    public void autoTranslate(String user, String group, String locale) {
+        checkGroupAndLocale(user, group, locale);
 
-        List<Lang> langList = i18nMapper.langWithDefaultsByGroupAndLocale(group, locale);
+        List<Lang> langList = i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
 
-        ResourceGroup resourceGroup = resourceGroupService.getGroup(group);
+        ResourceGroup resourceGroup = resourceGroupService.getGroup(user, group);
         ResourceLocale resourceLocale = resourceLocaleService.getByGroupAndLocale(resourceGroup.getId(), locale);
 
         String to = resourceLocale.getBaiduTranLang();
@@ -140,7 +142,7 @@ public class DefaultI18nService implements I18nService {
                 }
             }
         }
-        int ret = translationMap.isEmpty() ? 0 : i18nMapper.saveTranslation(group, locale, translationMap);
+        int ret = translationMap.isEmpty() ? 0 : i18nMapper.saveTranslation(user, group, locale, translationMap);
         log.info("自动翻译完毕: {} / {}", ret, translationMap.size());
     }
 }

@@ -7,7 +7,9 @@ import javax.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import win.doyto.i18n.mapper.ResourceGroupMapper;
 import win.doyto.i18n.mapper.ResourceLocaleMapper;
+import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.web.service.AbstractService;
 
@@ -21,6 +23,9 @@ import win.doyto.web.service.AbstractService;
 public class DefaultResourceLocaleService extends AbstractService<ResourceLocale> implements ResourceLocaleService {
     @Resource
     private ResourceLocaleMapper resourceLocaleMapper;
+
+    @Resource
+    private ResourceGroupMapper resourceGroupMapper;
 
     @Resource
     private I18nService i18nService;
@@ -51,7 +56,8 @@ public class DefaultResourceLocaleService extends AbstractService<ResourceLocale
     @Transactional
     public ResourceLocale add(ResourceLocale resourceLocale) {
         resourceLocaleMapper.insert(resourceLocale);
-        i18nService.addLocaleOnGroup(resourceLocale.getGroup(), resourceLocale.getLocale());
+        ResourceGroup group = resourceGroupMapper.get(resourceLocale.getGroupId());
+        i18nService.addLocaleOnGroup(group.getOwner(), group.getName(), resourceLocale.getLocale());
         return resourceLocale;
     }
 

@@ -10,6 +10,9 @@ import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.i18n.service.ResourceGroupService;
 import win.doyto.i18n.service.ResourceLocaleService;
+import win.doyto.web.spring.RestBody;
+
+import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
 /**
  * ResourceLocaleController
@@ -17,6 +20,7 @@ import win.doyto.i18n.service.ResourceLocaleService;
  * @author f0rb on 2017-04-16.
  */
 @Slf4j
+@RestBody
 @RestController
 @RequestMapping("/api/resource/{groupId}_{group}/locale")
 public class ResourceLocaleController {
@@ -32,7 +36,7 @@ public class ResourceLocaleController {
 
     @RequestMapping(method = RequestMethod.GET)
     public Object query(ResourceLocale resourceLocale, @PathVariable("group") String group) {
-        ResourceGroup resourceGroup = resourceGroupService.getGroup(group);
+        ResourceGroup resourceGroup = resourceGroupService.getGroup(DEFAULT_USER, group);
         resourceLocale.setGroupId(resourceGroup.getId());
         return resourceLocaleService.query(resourceLocale);
     }
@@ -51,7 +55,7 @@ public class ResourceLocaleController {
         if (result.hasErrors()) {
             return result;
         }
-        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, group);
+        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, DEFAULT_USER, group);
         resourceLocale.setGroupId(resourceGroup.getId());
         resourceLocale.setGroup(group);
         return resourceLocaleService.add(resourceLocale);
@@ -68,7 +72,7 @@ public class ResourceLocaleController {
         if (result.hasErrors()) {
             return result;
         }
-        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, group);
+        ResourceGroup resourceGroup = resourceGroupService.checkGroup(groupId, DEFAULT_USER, group);
         resourceLocale.setGroupId(resourceGroup.getId());
         return resourceLocaleService.save(resourceLocale);
     }

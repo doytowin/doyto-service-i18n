@@ -13,6 +13,8 @@ public class I18n extends PageableModel<I18n> {
 
     private Integer id;
 
+    private String user;
+
     private String group;
 
     private String label;

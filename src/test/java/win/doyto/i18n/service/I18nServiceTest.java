@@ -13,8 +13,8 @@ import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static win.doyto.i18n.common.Constant.SYSTEM_GROUP;
+import static win.doyto.i18n.common.Constant.DEFAULT_GROUP;
+import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
 /**
  * GroupServiceTest
@@ -28,20 +28,21 @@ public class I18nServiceTest extends I18nAppTest {
 
     @Test
     public void queryLanguageByLocale() throws Exception {
-        List<Lang> ret = i18nService.query(SYSTEM_GROUP, "zh_CN");
+        List<Lang> ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
     public void queryAllLanguage() throws Exception {
-        List ret = i18nService.query(SYSTEM_GROUP);
+        List ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
     public void pageAllLanguage() throws Exception {
         I18n query = new I18n();
-        query.setGroup(SYSTEM_GROUP);
+        query.setUser(DEFAULT_USER);
+        query.setGroup(DEFAULT_GROUP);
         query.setLimit(10);
         query.setPage(2);
         List ret = i18nService.query(query);
@@ -51,12 +52,13 @@ public class I18nServiceTest extends I18nAppTest {
     @Test
     //@org.springframework.test.annotation.Commit
     public void testSaveTranslation() throws Exception {
-        String group = "i18n";
+        String user = DEFAULT_USER;
+        String group = DEFAULT_GROUP;
         String locale;
 
-        locale = i18nService.addLocaleOnGroup(group, "zh_CN");
+        locale = i18nService.addLocaleOnGroup(user, group, "zh_CN");
         log.info("多语言分组[{}]添加语种: {}", group, locale);
-        locale = i18nService.addLocaleOnGroup(group, "en_US");
+        locale = i18nService.addLocaleOnGroup(user, group, "en_US");
         log.info("多语言分组[{}]添加语种: {}", group, locale);
 
         Map<String, String> langMap;
@@ -65,20 +67,21 @@ public class I18nServiceTest extends I18nAppTest {
         langMap = new HashMap<>();
         langMap.put("test_msg", "测试");
         langMap.put("user", "用户");
-        i18nService.saveTranslation(group, "zh_CN", langMap);
-        ret = i18nService.queryWithDefaults(group, "zh_CN");
+        i18nService.saveTranslation(user, group, "zh_CN", langMap);
+        ret = i18nService.queryWithDefaults(user, group, "zh_CN");
         log.info("test_zh_CN: \n{}", JSON.toJSONString(ret, true));
 
         langMap = new HashMap<>();
         langMap.put("test_msg", "test message");
         langMap.put("user", "user");
-        i18nService.saveTranslation(group, "en_US", langMap);
-        ret = i18nService.queryWithDefaults(group, "en_US");
+        i18nService.saveTranslation(user, group, "en_US", langMap);
+        ret = i18nService.queryWithDefaults(user, group, "en_US");
         log.info("test_en_US: \n{}", JSON.toJSONString(ret, true));
 
         for (Lang lang : ret) {
-            assertTrue(langMap.containsKey(lang.getLabel()));
-            assertEquals(lang.getValue(), langMap.get(lang.getLabel()));
+            if (langMap.containsKey(lang.getLabel())) {
+                assertEquals(lang.getValue(), langMap.get(lang.getLabel()));
+            }
         }
 
     }

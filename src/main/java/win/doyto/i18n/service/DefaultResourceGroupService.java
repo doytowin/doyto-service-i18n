@@ -27,8 +27,8 @@ public class DefaultResourceGroupService extends AbstractService<ResourceGroup> 
     }
 
     @Override
-    public ResourceGroup getGroup(String groupName) {
-        ResourceGroup group = groupMapper.getByName(groupName);
+    public ResourceGroup getGroup(String user, String groupName) {
+        ResourceGroup group = groupMapper.getByName(user, groupName);
         if (group == null) {
             throw new RestNotFoundException("资源分组未配置: " + groupName);
         }
@@ -36,9 +36,11 @@ public class DefaultResourceGroupService extends AbstractService<ResourceGroup> 
     }
 
     @Override
-    public ResourceGroup checkGroup(Integer id, String groupName) {
+    public ResourceGroup checkGroup(Integer id, String user, String groupName) {
         ResourceGroup group = groupMapper.get(id);
-        if (group == null || !StringUtils.equalsIgnoreCase(group.getName(), groupName)) {
+        if (group == null ||
+                (!StringUtils.equalsIgnoreCase(group.getOwner(), user)
+                        && !StringUtils.equalsIgnoreCase(group.getName(), groupName))) {
             throw new RestNotFoundException("资源分组未配置: " + groupName);
         }
         return group;

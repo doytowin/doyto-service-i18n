@@ -21,7 +21,7 @@ import static win.doyto.web.service.IMapper._LIMIT_1;
 @Mapper
 public interface I18nMapper {
 
-    String GROUP_FORMAT = "i18n_i18n_${group}";
+    String GROUP_FORMAT = "i18n_${user}_${group}";
 
     @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
     @Results(id = "localeMap", value = {
@@ -31,11 +31,11 @@ public interface I18nMapper {
             @Result(column = "updateTime"),
             @Result(column = "valid")
     })
-    List<LinkedHashMap<String, ?>> langByGroup(@Param("group") String group);
+    List<LinkedHashMap<String, ?>> langByGroup(@Param("user") String user, @Param("group") String group);
 
     @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
     @ResultMap("localeMap")
-    List<LinkedHashMap<String, ?>> pageLangByGroup(@Param("group") String group, RowBounds rowBounds);
+    List<LinkedHashMap<String, ?>> pageLangByGroup(@Param("user") String user, @Param("group") String group, RowBounds rowBounds);
 
     @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
     @ResultMap("localeMap")
@@ -52,7 +52,7 @@ public interface I18nMapper {
      * @return {label,value}
      */
     @Select("SELECT label, IF(locale_${locale} IS NULL OR locale_${locale} = '', defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
-    List<Lang> langByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
+    List<Lang> langByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 
     /**
      * 查询标签, 默认值, 语种对应的翻译
@@ -62,7 +62,7 @@ public interface I18nMapper {
      * @return {label,value,defaults}
      */
     @Select("SELECT label, defaults, locale_${locale} AS value FROM " + GROUP_FORMAT)
-    List<Lang> langWithDefaultsByGroupAndLocale(@Param("group") String group, @Param("locale") String locale);
+    List<Lang> langWithDefaultsByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 
     @Update({
             "<script>",
@@ -78,18 +78,18 @@ public interface I18nMapper {
             "</script>"
     })
     @Options
-    int saveTranslation(@Param("group") String group, @Param("locale") String locale, @Param("map") Map<String, String> langMap);
+    int saveTranslation(@Param("user") String user, @Param("group") String group, @Param("locale") String locale, @Param("map") Map<String, String> langMap);
 
     @Update({
             "ALTER TABLE",
             GROUP_FORMAT,
             "ADD locale_${locale} VARCHAR(1000) NOT NULL DEFAULT ''"
     })
-    void addLocaleOnGroup(@Param("group") String group, @Param("locale") String locale);
+    void addLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 
     @Select({LIST_, GROUP_FORMAT, _LIMIT_1})
-    Object existGroup(@Param("group") String group);
+    Object existGroup(@Param("user") String user, @Param("group") String group);
 
     @Select({"SELECT locale_${locale} FROM ", GROUP_FORMAT, _LIMIT_1})
-    Object existLocaleOnGroup(@Param("group") String group, @Param("locale") String locale);
+    Object existLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 }
