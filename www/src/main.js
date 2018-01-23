@@ -20,6 +20,7 @@ Vue.use(BootstrapVue)
 /** vue-i18n **/
 import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
+const i18n = new VueI18n({})
 
 // Vue.directive('t', {})
 Vue.component('t', {
@@ -57,6 +58,7 @@ window.bus = new Vue()
 new Vue({
   el: '#app',
   router,
+  i18n,
   data () {
     return {
       lang: undefined,
@@ -80,8 +82,9 @@ new Vue({
     switchLang (lang) {
       window.bus.$emit('loading')
       this.$http.get(Cons.apiHost + 'openapi/i18n/i18n/' + lang + '.json').then(res => {
-        Vue.locale(lang, res.body)
-        Vue.config.lang = lang
+        i18n.locale = lang
+        i18n.setLocaleMessage(lang, res.body)
+
         if (!this.lang) {
           // this.$options.components.t = new VueComponent({
           //   render: function () {

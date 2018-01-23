@@ -1,10 +1,10 @@
 <template>
   <div style="position:relative" ref="out">
     <div class="mb-2 clearfix ">
-      <a class="btn btn-secondary" :href="openapi + '/openapi/i18n/' + group + '.xlsx'" v-t>导出Excel</a>
-      <b-btn v-t>打包JSON格式</b-btn>
+      <a class="btn btn-secondary" :href="openapi + 'openapi/i18n/' + group + '.xlsx'" v-t>导出Excel</a>
+      <!--<b-btn v-t>打包JSON格式</b-btn>
       <b-btn v-t>打包Properties格式</b-btn>
-      <b-btn v-t>从Excel文件导入</b-btn>
+      <b-btn v-t>从Excel文件导入</b-btn>-->
       <div class="hidden-sm-up">
         <b-btn class="btn-success mr-2" v-t>添加条目</b-btn>
       </div>
@@ -17,13 +17,17 @@
         <thead>
         <tr class="text-center">
           <th>#</th>
-          <th v-for="(v, k) in crud.p.list[0]"><t>{{k == 'value' ? '默认值' : k}}</t></th>
+          <th v-t>label</th>
+          <th v-t>defaults</th>
+          <th v-for="(v, k) in crud.p.list[0]" v-if="k.substring(0,7) == 'locale_'"><t>{{k == 'value' ? '默认值' : k}}</t></th>
         </tr>
         </thead>
         <tbody style="background-color: #f7f7f9;">
         <tr v-for="(group, $index) in crud.p.list">
           <td>{{$index+1}}</td>
-          <td v-for="(v, k) in crud.p.list[0]">{{group[k]}}</td>
+          <td>{{group.label}}</td>
+          <td>{{group.defaults}}</td>
+          <td v-for="(v, k) in crud.p.list[0]" v-if="k.substring(0,7) == 'locale_'">{{group[k]}}</td>
         </tr>
         </tbody>
       </table>
