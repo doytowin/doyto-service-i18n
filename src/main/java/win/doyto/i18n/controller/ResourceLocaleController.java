@@ -61,7 +61,7 @@ public class ResourceLocaleController {
         return resourceLocaleService.add(resourceLocale);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "{id}", method = {RequestMethod.PUT, RequestMethod.POST})
     public Object save(
             @RequestBody @Valid ResourceLocale resourceLocale,
             BindingResult result,
