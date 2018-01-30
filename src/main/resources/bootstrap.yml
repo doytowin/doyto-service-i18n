@@ -1,0 +1,62 @@
+server:
+  port: @docker.expose@
+
+spring:
+  application:
+    name: @project.artifactId@
+
+eureka:
+  client:
+    enabled: false
+
+# /info 端点的显示
+info:
+  name: @project.artifactId@
+  version: @project.version@
+  date: @maven.build.timestamp@
+  description: @project.description@
+
+---
+#激活profile:cloud后, 开启config和eureka
+spring:
+  profiles: cloud
+  cloud:
+    config:
+      uri: http://config:8888
+      discovery:
+        enabled: true
+
+eureka:
+  client:
+    enabled: true
+    serviceUrl:
+      defaultZone: http://${EUREKA_HOST:eureka}:8761/eureka/
+
+---
+spring:
+  profiles: dev
+
+management:
+  security:
+    enabled: false
+
+logging:
+  level:
+    root: info
+    com.netflix.discovery.shared.resolver.aws: warn
+    org.springframework.security: debug
+
+---
+spring:
+  profiles: local
+  application:
+    name: @project.artifactId@-local
+  cloud:
+    config:
+      enabled: false
+
+eureka:
+  client:
+    register-with-eureka: false
+
+

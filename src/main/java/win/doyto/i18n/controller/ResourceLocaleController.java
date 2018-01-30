@@ -29,11 +29,6 @@ public class ResourceLocaleController {
     @Resource
     private ResourceGroupService resourceGroupService;
 
-    //@Override
-    //protected IMapper<ResourceLocale> getIMapper() {
-    //    return resourceLocaleService.getIMapper();
-    //}
-
     @RequestMapping(method = RequestMethod.GET)
     public Object query(ResourceLocale resourceLocale, @PathVariable("group") String group) {
         ResourceGroup resourceGroup = resourceGroupService.getGroup(DEFAULT_USER, group);

@@ -1,22 +1,9 @@
-server:
-  port: 9018
-
-logging:
-  level:
-    ROOT: info
-    org.springframework.security: debug
-    org.springframework.web.servlet: debug
-    org.springframework.beans.factory.annotation: debug
-    com.zaxxer.hikari.HikariConfig: debug
-    #com.zaxxer.hikari.pool: debug
-    win.doyto.i18n.mapper: debug
-
 spring:
-  resources:
-    chain:
-      enabled: true
-  application:
-    name: generator
+  rabbitmq:
+    host: ${RABBITMQ_DEFAULT_HOST:${ENV_HOST}}
+    port: 5672
+    username: ${RABBITMQ_DEFAULT_USER:admin}
+    password: ${RABBITMQ_DEFAULT_PASS:admin}
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
@@ -28,28 +15,31 @@ spring:
   http:
     encoding:
       force: true
+  resources:
+    chain:
+      enabled: true
 
 mybatis:
   config-location: classpath:mybatis.xml
   executor-type: reuse
 
-#baidu:
-#  fanyi:
-#    langMap:
-#      fr: fra
-#      de: de
-#      th: th
-#      ko_KR: kor
-#      ja_JP: ja
+baidu:
+  appid: 20170417000044993
+  securityKey: VaF807U3s7X6ZpRkcThL
 
-management:
-  security:
-    enabled: false
-
+doyto:
+  domain: host.local
+  home-url: http://www.${doyto.domain}
+  sso-url: http://sso.${doyto.domain}
+  login-url: ${doyto.sso-url}/login?redirect=http://i18n.${doyto.domain}/
+  failure-url: ${doyto.sso-url}/login?error
+  remember-me-token: doyto_token
+  remember-me-cookie: doyto_account
 
 ---
-#spring:
-#  profiles: test
-#server:
-#  port: 8088
+spring:
+  profiles: prod
 
+doyto:
+  domain: doyto.win
+  sso-url: https://sso.${doyto.domain}

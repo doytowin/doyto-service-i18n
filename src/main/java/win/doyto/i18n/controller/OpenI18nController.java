@@ -15,8 +15,6 @@ import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
 import win.doyto.web.spring.RestBody;
 
-import static win.doyto.i18n.common.Constant.DEFAULT_USER;
-
 /**
  * I18nController
  *
@@ -25,7 +23,7 @@ import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 @Slf4j
 @RestBody
 @Controller
-@RequestMapping("/openapi/i18n")
+@RequestMapping("/openapi")
 public class OpenI18nController {
     @Resource
     private I18nService i18nService;
@@ -36,20 +34,23 @@ public class OpenI18nController {
      * @param group 资源分组名称
      * @return i18n.xlsx
      */
-    @RequestMapping(value = "{group}.xlsx", method = RequestMethod.GET)
-    public View exportAllToExcel(Model model, @PathVariable("group") String group) {
-        //i18nService.checkGroup(group);
-        List data = i18nService.query(DEFAULT_USER, group);
+    @RequestMapping(value = "{user}/{group}.xlsx", method = RequestMethod.GET)
+    public View exportAllToExcel(Model model, @PathVariable("user") String user, @PathVariable("group") String group) {
+        i18nService.checkGroup(user, group);
+        List data = i18nService.query(user, group);
         model.addAttribute("data", data);
         return new I18nXlsxView();
     }
 
-    @RequestMapping(value = "{group}/{locale}.json", method = RequestMethod.GET)
+    @RequestMapping(value = "{user}/{group}/{locale}.json", method = RequestMethod.GET)
     @ResponseBody
-    public Object exportToJsonByLocale(@PathVariable("group") String group,
-                                 @PathVariable("locale") String locale) {
-        i18nService.checkGroupAndLocale(DEFAULT_USER, group, locale);
-        List<Lang> langList = i18nService.query(DEFAULT_USER, group, locale);
+    public Object exportToJsonByLocale(
+            @PathVariable("user") String user,
+            @PathVariable("group") String group,
+            @PathVariable("locale") String locale) {
+
+        i18nService.checkGroupAndLocale(user, group, locale);
+        List<Lang> langList = i18nService.query(user, group, locale);
 
         JSONObject root = new JSONObject();
 
