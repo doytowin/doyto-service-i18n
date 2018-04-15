@@ -7,11 +7,17 @@ import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.model.Lang;
+import win.doyto.i18n.model.ResourceGroup;
+import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.i18n.service.I18nService;
+import win.doyto.i18n.service.ResourceGroupService;
+import win.doyto.i18n.service.ResourceLocaleService;
 import win.doyto.i18n.view.I18nXlsxView;
 import win.doyto.web.spring.RestBody;
 
@@ -21,12 +27,18 @@ import win.doyto.web.spring.RestBody;
  * @author f0rb on 2017-03-30.
  */
 @Slf4j
-@RestBody
 @Controller
 @RequestMapping("/openapi")
 public class OpenI18nController {
+
     @Resource
     private I18nService i18nService;
+
+    @Resource
+    private ResourceLocaleService resourceLocaleService;
+
+    @Resource
+    private ResourceGroupService resourceGroupService;
 
     /**
      * 导出所有的标签和语言
@@ -42,8 +54,16 @@ public class OpenI18nController {
         return new I18nXlsxView();
     }
 
+    @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
+    public Object query(ResourceLocale resourceLocale, @PathVariable("user") String user, @PathVariable("group") String group) {
+        ResourceGroup resourceGroup = resourceGroupService.getGroup(user, group);
+        resourceLocale.setGroupId(resourceGroup.getId());
+        return resourceLocaleService.query(resourceLocale);
+    }
+
     @RequestMapping(value = "{user}/{group}/{locale}.json", method = RequestMethod.GET)
     @ResponseBody
+    @RestBody
     public Object exportToJsonByLocale(
             @PathVariable("user") String user,
             @PathVariable("group") String group,
@@ -81,8 +101,4 @@ public class OpenI18nController {
         nestedJson(parent.getJSONObject(param), params, deep + 1, arg);
     }
 
-    @ExceptionHandler({RestNotFoundException.class})
-    public void handleNotFound(RestNotFoundException e) {
-        throw e;
-    }
 }

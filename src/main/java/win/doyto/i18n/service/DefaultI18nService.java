@@ -11,8 +11,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import win.doyto.i18n.component.BaiduTran;
-import win.doyto.i18n.component.BaiduTranApi;
+import win.doyto.i18n.component.baidu.BaiduTran;
+import win.doyto.i18n.component.baidu.BaiduTranApi;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.mapper.I18nMapper;
 import win.doyto.i18n.model.I18n;
@@ -20,8 +20,6 @@ import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.web.PageResponse;
-
-import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
 /**
  * I18nService
@@ -44,6 +42,10 @@ public class DefaultI18nService implements I18nService {
 
     @Resource
     private ResourceLocaleService resourceLocaleService;
+
+    private static String getGroupName(String user, String group) {
+        return user + "_" + group;
+    }
 
     @Override
     public List query(String user, String group) {
@@ -77,14 +79,14 @@ public class DefaultI18nService implements I18nService {
         try {
             i18nMapper.existGroup(user, group);
         } catch (Exception e) {
-            throw new RestNotFoundException("多语言分组未配置: " + group);
+            throw new RestNotFoundException("多语言分组未配置: " + getGroupName(user, group));
         }
     }
 
     @Override
     public void checkGroupAndLocale(String user, String group, String locale) {
         if (!existLocale(user, group, locale)){
-            throw new RestNotFoundException("多语言分组[" + group + "]未配置语种: " + locale);
+            throw new RestNotFoundException("多语言分组[" + getGroupName(user, group) + "]未配置语种: " + locale);
         }
     }
 
@@ -92,7 +94,7 @@ public class DefaultI18nService implements I18nService {
         try {
             i18nMapper.existLocaleOnGroup(user, group, locale);
         } catch (Exception e) {
-            log.info("多语言分组[{}]不存在语种: {}", group, locale);
+            log.info("多语言分组[{}]不存在语种: {}", getGroupName(user, group), locale);
             return false;
         }
         return true;

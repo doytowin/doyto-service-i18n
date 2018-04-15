@@ -64,6 +64,9 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
                 if (record.getName() != null) {
                     WHERE("name like CONCAT(#{name},'%')");
                 }
+                if (record.getOwner() != null) {
+                    WHERE("owner = #{owner}");
+                }
             }}.toString();
         }
 
