@@ -26,6 +26,7 @@ public class DoytoProperties {
     private String failureUrl;
     private String rememberMeToken;
     private String rememberMeCookie;
+    private BaiduProperties baidu = new BaiduProperties();
 
     public static boolean isDev() {
         return dev;
@@ -44,4 +45,10 @@ public class DoytoProperties {
         }
     }
 
+    @Getter
+    @Setter
+    static class BaiduProperties {
+        private String appid;
+        private String securityKey;
+    }
 }

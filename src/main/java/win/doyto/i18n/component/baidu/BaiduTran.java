@@ -1,4 +1,4 @@
-package win.doyto.i18n.component;
+package win.doyto.i18n.component.baidu;
 
 import com.alibaba.fastjson.annotation.JSONField;
 import lombok.Getter;

@@ -1,4 +1,4 @@
-package win.doyto.i18n.component;
+package win.doyto.i18n.component.baidu;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -24,9 +24,9 @@ public class BaiduTranApi {
 
     private static final String TRANS_API_HOST = "http://api.fanyi.baidu.com/api/trans/vip/translate";
 
-    @Value("${baidu.appid:2015063000000001}")
+    @Value("${doyto.baidu.appid:2015063000000001}")
     private String appid;
-    @Value("${baidu.securityKey:12345678}")
+    @Value("${doyto.baidu.securityKey:12345678}")
     private String securityKey;
 
     public BaiduTranApi() {
