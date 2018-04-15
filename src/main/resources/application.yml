@@ -23,10 +23,6 @@ mybatis:
   config-location: classpath:mybatis.xml
   executor-type: reuse
 
-baidu:
-  appid: 20170417000044993
-  securityKey: VaF807U3s7X6ZpRkcThL
-
 doyto:
   domain: host.local
   home-url: http://www.${doyto.domain}
@@ -35,6 +31,9 @@ doyto:
   failure-url: ${doyto.sso-url}/login?error
   remember-me-token: doyto_token
   remember-me-cookie: doyto_account
+  baidu:
+    appid: 20170417000044993
+    securityKey: VaF807U3s7X6ZpRkcThL
 
 ---
 spring:
