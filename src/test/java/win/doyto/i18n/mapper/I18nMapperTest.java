@@ -10,9 +10,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
-import win.doyto.i18n.common.Constant;
+import win.doyto.i18n.common.TestConstant;
 
-import static win.doyto.i18n.common.Constant.DEFAULT_USER;
+import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 
 /**
  * I18nMapperTest
@@ -24,7 +24,7 @@ public class I18nMapperTest extends I18nAppTest {
     @Resource
     private I18nMapper i18nMapper;
 
-    private String group = Constant.DEFAULT_GROUP;
+    private String group = TestConstant.DEFAULT_GROUP;
 
     @Test
     public void langByGroup() throws Exception {

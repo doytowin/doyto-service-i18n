@@ -14,8 +14,8 @@ import win.doyto.i18n.model.Lang;
 import win.doyto.web.PageResponse;
 
 import static org.junit.Assert.assertEquals;
-import static win.doyto.i18n.common.Constant.DEFAULT_GROUP;
-import static win.doyto.i18n.common.Constant.DEFAULT_USER;
+import static win.doyto.i18n.common.TestConstant.DEFAULT_GROUP;
+import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 
 /**
  * GroupServiceTest
