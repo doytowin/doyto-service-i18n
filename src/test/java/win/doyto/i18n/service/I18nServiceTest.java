@@ -11,6 +11,7 @@ import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
+import win.doyto.web.PageResponse;
 
 import static org.junit.Assert.assertEquals;
 import static win.doyto.i18n.common.Constant.DEFAULT_GROUP;
@@ -45,7 +46,7 @@ public class I18nServiceTest extends I18nAppTest {
         query.setGroup(DEFAULT_GROUP);
         query.setLimit(10);
         query.setPage(2);
-        List ret = i18nService.query(query);
+        PageResponse ret = i18nService.query(query);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 

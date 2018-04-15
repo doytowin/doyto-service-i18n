@@ -5,6 +5,7 @@ import java.util.Map;
 
 import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
+import win.doyto.web.PageResponse;
 import win.doyto.web.RestException;
 
 /**
@@ -16,7 +17,7 @@ public interface I18nService {
 
     List query(String user, String group);
 
-    List query(I18n i18n);
+    PageResponse query(I18n i18n);
 
     List<Lang> query(String user, String group, String locale);
 

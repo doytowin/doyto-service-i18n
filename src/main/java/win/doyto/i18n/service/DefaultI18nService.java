@@ -19,7 +19,7 @@ import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
-import win.doyto.web.PageList;
+import win.doyto.web.PageResponse;
 
 import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
@@ -52,9 +52,9 @@ public class DefaultI18nService implements I18nService {
     }
 
     @Override
-    public List query(I18n i18n) {
+    public PageResponse query(I18n i18n) {
         checkGroup(i18n.getUser(), i18n.getGroup());
-        PageList<LinkedHashMap<String, ?>> pageList = new PageList<>();
+        PageResponse<LinkedHashMap<String, ?>> pageList = new PageResponse<>();
         pageList.setList(i18nMapper.query(i18n));
         pageList.setTotal(i18nMapper.count(i18n));
         return pageList;

@@ -15,6 +15,7 @@ import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
+import win.doyto.web.PageResponse;
 import win.doyto.web.spring.RestBody;
 
 import static win.doyto.i18n.common.Constant.DEFAULT_USER;
@@ -42,7 +43,7 @@ public class I18nController {
     public Object exportAll(I18n i18n) {
         //i18nService.checkGroup(i18n.getGroup());
         i18n.setUser(DEFAULT_USER);
-        List data = i18nService.query(i18n);
+        PageResponse data = i18nService.query(i18n);
         return data;
     }
 
