@@ -1,0 +1,3 @@
+doyto:
+  domain: doyto.win
+  sso-url: https://sso.${doyto.domain}

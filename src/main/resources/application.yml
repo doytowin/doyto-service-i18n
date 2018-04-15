@@ -23,6 +23,12 @@ mybatis:
   config-location: classpath:mybatis.xml
   executor-type: reuse
 
+logging:
+  level:
+    root: info
+    com.netflix.discovery.shared.resolver.aws: warn
+
+
 doyto:
   domain: host.local
   home-url: http://www.${doyto.domain}
@@ -34,11 +40,3 @@ doyto:
   baidu:
     appid: 20170417000044993
     securityKey: VaF807U3s7X6ZpRkcThL
-
----
-spring:
-  profiles: prod
-
-doyto:
-  domain: doyto.win
-  sso-url: https://sso.${doyto.domain}

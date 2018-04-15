@@ -1,0 +1,10 @@
+
+management:
+  security:
+    enabled: true
+
+logging:
+  level:
+    root: info
+    com.netflix.discovery.shared.resolver.aws: warn
+    org.springframework.security: debug
