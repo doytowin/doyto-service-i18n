@@ -10,8 +10,8 @@ import win.doyto.web.service.IMapper;
 
 @Mapper
 //@CacheNamespace(implementation = org.mybatis.caches.hazelcast.HazelcastCache.class)
-public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
-    String Table = "i18n_group";
+public interface ResourceGroupMapper extends IMapper<ResourceGroup, ResourceGroup> {
+    String Table = "i18n_resource_group";
 
     /*-------------------start--------------------------*/
 
@@ -61,11 +61,13 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
             return new SQL() {{
                 SELECT(query ? "*" : "COUNT(*)");
                 FROM(Table);
-                if (record.getName() != null) {
-                    WHERE("name like CONCAT(#{name},'%')");
-                }
-                if (record.getOwner() != null) {
-                    WHERE("owner = #{owner}");
+                if (record != null) {
+                    if (record.getName() != null) {
+                        WHERE("name like CONCAT(#{name},'%')");
+                    }
+                    if (record.getOwner() != null) {
+                        WHERE("owner = #{owner}");
+                    }
                 }
             }}.toString();
         }
@@ -81,12 +83,9 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup> {
         public String update(final ResourceGroup record) {
             return new SQL() {{
                 UPDATE(Table);
-                if (record.getName() != null) {
-                    SET("`name` = #{name,jdbcType=VARCHAR}");
+                if (record.getLabel() != null) {
+                    SET("`label` = #{label,jdbcType=VARCHAR}");
                 }
-                /*if (record.getUpdateTime() != null) {
-                    SET("`updateTime` = #{updateTime,jdbcType=TIMESTAMP}");
-                }*/
                 WHERE("id = #{id,jdbcType=INTEGER}");
             }}.toString();
         }

@@ -52,4 +52,8 @@ public class I18nMapperTest extends I18nAppTest {
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
+    @Test
+    public void createGroupTable() {
+        i18nMapper.createGroupTable("test", "group");
+    }
 }

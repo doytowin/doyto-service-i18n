@@ -11,6 +11,7 @@ import win.doyto.i18n.mapper.ResourceGroupMapper;
 import win.doyto.i18n.mapper.ResourceLocaleMapper;
 import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceLocale;
+import win.doyto.web.RestError;
 import win.doyto.web.service.AbstractService;
 
 /**
@@ -54,11 +55,11 @@ public class DefaultResourceLocaleService extends AbstractService<ResourceLocale
 
     @Override
     @Transactional
-    public ResourceLocale add(ResourceLocale resourceLocale) {
+    public RestError add(ResourceLocale resourceLocale) {
         resourceLocaleMapper.insert(resourceLocale);
         ResourceGroup group = resourceGroupMapper.get(resourceLocale.getGroupId());
         i18nService.addLocaleOnGroup(group.getOwner(), group.getName(), resourceLocale.getLocale());
-        return resourceLocale;
+        return RestError.create(resourceLocale);
     }
 
     @Override

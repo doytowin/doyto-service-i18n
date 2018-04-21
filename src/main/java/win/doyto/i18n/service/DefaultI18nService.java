@@ -147,4 +147,9 @@ public class DefaultI18nService implements I18nService {
         int ret = translationMap.isEmpty() ? 0 : i18nMapper.saveTranslation(user, group, locale, translationMap);
         log.info("自动翻译完毕: {} / {}", ret, translationMap.size());
     }
+
+    @Override
+    public void createGroupTable(String user, String name) {
+        i18nMapper.createGroupTable(user, name);
+    }
 }

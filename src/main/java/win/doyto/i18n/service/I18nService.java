@@ -32,4 +32,6 @@ public interface I18nService {
     void saveTranslation(String user, String group, String locale, Map<String, String> translationMap);
 
     void autoTranslate(String user, String group, String locale);
+
+    void createGroupTable(String user, String name);
 }

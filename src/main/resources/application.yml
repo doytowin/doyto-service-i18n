@@ -1,9 +1,18 @@
 spring:
+  application:
+    name: @project.artifactId@
   rabbitmq:
     host: ${RABBITMQ_DEFAULT_HOST:${ENV_HOST}}
     port: 5672
     username: ${RABBITMQ_DEFAULT_USER:admin}
     password: ${RABBITMQ_DEFAULT_PASS:admin}
+  redis:
+    host: ${REDIS_DEFAULT_HOST:${ENV_HOST}}
+    password: ${REDIS_DEFAULT_PASS:redis}
+    port: 6379
+    pool:
+      max-active: 10
+      max-wait: 1
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
@@ -12,12 +21,6 @@ spring:
     password: ${jdbc.password:i18n_pass}
     hikari:
       jdbc-url: ${spring.datasource.url}
-  http:
-    encoding:
-      force: true
-  resources:
-    chain:
-      enabled: true
 
 mybatis:
   config-location: classpath:mybatis.xml
@@ -28,6 +31,8 @@ logging:
     root: info
     com.netflix.discovery.shared.resolver.aws: warn
 
+#hystrix 熔断机制
+feign.hystrix.enabled: true
 
 doyto:
   domain: host.local

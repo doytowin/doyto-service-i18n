@@ -1,15 +1,16 @@
 package win.doyto.i18n.service;
 
+import java.util.Date;
 import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.mapper.ResourceGroupMapper;
 import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.web.service.AbstractService;
+import win.doyto.web.RestEnum;
+import win.doyto.web.RestError;
 
 /**
  * GroupDefaultService
@@ -18,9 +19,12 @@ import win.doyto.web.service.AbstractService;
  */
 @Slf4j
 @Service
-public class DefaultResourceGroupService extends AbstractService<ResourceGroup> implements ResourceGroupService {
+public class DefaultResourceGroupService implements ResourceGroupService {
     @Resource
     private ResourceGroupMapper resourceGroupMapper;
+
+    @Resource
+    private I18nService i18nService;
 
     @Override
     public ResourceGroupMapper getIMapper() {
@@ -37,36 +41,44 @@ public class DefaultResourceGroupService extends AbstractService<ResourceGroup> 
     }
 
     @Override
-    public ResourceGroup checkGroup(Integer id, String user, String groupName) {
-        ResourceGroup group = resourceGroupMapper.get(id);
-        if (group == null ||
-                (!StringUtils.equalsIgnoreCase(group.getOwner(), user)
-                        && !StringUtils.equalsIgnoreCase(group.getName(), groupName))) {
-            throw new RestNotFoundException("资源分组未配置: " + groupName);
+    public RestError deleteByUser(Integer groupId, String user) {
+        ResourceGroup origin = resourceGroupMapper.get(groupId);
+        if (origin == null) {
+            return RestEnum.RecordNotFound.value();
         }
-        return group;
+        origin.setValid(false);
+        resourceGroupMapper.update(origin);
+        return RestError.create(0, " 资源组删除成功: " + groupId);
     }
 
     @Override
     @Transactional
-    public ResourceGroup add(ResourceGroup resourceLocale) {
-
-        return null;
+    public RestError create(String owner, String name, String label, String locale) {
+        ResourceGroup resourceGroup = resourceGroupMapper.getByName(owner, name);
+        if (resourceGroup != null) {
+            return RestEnum.RecordAlreadyExists.value();
+        }
+        resourceGroup = new ResourceGroup();
+        resourceGroup.setOwner(owner);
+        resourceGroup.setName(name);
+        resourceGroup.setLabel(label);
+        resourceGroup.setCreateTime(new Date());
+        resourceGroupMapper.insert(resourceGroup);
+        i18nService.createGroupTable(owner, name);
+        i18nService.addLocaleOnGroup(owner, name, locale);
+        return RestEnum.Success.value();
     }
 
-
-    public ResourceGroup save(ResourceGroup group) {
-        ResourceGroup origin = resourceGroupMapper.get(group.getId());
+    @Override
+    public RestError updateLabel(Integer groupId, String label) {
+        ResourceGroup origin = resourceGroupMapper.get(groupId);
         if (origin == null) {
-            return null;
+            return RestEnum.RecordNotFound.value();
         }
-        //origin.setLabel(group.getLabel());
-        //origin.setValue(group.getValue());
-
-        //origin.setUpdateUserId(AppContext.getLoginUserId());
-        //origin.setUpdateTime(new Date());
+        origin.setLabel(label);
+        origin.setUpdateTime(new Date());
         resourceGroupMapper.update(origin);
-        return origin;
+        return RestEnum.SuccessUpdate.value();
     }
 
 }

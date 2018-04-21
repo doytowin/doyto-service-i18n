@@ -5,20 +5,19 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.model.I18n;
 import win.doyto.i18n.model.Lang;
 import win.doyto.i18n.service.I18nService;
 import win.doyto.i18n.view.I18nXlsxView;
 import win.doyto.web.PageResponse;
 import win.doyto.web.spring.RestBody;
-
-import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 
 /**
  * I18nController
@@ -29,6 +28,7 @@ import static win.doyto.i18n.common.Constant.DEFAULT_USER;
 @RestBody
 @Controller
 @RequestMapping("/api/i18n")
+@PreAuthorize("hasRole('i18n')")
 public class I18nController {
 
     @Resource
@@ -40,10 +40,10 @@ public class I18nController {
 
     @RequestMapping(value = "{group}", method = RequestMethod.GET)
     @ResponseBody
-    public Object exportAll(I18n i18n) {
-        //i18nService.checkGroup(i18n.getGroup());
-        i18n.setUser(DEFAULT_USER);
+    public Object exportAll(Authentication oper, I18n i18n) {
+        i18n.setUser(oper.getName());
         PageResponse data = i18nService.query(i18n);
+        log.info("导出数据: {}条", data.getTotal());
         return data;
     }
 
@@ -54,57 +54,57 @@ public class I18nController {
      * @return i18n.xlsx
      */
     @RequestMapping(value = "{group}.xlsx", method = RequestMethod.GET)
-    public View exportAllToExcel(Model model, @PathVariable("group") String group) {
-        //i18nService.checkGroup(group);
-        List data = i18nService.query(DEFAULT_USER, group);
+    public View exportAllToExcel(Authentication oper, Model model, @PathVariable("group") String group) {
+        List data = i18nService.query(oper.getName(), group);
         model.addAttribute("data", data);
         return new I18nXlsxView();
     }
 
     @RequestMapping(value = "{group}/{locale}", method = RequestMethod.GET)
     @ResponseBody
-    public Object exportByLocale(ModelAndView mav, @PathVariable("group") String group,
-                                 @PathVariable("locale") String locale,
-                                 @PathVariable(value = "format", required = false) String format) {
-        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
+    public Object exportByLocale(
+            ModelAndView mav, @PathVariable("group") String group,
+            Authentication oper,
+            @PathVariable("locale") String locale,
+            @PathVariable(value = "format", required = false) String format) {
+        List<Lang> data = i18nService.queryWithDefaults(oper.getName(), group, locale);
         return data;
     }
 
     /**
      * 保存翻译文本
-     *
      */
     @RequestMapping(value = "{group}/{locale}", method = RequestMethod.POST)
     @ResponseBody
-    public Object saveText(ModelAndView mav,
-                           @PathVariable("group") String group,
-                           @PathVariable("locale") String locale,
-                           @RequestBody Map<String, String> map
+    public Object saveText(
+            ModelAndView mav,
+            Authentication oper,
+            @PathVariable("group") String group,
+            @PathVariable("locale") String locale,
+            @RequestBody Map<String, String> map
     ) {
-        //i18nService.checkGroupAndLocale(group, locale);
-        i18nService.saveTranslation(DEFAULT_USER, group, locale, map);
-        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
+        String user = oper.getName();
+        i18nService.saveTranslation(user, group, locale, map);
+        List<Lang> data = i18nService.queryWithDefaults(user, group, locale);
 
         return data;
     }
 
     /**
      * 保存翻译文本
-     *
      */
     @RequestMapping(value = "{group}/{locale}/auto", method = RequestMethod.POST)
     @ResponseBody
-    public Object autoTranslate(ModelAndView mav,
-                           @PathVariable("group") String group,
-                           @PathVariable("locale") String locale
+    public Object autoTranslate(
+            ModelAndView mav,
+            Authentication oper,
+            @PathVariable("group") String group,
+            @PathVariable("locale") String locale
     ) {
-        i18nService.autoTranslate(DEFAULT_USER, group, locale);
-        List<Lang> data = i18nService.queryWithDefaults(DEFAULT_USER, group, locale);
+        String user = oper.getName();
+        i18nService.autoTranslate(user, group, locale);
+        List<Lang> data = i18nService.queryWithDefaults(user, group, locale);
         return data;
     }
 
-    @ExceptionHandler({RestNotFoundException.class})
-    public void handleNotFound(RestNotFoundException e) {
-        throw e;
-    }
 }

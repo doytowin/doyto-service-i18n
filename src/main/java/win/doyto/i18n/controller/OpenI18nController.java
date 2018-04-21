@@ -55,6 +55,8 @@ public class OpenI18nController {
     }
 
     @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
+    @ResponseBody
+    @RestBody
     public Object query(ResourceLocale resourceLocale, @PathVariable("user") String user, @PathVariable("group") String group) {
         ResourceGroup resourceGroup = resourceGroupService.getGroup(user, group);
         resourceLocale.setGroupId(resourceGroup.getId());

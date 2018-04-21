@@ -10,7 +10,7 @@ import win.doyto.web.service.IMapper;
 
 @Mapper
 //@CacheNamespace(implementation = org.mybatis.caches.hazelcast.HazelcastCache.class)
-public interface ResourceLocaleMapper extends IMapper<ResourceLocale> {
+public interface ResourceLocaleMapper extends IMapper<ResourceLocale, ResourceLocale> {
     String Table = "i18n_resource_locale";
 
     /*-------------------start--------------------------*/

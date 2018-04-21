@@ -1,14 +1,6 @@
 server:
   port: @docker.expose@
 
-spring:
-  application:
-    name: @project.artifactId@
-
-eureka:
-  client:
-    enabled: false
-
 # /info 端点的显示
 info:
   name: @project.artifactId@
@@ -16,4 +8,6 @@ info:
   date: @maven.build.timestamp@
   description: @project.description@
 
-
+eureka:
+  client:
+    enabled: false

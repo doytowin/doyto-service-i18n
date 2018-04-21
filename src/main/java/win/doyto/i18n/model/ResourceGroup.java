@@ -13,9 +13,11 @@ public class ResourceGroup extends PageableModel<ResourceGroup> {
 
     private Integer id;
 
+    private String owner;
+
     private String name;
 
-    private String owner;
+    private String label;
 
     private Date createTime;
 

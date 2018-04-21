@@ -7,8 +7,8 @@ package win.doyto.i18n.common;
  */
 public interface Constant {
 
-    String DEFAULT_USER = "i18n";
-    String DEFAULT_GROUP = "i18n";
+    //String DEFAULT_USER = "i18n";
+    //String DEFAULT_GROUP = "i18n";
     String __ = "_";
     String TABLE_PREFIX = "i18n";
     String VIEW_PREFIX = "i18n_view";
