@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.i18n.model.ResourceGroup;
 import win.doyto.i18n.model.ResourceGroupAddReq;
+import win.doyto.i18n.query.ResourceGroupQuery;
 import win.doyto.i18n.service.ResourceGroupService;
 import win.doyto.web.spring.RestBody;
 
@@ -29,8 +30,8 @@ public class ResourceGroupController {
     private ResourceGroupService groupService;
 
     @GetMapping
-    public Object page(ResourceGroup group) {
-        return groupService.page(group);
+    public Object page(ResourceGroupQuery query) {
+        return groupService.page(query);
     }
 
     @GetMapping("list")

@@ -6,11 +6,12 @@ import java.util.List;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import win.doyto.i18n.model.ResourceGroup;
+import win.doyto.i18n.query.ResourceGroupQuery;
 import win.doyto.web.service.IMapper;
 
 @Mapper
 //@CacheNamespace(implementation = org.mybatis.caches.hazelcast.HazelcastCache.class)
-public interface ResourceGroupMapper extends IMapper<ResourceGroup, ResourceGroup> {
+public interface ResourceGroupMapper extends IMapper<ResourceGroupQuery, ResourceGroup> {
     String Table = "i18n_resource_group";
 
     /*-------------------start--------------------------*/
@@ -51,13 +52,13 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup, ResourceGrou
     Boolean hasValueOnColumn(@Param("column") String column, @Param("value") String value);
 
     @SelectProvider(type = GroupSqlProvider.class, method = "query")
-    List<ResourceGroup> query(ResourceGroup record);
+    List<ResourceGroup> query(ResourceGroupQuery record);
 
     @SelectProvider(type = GroupSqlProvider.class, method = "count")
-    long count(ResourceGroup record);
+    long count(ResourceGroupQuery record);
 
     class GroupSqlProvider {
-        private String queryOrCount(final ResourceGroup record, final boolean query) {
+        private String queryOrCount(final ResourceGroupQuery record, final boolean query) {
             return new SQL() {{
                 SELECT(query ? "*" : "COUNT(*)");
                 FROM(Table);
@@ -72,11 +73,11 @@ public interface ResourceGroupMapper extends IMapper<ResourceGroup, ResourceGrou
             }}.toString();
         }
 
-        public String query(ResourceGroup record) {
+        public String query(ResourceGroupQuery record) {
             return queryOrCount(record, true);
         }
 
-        public String count(ResourceGroup record) {
+        public String count(ResourceGroupQuery record) {
             return queryOrCount(record, false);
         }
 

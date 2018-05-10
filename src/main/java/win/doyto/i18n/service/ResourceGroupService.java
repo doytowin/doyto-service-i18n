@@ -2,6 +2,7 @@ package win.doyto.i18n.service;
 
 import win.doyto.i18n.mapper.ResourceGroupMapper;
 import win.doyto.i18n.model.ResourceGroup;
+import win.doyto.i18n.query.ResourceGroupQuery;
 import win.doyto.web.RestError;
 import win.doyto.web.service.ServiceApi;
 
@@ -11,7 +12,7 @@ import win.doyto.web.service.ServiceApi;
  * @author f0rb on 2017-03-29.
  */
 @SuppressWarnings("unused")
-public interface ResourceGroupService extends ServiceApi<ResourceGroup, ResourceGroup> {
+public interface ResourceGroupService extends ServiceApi<ResourceGroupQuery, ResourceGroup> {
 
     ResourceGroupMapper getIMapper();
 
