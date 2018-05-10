@@ -5,13 +5,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>doyto-service-parent</artifactId>
         <groupId>win.doyto</groupId>
-        <version>1.0.1</version>
+        <artifactId>doyto-service-parent</artifactId>
+        <version>${revision}</version>
+        <relativePath>../doyto-service-parent/pom.xml</relativePath>
     </parent>
 
     <artifactId>doyto-service-i18n</artifactId>
-    <version>1.0-SNAPSHOT</version>
     <description>多语言翻译服务</description>
 
     <properties>
@@ -42,10 +42,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <!--<dependency>
-            <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-security</artifactId>
-        </dependency>-->
         <dependency>
             <groupId>org.projectlombok</groupId>
             <artifactId>lombok</artifactId>
@@ -82,7 +78,7 @@
         <dependency>
             <groupId>org.mybatis.spring.boot</groupId>
             <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>1.2.0</version>
+            <version>1.3.2</version>
         </dependency>
 
         <!-- 数据库连接池 -->
@@ -127,15 +123,6 @@
             <artifactId>doyto-starter-auth-client</artifactId>
             <version>1.0.0-SNAPSHOT</version>
         </dependency>
-        <!--<dependency>
-            <groupId>org.springframework.session</groupId>
-            <artifactId>spring-session-data-redis</artifactId>
-        </dependency>-->
-        <!--<dependency>
-            <groupId>biz.paluch.redis</groupId>
-            <artifactId>lettuce</artifactId>
-            <version>4.3.3.Final</version>
-        </dependency>-->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-starter-security</artifactId>
