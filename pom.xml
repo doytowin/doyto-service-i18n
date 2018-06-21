@@ -21,8 +21,6 @@
         <mysql.version>5.1.35</mysql.version>
         <HikariCP.version>RELEASE</HikariCP.version>
         <mybatis.version>3.4.5</mybatis.version>
-        <hazelcast.version>3.8.4</hazelcast.version>
-        <lombok.version>1.16.18</lombok.version>
 
     </properties>
 
@@ -41,11 +39,6 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <optional>true</optional>
         </dependency>
         <dependency>
             <groupId>org.springframework</groupId>
