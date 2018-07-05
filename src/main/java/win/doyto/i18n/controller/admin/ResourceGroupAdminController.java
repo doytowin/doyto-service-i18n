@@ -20,7 +20,7 @@ import win.doyto.web.spring.RestBody;
 @RestBody
 @RestController
 @RequestMapping("/admin/resource-group")
-@PreAuthorize("hasAnyRole('admin', 'i18n-admin')")
+@PreAuthorize("hasAnyRole('admin', 'admin:i18n')")
 public class ResourceGroupAdminController {
     @Resource
     private ResourceGroupService groupService;
