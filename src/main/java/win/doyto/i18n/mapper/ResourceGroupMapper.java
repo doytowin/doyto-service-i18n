@@ -11,7 +11,7 @@ import win.doyto.web.service.IMapper;
 
 @Mapper
 //@CacheNamespace(implementation = org.mybatis.caches.hazelcast.HazelcastCache.class)
-public interface ResourceGroupMapper extends IMapper<ResourceGroupQuery, ResourceGroup> {
+public interface ResourceGroupMapper extends IMapper<ResourceGroup, ResourceGroupQuery> {
     String Table = "i18n_resource_group";
 
     /*-------------------start--------------------------*/

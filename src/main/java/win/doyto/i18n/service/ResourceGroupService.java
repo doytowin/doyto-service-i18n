@@ -12,7 +12,7 @@ import win.doyto.web.service.ServiceApi;
  * @author f0rb on 2017-03-29.
  */
 @SuppressWarnings("unused")
-public interface ResourceGroupService extends ServiceApi<ResourceGroupQuery, ResourceGroup> {
+public interface ResourceGroupService extends ServiceApi<ResourceGroup, ResourceGroupQuery> {
 
     ResourceGroupMapper getIMapper();
 
