@@ -23,6 +23,7 @@ import win.doyto.web.spring.RestBody;
 @RestBody
 @RestController
 @RequestMapping("/api/resource/{group}/locale")
+@PreAuthorize("hasAnyRole('i18n')")
 public class ResourceLocaleController {
     @Resource
     private ResourceLocaleService resourceLocaleService;
@@ -30,7 +31,6 @@ public class ResourceLocaleController {
     private ResourceGroupService resourceGroupService;
 
     @RequestMapping(method = RequestMethod.GET)
-    @PreAuthorize("hasRole('i18n')")
     public Object query(
             ResourceLocale resourceLocale,
             Authentication oper,
@@ -42,13 +42,11 @@ public class ResourceLocaleController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.GET)
-    @PreAuthorize("hasRole('i18n')")
     public Object get(@PathVariable("id") Integer id) {
         return resourceLocaleService.get(id);
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    @PreAuthorize("hasRole('i18n')")
     public Object add(
             @RequestBody @Valid ResourceLocale resourceLocale, BindingResult result,
             Authentication oper,
@@ -64,7 +62,6 @@ public class ResourceLocaleController {
     }
 
     @RequestMapping(value = "{id}", method = {RequestMethod.PUT, RequestMethod.POST})
-    @PreAuthorize("hasRole('i18n')")
     public Object save(
             @RequestBody @Valid ResourceLocale resourceLocale,
             BindingResult result,
@@ -81,7 +78,6 @@ public class ResourceLocaleController {
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    @PreAuthorize("hasRole('i18n')")
     public Object delete(@PathVariable("id") Integer id) {
         return resourceLocaleService.delete(id);
     }
