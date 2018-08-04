@@ -13,3 +13,10 @@ spring:
 eureka:
   client:
     register-with-eureka: false
+
+security:
+  user:
+    name: i18n
+    password: i18n
+    role:
+      - i18n

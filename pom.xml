@@ -18,9 +18,9 @@
         <start-class>win.doyto.i18n.I18nApp</start-class>
         <docker.expose>10301</docker.expose>
 
-        <mysql.version>5.1.35</mysql.version>
-        <HikariCP.version>RELEASE</HikariCP.version>
-        <mybatis.version>3.4.5</mybatis.version>
+        <mysql.version>8.0.12</mysql.version>
+        <HikariCP.version>3.2.0</HikariCP.version>
+        <mybatis.version>3.4.6</mybatis.version>
 
     </properties>
 
@@ -114,7 +114,7 @@
         <dependency>
             <groupId>win.doyto</groupId>
             <artifactId>doyto-starter-auth-client</artifactId>
-            <version>1.0.0-SNAPSHOT</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>

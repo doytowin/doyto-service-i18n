@@ -11,12 +11,14 @@ spring:
     password: ${REDIS_DEFAULT_PASS:redis}
     port: 6379
     pool:
-      max-active: 10
-      max-wait: 1
+      max-active: 1000
+      max-idle: 20
+      min-idle: 5
+
   datasource:
     driver-class-name: com.mysql.jdbc.Driver
     type: com.zaxxer.hikari.HikariDataSource
-    url: jdbc:mysql://${jdbc.host:localhost}:${jdbc.port:3306}/i18n?autoReconnect=true&zeroDateTimeBehavior=convertToNull&allowMultiQueries=true
+    url: jdbc:mysql://${jdbc.host:localhost}:${jdbc.port:3306}/i18n?autoReconnect=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true&useSSL=false
     username: ${jdbc.username:i18n}
     password: ${jdbc.password:i18n_pass}
     hikari:
