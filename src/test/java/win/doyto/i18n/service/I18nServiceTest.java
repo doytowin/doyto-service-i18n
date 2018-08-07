@@ -9,8 +9,9 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
-import win.doyto.i18n.model.I18n;
-import win.doyto.i18n.model.Lang;
+import win.doyto.i18n.module.i18n.I18n;
+import win.doyto.i18n.module.i18n.Lang;
+import win.doyto.i18n.module.i18n.I18nService;
 import win.doyto.web.PageResponse;
 
 import static org.junit.Assert.assertEquals;

@@ -11,6 +11,7 @@ import org.apache.ibatis.session.RowBounds;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.common.TestConstant;
+import win.doyto.i18n.module.i18n.I18nMapper;
 
 import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 

@@ -1,4 +1,4 @@
-package win.doyto.i18n.model;
+package win.doyto.i18n.module.localle;
 
 import java.util.Date;
 

@@ -1,4 +1,4 @@
-package win.doyto.i18n.mapper;
+package win.doyto.i18n.module.i18n;
 
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -6,12 +6,8 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.session.RowBounds;
-import win.doyto.i18n.model.I18n;
-import win.doyto.i18n.model.Lang;
 
-import static win.doyto.web.service.IMapper.COUNT_;
-import static win.doyto.web.service.IMapper.LIST_;
-import static win.doyto.web.service.IMapper._LIMIT_1;
+import static win.doyto.web.service.IMapper.*;
 
 /**
  * I18nMapper

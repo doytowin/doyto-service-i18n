@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.model.Lang;
-import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.model.ResourceLocale;
-import win.doyto.i18n.service.I18nService;
-import win.doyto.i18n.service.ResourceGroupService;
-import win.doyto.i18n.service.ResourceLocaleService;
+import win.doyto.i18n.module.i18n.Lang;
+import win.doyto.i18n.module.group.ResourceGroup;
+import win.doyto.i18n.module.localle.ResourceLocale;
+import win.doyto.i18n.module.i18n.I18nService;
+import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.module.localle.ResourceLocaleService;
 import win.doyto.i18n.view.I18nXlsxView;
 import win.doyto.web.spring.RestBody;
 

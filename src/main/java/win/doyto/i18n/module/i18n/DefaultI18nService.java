@@ -1,4 +1,4 @@
-package win.doyto.i18n.service;
+package win.doyto.i18n.module.i18n;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -14,11 +14,10 @@ import org.springframework.transaction.annotation.Transactional;
 import win.doyto.i18n.component.baidu.BaiduTran;
 import win.doyto.i18n.component.baidu.BaiduTranApi;
 import win.doyto.i18n.exception.RestNotFoundException;
-import win.doyto.i18n.mapper.I18nMapper;
-import win.doyto.i18n.model.I18n;
-import win.doyto.i18n.model.Lang;
-import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.model.ResourceLocale;
+import win.doyto.i18n.module.group.ResourceGroup;
+import win.doyto.i18n.module.localle.ResourceLocale;
+import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.module.localle.ResourceLocaleService;
 import win.doyto.web.PageResponse;
 
 /**

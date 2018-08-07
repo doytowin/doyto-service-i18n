@@ -1,7 +1,5 @@
-package win.doyto.i18n.service;
+package win.doyto.i18n.module.localle;
 
-import win.doyto.i18n.mapper.ResourceLocaleMapper;
-import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.web.service.IService;
 
 /**

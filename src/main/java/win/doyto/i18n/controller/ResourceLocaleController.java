@@ -8,10 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.model.ResourceLocale;
-import win.doyto.i18n.service.ResourceGroupService;
-import win.doyto.i18n.service.ResourceLocaleService;
+import win.doyto.i18n.module.group.ResourceGroup;
+import win.doyto.i18n.module.localle.ResourceLocale;
+import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.module.localle.ResourceLocaleService;
 import win.doyto.web.spring.RestBody;
 
 /**

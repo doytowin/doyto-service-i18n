@@ -1,10 +1,8 @@
-package win.doyto.i18n.service;
+package win.doyto.i18n.module.i18n;
 
 import java.util.List;
 import java.util.Map;
 
-import win.doyto.i18n.model.I18n;
-import win.doyto.i18n.model.Lang;
 import win.doyto.web.PageResponse;
 import win.doyto.web.RestException;
 

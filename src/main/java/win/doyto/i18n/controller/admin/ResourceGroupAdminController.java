@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import win.doyto.i18n.module.group.ResourceGroupQuery;
-import win.doyto.i18n.service.ResourceGroupService;
+import win.doyto.i18n.module.group.ResourceGroupService;
 import win.doyto.web.spring.RestBody;
 
 /**

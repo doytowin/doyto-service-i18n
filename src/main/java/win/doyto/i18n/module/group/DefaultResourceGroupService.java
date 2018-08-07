@@ -1,4 +1,4 @@
-package win.doyto.i18n.service;
+package win.doyto.i18n.module.group;
 
 import java.util.Date;
 import javax.annotation.Resource;
@@ -7,8 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.i18n.exception.RestNotFoundException;
-import win.doyto.i18n.mapper.ResourceGroupMapper;
-import win.doyto.i18n.model.ResourceGroup;
+import win.doyto.i18n.module.i18n.I18nService;
 import win.doyto.web.RestEnum;
 import win.doyto.web.RestError;
 

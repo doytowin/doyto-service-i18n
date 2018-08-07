@@ -1,11 +1,10 @@
-package win.doyto.i18n.mapper;
+package win.doyto.i18n.module.localle;
 
 import java.io.Serializable;
 import java.util.List;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
-import win.doyto.i18n.model.ResourceLocale;
 import win.doyto.web.service.IMapper;
 
 @Mapper

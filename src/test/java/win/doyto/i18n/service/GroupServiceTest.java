@@ -4,6 +4,7 @@ import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 import win.doyto.i18n.I18nAppTest;
+import win.doyto.i18n.module.group.ResourceGroupService;
 
 /**
  * GroupServiceTest

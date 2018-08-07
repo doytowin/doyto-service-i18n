@@ -3,16 +3,18 @@ package win.doyto.i18n.controller;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import javax.validation.constraints.Pattern;
 
+import lombok.Getter;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.model.ResourceGroupAddReq;
+import win.doyto.i18n.module.group.ResourceGroup;
 import win.doyto.i18n.module.group.ResourceGroupQuery;
-import win.doyto.i18n.service.ResourceGroupService;
+import win.doyto.i18n.module.group.ResourceGroupService;
 import win.doyto.web.spring.RestBody;
 
 /**
@@ -66,4 +68,22 @@ public class ResourceGroupController {
         return groupService.deleteByUser(id, authentication.getName());
     }
 
+    /**
+     * ResourceGroupAddReq
+     *
+     * @author f0rb on 2018-04-21.
+     */
+    @Getter
+    @Setter
+    public static class ResourceGroupAddReq {
+
+        @Pattern(regexp = ".+")
+        private String name;
+
+        @Pattern(regexp = ".+")
+        private String label;
+
+        private String locale = "zh_CN";
+
+    }
 }

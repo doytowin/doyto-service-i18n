@@ -1,4 +1,4 @@
-package win.doyto.i18n.model;
+package win.doyto.i18n.module.i18n;
 
 import java.util.Date;
 
@@ -8,16 +8,20 @@ import win.doyto.web.PageableModel;
 
 @Getter
 @Setter
-public class ResourceGroup extends PageableModel<ResourceGroup> {
+public class I18n extends PageableModel<I18n> {
     private static final long serialVersionUID = 1L;
 
     private Integer id;
 
-    private String owner;
+    private String user;
 
-    private String name;
+    private String group;
 
     private String label;
+
+    private String defaults;
+
+    private String memo;
 
     private Date createTime;
 

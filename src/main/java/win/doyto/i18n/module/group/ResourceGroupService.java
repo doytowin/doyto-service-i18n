@@ -1,8 +1,5 @@
-package win.doyto.i18n.service;
+package win.doyto.i18n.module.group;
 
-import win.doyto.i18n.mapper.ResourceGroupMapper;
-import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.module.group.ResourceGroupQuery;
 import win.doyto.web.RestError;
 import win.doyto.web.service.ServiceApi;
 
