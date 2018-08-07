@@ -6,7 +6,6 @@ import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.i18n.module.group.ResourceGroup;
 import win.doyto.i18n.module.localle.ResourceLocale;
@@ -48,13 +47,10 @@ public class ResourceLocaleController {
 
     @RequestMapping(method = RequestMethod.POST)
     public Object add(
-            @RequestBody @Valid ResourceLocale resourceLocale, BindingResult result,
+            @RequestBody @Valid ResourceLocale resourceLocale,
             Authentication oper,
             @PathVariable("group") String group
     ) {
-        if (result.hasErrors()) {
-            return result;
-        }
         ResourceGroup resourceGroup = resourceGroupService.getGroup(oper.getName(), group);
         resourceLocale.setGroupId(resourceGroup.getId());
         resourceLocale.setGroup(group);
@@ -64,14 +60,10 @@ public class ResourceLocaleController {
     @RequestMapping(value = "{id}", method = {RequestMethod.PUT, RequestMethod.POST})
     public Object save(
             @RequestBody @Valid ResourceLocale resourceLocale,
-            BindingResult result,
             Authentication oper,
             @PathVariable("group") String group,
             @PathVariable(value = "id", required = false) String id
     ) {
-        if (result.hasErrors()) {
-            return result;
-        }
         ResourceGroup resourceGroup = resourceGroupService.getGroup(oper.getName(), group);
         resourceLocale.setGroupId(resourceGroup.getId());
         return resourceLocaleService.save(resourceLocale);

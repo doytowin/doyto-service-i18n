@@ -1,6 +1,5 @@
 package win.doyto.i18n.controller;
 
-import java.util.List;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 import javax.validation.constraints.Pattern;
@@ -10,7 +9,6 @@ import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.i18n.module.group.ResourceGroup;
 import win.doyto.i18n.module.group.ResourceGroupQuery;
@@ -38,28 +36,16 @@ public class ResourceGroupController {
 
     @GetMapping("list")
     public Object query() {
-        List<ResourceGroup> resourceGroupList = groupService.query().getData();
-
-        return resourceGroupList;
+        return groupService.query().getData();
     }
 
     @RequestMapping(method = RequestMethod.POST)
-    public Object add(
-            Authentication authentication,
-            @RequestBody @Valid ResourceGroupAddReq group,
-            BindingResult result
-    ) {
-        if (result.hasErrors()) {
-            return result;
-        }
+    public Object add(Authentication authentication, @RequestBody @Valid ResourceGroupAddReq group) {
         return groupService.create(authentication.getName(), group.getName(), group.getLabel(), group.getLocale());
     }
 
     @PostMapping("update/label")
-    public Object save(@RequestBody @Valid ResourceGroup group, BindingResult result) {
-        if (result.hasErrors()) {
-            return result;
-        }
+    public Object save(@RequestBody @Valid ResourceGroup group) {
         return groupService.updateLabel(group.getId(), group.getLabel());
     }
 
