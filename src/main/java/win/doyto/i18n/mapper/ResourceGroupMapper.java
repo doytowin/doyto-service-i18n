@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
 import win.doyto.i18n.model.ResourceGroup;
-import win.doyto.i18n.query.ResourceGroupQuery;
+import win.doyto.i18n.module.group.ResourceGroupQuery;
 import win.doyto.web.service.IMapper;
 
 @Mapper
