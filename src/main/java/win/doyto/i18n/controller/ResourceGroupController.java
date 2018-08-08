@@ -35,8 +35,8 @@ public class ResourceGroupController {
     }
 
     @GetMapping("list")
-    public Object query() {
-        return groupService.query().getData();
+    public Object query(ResourceGroupQuery resourceGroupQuery) {
+        return groupService.page(resourceGroupQuery);
     }
 
     @RequestMapping(method = RequestMethod.POST)
@@ -51,7 +51,7 @@ public class ResourceGroupController {
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public Object delete(Authentication authentication,  @PathVariable("id") Integer id) {
-        return groupService.deleteByUser(id, authentication.getName());
+        return groupService.deleteByUser(authentication.getName(), id);
     }
 
     /**

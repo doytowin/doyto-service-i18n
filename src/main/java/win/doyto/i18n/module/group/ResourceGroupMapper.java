@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
-import win.doyto.web.service.IMapper;
+import win.doyto.common.repository.mybatis.IMapper;
 
 @Mapper
 //@CacheNamespace(implementation = org.mybatis.caches.hazelcast.HazelcastCache.class)

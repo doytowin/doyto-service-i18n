@@ -4,14 +4,13 @@ import java.util.Date;
 
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.web.PageableModel;
+import win.doyto.common.repository.IntegerId;
 
 @Getter
 @Setter
-public class ResourceGroup extends PageableModel<ResourceGroup> {
-    private static final long serialVersionUID = 1L;
+public class ResourceGroup extends IntegerId {
 
-    private Integer id;
+    private static final long serialVersionUID = 1L;
 
     private String owner;
 

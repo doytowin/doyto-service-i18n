@@ -4,8 +4,10 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import win.doyto.common.repository.mybatis.AbstractMyBatisDataService;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.module.i18n.I18nService;
 import win.doyto.web.RestEnum;
@@ -18,15 +20,22 @@ import win.doyto.web.RestError;
  */
 @Slf4j
 @Service
-public class DefaultResourceGroupService implements ResourceGroupService {
-    @Resource
+public class DefaultResourceGroupService
+    extends AbstractMyBatisDataService<ResourceGroup, Integer, ResourceGroupQuery>
+        implements ResourceGroupService {
+
+    @Autowired
+    public DefaultResourceGroupService(ResourceGroupMapper resourceGroupMapper) {
+        this.resourceGroupMapper = resourceGroupMapper;
+    }
+
     private ResourceGroupMapper resourceGroupMapper;
 
     @Resource
     private I18nService i18nService;
 
     @Override
-    public ResourceGroupMapper getIMapper() {
+    public ResourceGroupMapper getMapper() {
         return resourceGroupMapper;
     }
 
@@ -40,7 +49,7 @@ public class DefaultResourceGroupService implements ResourceGroupService {
     }
 
     @Override
-    public RestError deleteByUser(Integer groupId, String user) {
+    public RestError deleteByUser(String user, Integer groupId) {
         ResourceGroup origin = resourceGroupMapper.get(groupId);
         if (origin == null) {
             return RestEnum.RecordNotFound.value();
@@ -78,6 +87,11 @@ public class DefaultResourceGroupService implements ResourceGroupService {
         origin.setUpdateTime(new Date());
         resourceGroupMapper.update(origin);
         return RestEnum.SuccessUpdate.value();
+    }
+
+    @Override
+    public ResourceGroup save(ResourceGroup resourceGroup) {
+        return null;
     }
 
 }
