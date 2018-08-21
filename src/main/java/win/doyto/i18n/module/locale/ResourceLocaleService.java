@@ -1,4 +1,4 @@
-package win.doyto.i18n.module.localle;
+package win.doyto.i18n.module.locale;
 
 import win.doyto.web.service.IService;
 

@@ -15,9 +15,9 @@ import win.doyto.i18n.component.baidu.BaiduTran;
 import win.doyto.i18n.component.baidu.BaiduTranApi;
 import win.doyto.i18n.exception.RestNotFoundException;
 import win.doyto.i18n.module.group.ResourceGroup;
-import win.doyto.i18n.module.localle.ResourceLocale;
+import win.doyto.i18n.module.locale.ResourceLocale;
 import win.doyto.i18n.module.group.ResourceGroupService;
-import win.doyto.i18n.module.localle.ResourceLocaleService;
+import win.doyto.i18n.module.locale.ResourceLocaleService;
 import win.doyto.web.PageResponse;
 
 /**
