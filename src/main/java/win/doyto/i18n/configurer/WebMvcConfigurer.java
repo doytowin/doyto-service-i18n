@@ -4,14 +4,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Lazy;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
-import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 import win.doyto.web.spring.CommonWebMvcConfiguration;
 
 /**
@@ -37,12 +34,6 @@ public class WebMvcConfigurer extends CommonWebMvcConfiguration {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor()).addPathPatterns("/**");
-    }
-
-
-    @Bean @Lazy
-    public HandlerMappingIntrospector mvcHandlerMappingIntrospector(ApplicationContext context) {
-        return new HandlerMappingIntrospector(context);
     }
 
 }
