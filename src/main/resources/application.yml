@@ -10,19 +10,22 @@ spring:
     host: ${REDIS_DEFAULT_HOST:${ENV_HOST}}
     password: ${REDIS_DEFAULT_PASS:redis}
     port: 6379
-    pool:
-      max-active: 1000
-      max-idle: 20
-      min-idle: 5
+    jedis:
+      pool:
+        max-active: 100
+        max-idle: 10
+        min-idle: 5
 
   datasource:
-    driver-class-name: com.mysql.jdbc.Driver
-    type: com.zaxxer.hikari.HikariDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://${jdbc.host:localhost}:${jdbc.port:3306}/i18n?autoReconnect=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true&useSSL=false
     username: ${jdbc.username:i18n}
     password: ${jdbc.password:i18n_pass}
     hikari:
       jdbc-url: ${spring.datasource.url}
+
+spring.cloud.refresh.refreshable: none
+spring.jmx.enabled: false
 
 mybatis:
   config-location: classpath:mybatis.xml
