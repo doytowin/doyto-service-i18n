@@ -11,7 +11,7 @@ import win.doyto.auth.annotation.EnableSessionAuthentication;
  * @author f0rb on 2017-03-29.
  */
 @SpringCloudApplication
-@ComponentScan(basePackages = {"win.doyto.i18n", "win.doyto.web"})
+@ComponentScan(basePackages = {"win.doyto.i18n", "win.doyto.web", "win.doyto.auth"})
 @EnableSessionAuthentication
 public class I18nApp {
     public static void main(String[] args) {

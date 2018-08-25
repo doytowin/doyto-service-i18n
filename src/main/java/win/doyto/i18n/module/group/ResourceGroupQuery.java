@@ -1,8 +1,11 @@
 package win.doyto.i18n.module.group;
 
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import win.doyto.common.repository.PageQuery;
+import win.doyto.common.repository.QueryTable;
 
 /**
  * ResourceGroupQuery
@@ -11,13 +14,16 @@ import win.doyto.common.repository.PageQuery;
  */
 @Getter
 @Setter
+@SuperBuilder
+@NoArgsConstructor
+@QueryTable(table = ResourceGroup.TABLE, entity = ResourceGroup.class)
 public class ResourceGroupQuery extends PageQuery {
+
+    private Boolean deleted = false;
 
     private String owner;
 
-    private String name;
-
-    private String label;
+    private String nameLike;
 
     private Boolean valid;
 

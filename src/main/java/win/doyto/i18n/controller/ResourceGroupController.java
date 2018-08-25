@@ -1,18 +1,18 @@
 package win.doyto.i18n.controller;
 
-import javax.annotation.Resource;
 import javax.validation.Valid;
-import javax.validation.constraints.Pattern;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
+import win.doyto.auth.annotation.CurrentUser;
+import win.doyto.common.repository.PageList;
 import win.doyto.i18n.module.group.ResourceGroup;
 import win.doyto.i18n.module.group.ResourceGroupQuery;
 import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.web.RestEnum;
+import win.doyto.web.RestError;
 import win.doyto.web.spring.RestBody;
 
 /**
@@ -23,53 +23,36 @@ import win.doyto.web.spring.RestBody;
 @Slf4j
 @RestBody
 @RestController
-@RequestMapping("/api/resource-group")
+@RequestMapping({"/api/resource-group", "/api/group"})
 @PreAuthorize("hasAnyRole('i18n')")
 public class ResourceGroupController {
-    @Resource
     private ResourceGroupService groupService;
 
-    @GetMapping
-    public Object page(ResourceGroupQuery query) {
-        return groupService.page(query);
+    public ResourceGroupController(ResourceGroupService groupService) {
+        this.groupService = groupService;
     }
 
-    @GetMapping("list")
-    public Object query(ResourceGroupQuery resourceGroupQuery) {
+    @GetMapping
+    public PageList<ResourceGroup> page(@CurrentUser String owner, ResourceGroupQuery resourceGroupQuery) {
+        resourceGroupQuery.setOwner(owner);
         return groupService.page(resourceGroupQuery);
     }
 
-    @RequestMapping(method = RequestMethod.POST)
-    public Object add(Authentication authentication, @RequestBody @Valid ResourceGroupAddReq group) {
-        return groupService.create(authentication.getName(), group.getName(), group.getLabel(), group.getLocale());
-    }
-
     @PostMapping("update/label")
-    public Object save(@RequestBody @Valid ResourceGroup group) {
-        return groupService.updateLabel(group.getId(), group.getLabel());
+    public RestError updateLabel(@RequestBody @Valid UpdateGroupLabelRequest group) {
+        ResourceGroup resourceGroup = groupService.updateLabel(group.getId(), group.getLabel());
+        return resourceGroup == null ? RestEnum.RecordNotFound.value() : RestError.Success;
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public Object delete(Authentication authentication,  @PathVariable("id") Integer id) {
-        return groupService.deleteByUser(authentication.getName(), id);
+    public RestError delete(@PathVariable("id") Integer id) {
+        ResourceGroup resourceGroup = groupService.logicDelete(id);
+        return resourceGroup == null ? RestEnum.RecordNotFound.value() : RestError.Success;
     }
 
-    /**
-     * ResourceGroupAddReq
-     *
-     * @author f0rb on 2018-04-21.
-     */
-    @Getter
-    @Setter
-    public static class ResourceGroupAddReq {
-
-        @Pattern(regexp = ".+")
-        private String name;
-
-        @Pattern(regexp = ".+")
+    @Data
+    public static class UpdateGroupLabelRequest {
+        private Integer id;
         private String label;
-
-        private String locale = "zh_CN";
-
     }
 }

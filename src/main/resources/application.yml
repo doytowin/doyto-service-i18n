@@ -16,14 +16,6 @@ spring:
         max-idle: 10
         min-idle: 5
 
-  datasource:
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://${jdbc.host:localhost}:${jdbc.port:3306}/i18n?autoReconnect=true&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true&useSSL=false
-    username: ${jdbc.username:i18n}
-    password: ${jdbc.password:i18n_pass}
-    hikari:
-      jdbc-url: ${spring.datasource.url}
-
 spring.cloud.refresh.refreshable: none
 spring.jmx.enabled: false
 
@@ -35,6 +27,7 @@ logging:
   level:
     root: info
     com.netflix.discovery.shared.resolver.aws: warn
+    org.springframework.boot.devtools.autoconfigure: warn
 
 #hystrix 熔断机制
 feign.hystrix.enabled: true

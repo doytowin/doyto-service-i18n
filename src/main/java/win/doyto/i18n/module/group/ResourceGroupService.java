@@ -15,8 +15,6 @@ public interface ResourceGroupService extends IDataService<ResourceGroup, Intege
 
     RestError deleteByUser(String user, Integer id);
 
-    RestError create(String owner, String name, String label, String locale);
-
-    RestError updateLabel(Integer groupId, String label);
+    ResourceGroup updateLabel(Integer groupId, String label);
 
 }

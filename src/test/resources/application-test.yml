@@ -1,0 +1,4 @@
+logging:
+  level:
+    root: info
+    win.doyto.i18n.module: debug
