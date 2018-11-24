@@ -5,3 +5,4 @@ target/
 npm-debug.log
 /src/main/resources/static/
 /src/main/dev/template/
+.flattened-pom.xml

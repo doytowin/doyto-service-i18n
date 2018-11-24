@@ -2,23 +2,33 @@ package win.doyto.i18n.module.locale;
 
 import java.util.Date;
 
+import javax.persistence.Entity;
+import javax.persistence.Table;
+
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.web.PageableModel;
+import win.doyto.query.IntegerId;
 
 /**
- * ResourceLocale
+ * toResourceLocale
  *
  * @author f0rb on 2017-04-16.
  */
 @Getter
 @Setter
-public class ResourceLocale extends PageableModel<ResourceLocale> {
+@Entity
+@Table(name = ResourceLocale.TABLE)
+public class ResourceLocale extends IntegerId {
+
+    public static final String TABLE = "i18n_resource_locale";
+
     private static final long serialVersionUID = 1L;
 
-    private Integer id;
-
     private Integer groupId;
+
+    private String groupName;
+
+    private String owner;
 
     private String locale;
 
@@ -31,8 +41,5 @@ public class ResourceLocale extends PageableModel<ResourceLocale> {
     private Date updateTime;
 
     private Boolean status;
-
-    // POST
-    private String group;
 
 }

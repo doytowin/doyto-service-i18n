@@ -1,4 +1,4 @@
-package win.doyto.i18n.view;
+package win.doyto.i18n.component.view;
 
 import java.io.UnsupportedEncodingException;
 import java.util.LinkedHashMap;

@@ -7,8 +7,8 @@ import javax.persistence.Table;
 
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.common.repository.IntegerId;
-import win.doyto.common.repository.LogicDeletable;
+import win.doyto.query.IntegerId;
+import win.doyto.query.LogicDeletable;
 
 @Getter
 @Setter

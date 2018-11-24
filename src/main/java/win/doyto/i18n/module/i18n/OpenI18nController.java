@@ -1,4 +1,4 @@
-package win.doyto.i18n.controller;
+package win.doyto.i18n.module.i18n;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -12,13 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.module.i18n.Lang;
-import win.doyto.i18n.module.group.ResourceGroup;
-import win.doyto.i18n.module.locale.ResourceLocale;
-import win.doyto.i18n.module.i18n.I18nService;
 import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.module.locale.ResourceLocaleQuery;
 import win.doyto.i18n.module.locale.ResourceLocaleService;
-import win.doyto.i18n.view.I18nXlsxView;
+import win.doyto.i18n.component.view.I18nXlsxView;
 import win.doyto.web.spring.RestBody;
 
 /**
@@ -57,10 +54,9 @@ public class OpenI18nController {
     @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
     @ResponseBody
     @RestBody
-    public Object query(ResourceLocale resourceLocale, @PathVariable("user") String user, @PathVariable("group") String group) {
-        ResourceGroup resourceGroup = resourceGroupService.getGroup(user, group);
-        resourceLocale.setGroupId(resourceGroup.getId());
-        return resourceLocaleService.query(resourceLocale);
+    public Object query(ResourceLocaleQuery resourceLocaleQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
+        resourceLocaleQuery.setGroup(group);
+        return resourceLocaleService.query(resourceLocaleQuery);
     }
 
     @RequestMapping(value = "{user}/{group}/{locale}.json", method = RequestMethod.GET)

@@ -7,8 +7,9 @@
     <parent>
         <groupId>win.doyto</groupId>
         <artifactId>doyto-service-parent</artifactId>
-        <version>${msversion}</version>
-        <relativePath>../doyto-service-parent/pom.xml</relativePath>
+        <version>2.0.0</version>
+        <!--<version>${msversion}</version>-->
+        <!--<relativePath>../doyto-service-parent/pom.xml</relativePath>-->
     </parent>
 
     <artifactId>doyto-service-i18n</artifactId>
@@ -18,7 +19,7 @@
         <start-class>win.doyto.i18n.I18nApp</start-class>
         <docker.expose>10301</docker.expose>
 
-        <repository.version>2.0.3-SNAPSHOT</repository.version>
+        <repository.version>1.0.0-SNAPSHOT</repository.version>
 
     </properties>
 
@@ -129,12 +130,12 @@
         </dependency>
         <dependency>
             <groupId>win.doyto</groupId>
-            <artifactId>doyto-common-repository-mybatis</artifactId>
+            <artifactId>doyto-query-mybatis</artifactId>
             <version>${repository.version}</version>
         </dependency>
         <dependency>
             <groupId>win.doyto</groupId>
-            <artifactId>doyto-common-repository-mock</artifactId>
+            <artifactId>doyto-query-mock</artifactId>
             <version>${repository.version}</version>
             <scope>test</scope>
         </dependency>
@@ -165,6 +166,11 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
             </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

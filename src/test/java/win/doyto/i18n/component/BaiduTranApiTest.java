@@ -26,10 +26,11 @@ public class BaiduTranApiTest {
         log.info(ret);
         ret = new BaiduTranApi("2015063000000001", "12345678")
                 .getTransResult("username", "en", "fra");
-        System.out.println(ret);
+        log.info(ret);
+
         ret = new BaiduTranApi("2015063000000001", "12345678")
                 .getTransResult("username", "en", "jp");
-        System.out.println(ret);
+        log.info(ret);
 
         BaiduTran tran = new BaiduTranApi("2015063000000001", "12345678")
                 .getTrans("username", "en", "kor");

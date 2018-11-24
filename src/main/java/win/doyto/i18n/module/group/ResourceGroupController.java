@@ -1,4 +1,4 @@
-package win.doyto.i18n.controller;
+package win.doyto.i18n.module.group;
 
 import javax.validation.Valid;
 
@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.auth.annotation.CurrentUser;
-import win.doyto.common.repository.PageList;
-import win.doyto.i18n.module.group.ResourceGroup;
-import win.doyto.i18n.module.group.ResourceGroupQuery;
-import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.query.PageList;
 import win.doyto.web.RestEnum;
 import win.doyto.web.RestError;
 import win.doyto.web.spring.RestBody;

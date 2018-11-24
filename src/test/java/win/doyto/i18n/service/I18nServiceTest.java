@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
+import org.junit.Ignore;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.module.i18n.I18n;
@@ -24,6 +25,7 @@ import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
  * @author f0rb on 2017-03-31.
  */
 @Slf4j
+@Ignore
 public class I18nServiceTest extends I18nAppTest {
     @Resource
     private I18nService i18nService;

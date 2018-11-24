@@ -71,6 +71,6 @@ public class AbstractControllerTest {
     }
 
     protected ResultActions performUploadFile(String url, MockMultipartFile file) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.fileUpload(url).file(file).session(mockHttpSession));
+        return mockMvc.perform(MockMvcRequestBuilders.multipart(url).file(file).session(mockHttpSession));
     }
 }

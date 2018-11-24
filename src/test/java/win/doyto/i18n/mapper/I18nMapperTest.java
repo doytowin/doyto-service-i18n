@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.session.RowBounds;
+import org.junit.Ignore;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.common.TestConstant;
@@ -21,6 +22,7 @@ import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
  * @author f0rb on 2017-03-30.
  */
 @Slf4j
+@Ignore
 public class I18nMapperTest extends I18nAppTest {
     @Resource
     private I18nMapper i18nMapper;

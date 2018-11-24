@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -17,7 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import win.doyto.i18n.controller.ResourceGroupControllerTest;
+import win.doyto.i18n.module.group.ResourceGroupControllerTest;
 import win.doyto.i18n.module.group.ResourceGroupService;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -26,6 +27,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = I18nApp.class)
 @ActiveProfiles({"test"})
+@Ignore
 public class I18nControllerTest extends AbstractControllerTest {
     @Resource
     protected WebApplicationContext wac;

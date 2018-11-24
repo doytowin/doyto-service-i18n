@@ -1,9 +1,11 @@
-package win.doyto.i18n.controller;
+package win.doyto.i18n.module.i18n;
 
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
+import javax.validation.constraints.Pattern;
 
+import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
@@ -12,10 +14,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.module.i18n.I18n;
-import win.doyto.i18n.module.i18n.Lang;
-import win.doyto.i18n.module.i18n.I18nService;
-import win.doyto.i18n.view.I18nXlsxView;
+import win.doyto.i18n.module.locale.ResourceLocale;
+import win.doyto.i18n.component.view.I18nXlsxView;
 import win.doyto.web.PageResponse;
 import win.doyto.web.spring.RestBody;
 
@@ -105,6 +105,42 @@ public class I18nController {
         i18nService.autoTranslate(user, group, locale);
         List<Lang> data = i18nService.queryWithDefaults(user, group, locale);
         return data;
+    }
+
+
+    /**
+     * ResourceGroupAddReq
+     *
+     * @author f0rb on 2018-04-21.
+     */
+    @Data
+    private static class CreateResourceGroupRequest {
+
+        @Pattern(regexp = ".+")
+        private String name;
+
+        @Pattern(regexp = ".+")
+        private String label;
+
+        private String locale = "zh_CN";
+
+    }
+
+    @Data
+    private class CreateResourceLocaleRequest {
+        private String group;
+        private String locale;
+        private String baiduTranLang;
+        private String language;
+
+        public ResourceLocale toResourceLocale() {
+            ResourceLocale resourceLocale = new ResourceLocale();
+            resourceLocale.setBaiduTranLang(baiduTranLang);
+            resourceLocale.setLocale(locale);
+            resourceLocale.setBaiduTranLang(baiduTranLang);
+            resourceLocale.setLanguage(language);
+            return resourceLocale;
+        }
     }
 
 }

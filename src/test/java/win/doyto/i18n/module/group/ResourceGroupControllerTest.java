@@ -1,4 +1,4 @@
-package win.doyto.i18n.controller;
+package win.doyto.i18n.module.group;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -6,16 +6,16 @@ import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
-import win.doyto.common.repository.PageList;
+import win.doyto.query.PageList;
 import win.doyto.i18n.common.TestConstant;
 import win.doyto.i18n.mapper.MockResourceGroupMapper;
-import win.doyto.i18n.module.group.DefaultResourceGroupService;
 import win.doyto.i18n.module.group.ResourceGroup;
+import win.doyto.i18n.module.group.ResourceGroupController;
 import win.doyto.i18n.module.group.ResourceGroupQuery;
+import win.doyto.i18n.module.group.ResourceGroupService;
 import win.doyto.web.RestError;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -37,7 +37,7 @@ public class ResourceGroupControllerTest {
     }
 
     private final MockResourceGroupMapper resourceGroupMapper = new MockResourceGroupMapper();
-    private final DefaultResourceGroupService groupService = new DefaultResourceGroupService(resourceGroupMapper);
+    private final ResourceGroupService groupService = new ResourceGroupService(resourceGroupMapper);
     private final ResourceGroupController resourceGroupController = new ResourceGroupController(groupService);
 
     private static ResourceGroup newResourceGroup(String suffix) {

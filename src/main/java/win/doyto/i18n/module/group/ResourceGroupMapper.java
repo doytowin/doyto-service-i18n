@@ -2,7 +2,7 @@ package win.doyto.i18n.module.group;
 
 import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.jdbc.SQL;
-import win.doyto.common.repository.mybatis.IMapper;
+import win.doyto.query.mybatis.IMapper;
 
 @Mapper
 public interface ResourceGroupMapper extends IMapper<ResourceGroup, Integer, ResourceGroupQuery> {

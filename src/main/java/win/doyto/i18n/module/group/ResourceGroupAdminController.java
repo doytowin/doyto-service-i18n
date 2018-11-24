@@ -1,4 +1,4 @@
-package win.doyto.i18n.controller.admin;
+package win.doyto.i18n.module.group;
 
 import javax.annotation.Resource;
 
@@ -7,8 +7,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-import win.doyto.i18n.module.group.ResourceGroupQuery;
-import win.doyto.i18n.module.group.ResourceGroupService;
 import win.doyto.web.spring.RestBody;
 
 /**
