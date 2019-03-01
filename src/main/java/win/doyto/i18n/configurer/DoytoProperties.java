@@ -19,13 +19,6 @@ import org.springframework.stereotype.Component;
 @ConfigurationProperties(prefix = "doyto")
 public class DoytoProperties {
 
-    private String domain;
-    private String homeUrl;
-    private String ssoUrl;
-    private String loginUrl;
-    private String failureUrl;
-    private String rememberMeToken;
-    private String rememberMeCookie;
     private BaiduProperties baidu = new BaiduProperties();
 
     public static boolean isDev() {

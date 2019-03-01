@@ -7,7 +7,3 @@ info:
   version: @project.version@
   date: @project.build.timestamp@
   description: @project.description@
-
-eureka:
-  client:
-    enabled: false

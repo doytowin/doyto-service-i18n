@@ -1,7 +1,6 @@
 package win.doyto.i18n.module.i18n;
 
 import java.util.List;
-import javax.annotation.Resource;
 
 import com.alibaba.fastjson.JSONObject;
 import lombok.extern.slf4j.Slf4j;
@@ -12,10 +11,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.View;
-import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.component.view.I18nXlsxView;
 import win.doyto.i18n.module.locale.ResourceLocaleQuery;
 import win.doyto.i18n.module.locale.ResourceLocaleService;
-import win.doyto.i18n.component.view.I18nXlsxView;
 import win.doyto.web.spring.RestBody;
 
 /**
@@ -27,15 +25,14 @@ import win.doyto.web.spring.RestBody;
 @Controller
 @RequestMapping("/openapi")
 public class OpenI18nController {
-
-    @Resource
     private I18nService i18nService;
 
-    @Resource
     private ResourceLocaleService resourceLocaleService;
 
-    @Resource
-    private ResourceGroupService resourceGroupService;
+    public OpenI18nController(I18nService i18nService, ResourceLocaleService resourceLocaleService) {
+        this.i18nService = i18nService;
+        this.resourceLocaleService = resourceLocaleService;
+    }
 
     /**
      * 导出所有的标签和语言

@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: @project.artifactId@
+
+mybatis:
+  executor-type: reuse
+  configuration:
+    # [是否启用数据中下划线命名自动映射到类中驼峰命名的属性 default:false]
+    mapUnderscoreToCamelCase: true
+    # 枚举类型处理
+    defaultEnumTypeHandler: org.apache.ibatis.type.EnumOrdinalTypeHandler
+    # 对于未知的SQL查询，允许返回不同的结果集以达到通用的效果
+    multipleResultSetsEnabled: true
+    # 允许使用列标签代替列名
+    useColumnLabel: true
+    # 允许使用自定义的主键值(比如由程序生成的UUID 32位编码作为键值)，数据表的PK生成策略将被覆盖
+    useGeneratedKeys: true
+    # 给予被嵌套的resultMap以字段-属性的映射支持
+    autoMappingBehavior: FULL
+    # 数据库超过5秒仍未响应则超时
+    defaultStatementTimeout: 5000
+    # 导报表需要
+    callSettersOnNulls: true
+    # 查询到一行全为空时是否返null, default:false返null
+    returnInstanceForEmptyRow: true
+
+doyto:
+  baidu:
+    appid: 20170417000044993
+    securityKey: VaF807U3s7X6ZpRkcThL
