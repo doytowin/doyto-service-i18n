@@ -18,8 +18,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import win.doyto.i18n.module.group.ResourceGroupControllerTest;
-import win.doyto.i18n.module.group.ResourceGroupService;
+import win.doyto.i18n.module.group.GroupControllerTest;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
@@ -31,14 +30,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 public class I18nControllerTest extends AbstractControllerTest {
     @Resource
     protected WebApplicationContext wac;
-
-    @Resource
-    ResourceGroupService resourceGroupService;
-
-    @PostConstruct
-    public void init() throws Exception {
-        resourceGroupService.save(ResourceGroupControllerTest.INIT_LIST);
-    }
 
     @Before
     public void setUp() throws Exception {
@@ -58,7 +49,7 @@ public class I18nControllerTest extends AbstractControllerTest {
     public void testPage() throws Exception {
 
         performGetAndExpectSuccess("/api/group", "pageNumber=1", "pageSize=5")
-        .andExpect(jsonPath($_DATA_TOTAL).value(ResourceGroupControllerTest.INIT_I18N_SIZE))
+        .andExpect(jsonPath($_DATA_TOTAL).value(GroupControllerTest.INIT_I18N_SIZE))
         .andExpect(jsonPath("$.data.list").isArray())
         .andExpect(jsonPath("$.data.list.length()").value(3));
 

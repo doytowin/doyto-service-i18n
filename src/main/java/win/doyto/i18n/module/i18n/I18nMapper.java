@@ -1,13 +1,11 @@
 package win.doyto.i18n.module.i18n;
 
+import org.apache.ibatis.annotations.*;
+import win.doyto.query.core.QueryBuilder;
+
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-
-import org.apache.ibatis.annotations.*;
-import org.apache.ibatis.session.RowBounds;
-
-import static win.doyto.web.service.IMapper.*;
 
 /**
  * I18nMapper
@@ -15,11 +13,11 @@ import static win.doyto.web.service.IMapper.*;
  * @author f0rb on 2017-03-30.
  */
 @Mapper
+@SuppressWarnings({"squid:S00115", "squid:S1214"})
 public interface I18nMapper {
 
     String GROUP_FORMAT = "i18n_data_${user}_${group}";
 
-    @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
     @Results(id = "localeMap", value = {
             @Result(column = "id"),
             @Result(column = "memo"),
@@ -27,18 +25,11 @@ public interface I18nMapper {
             @Result(column = "updateTime"),
             @Result(column = "valid")
     })
-    List<LinkedHashMap<String, ?>> langByGroup(@Param("user") String user, @Param("group") String group);
+    @SelectProvider(type = QueryBuilder.class, method = "buildSelect")
+    List<LinkedHashMap<String, Object>> query(I18nQuery i18nQuery);
 
-    @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
-    @ResultMap("localeMap")
-    List<LinkedHashMap<String, ?>> pageLangByGroup(@Param("user") String user, @Param("group") String group, RowBounds rowBounds);
-
-    @Select({LIST_, GROUP_FORMAT, " WHERE valid = true"})
-    @ResultMap("localeMap")
-    List<LinkedHashMap<String, ?>> query(I18n i18n);
-
-    @Select({COUNT_, GROUP_FORMAT, " WHERE valid = true"})
-    long count(I18n i18n);
+    @SelectProvider(type = QueryBuilder.class, method = "buildCount")
+    long count(I18nQuery i18nQuery);
 
     /**
      * 如果locale_${locale}为null, 则以默认值替代
@@ -47,8 +38,8 @@ public interface I18nMapper {
      * @param locale 语种
      * @return {label,value}
      */
-    @Select("SELECT label, IF(locale_${locale} IS NULL OR locale_${locale} = '', defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
-    List<Lang> langByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
+    @Select("SELECT label, defaults, IF(locale_${locale} IS NULL OR LENGTH(locale_${locale}) = 0, defaults, locale_${locale}) AS value FROM " + GROUP_FORMAT)
+    List<LangView> langByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 
     /**
      * 查询标签, 默认值, 语种对应的翻译
@@ -58,7 +49,7 @@ public interface I18nMapper {
      * @return {label,value,defaults}
      */
     @Select("SELECT label, defaults, locale_${locale} AS value FROM " + GROUP_FORMAT)
-    List<Lang> langWithDefaultsByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
+    List<LangView> langWithDefaultsByGroupAndLocale(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
 
     @Update({
             "<script>",
@@ -76,18 +67,15 @@ public interface I18nMapper {
     @Options
     int saveTranslation(@Param("user") String user, @Param("group") String group, @Param("locale") String locale, @Param("map") Map<String, String> langMap);
 
-    @Update({
-            "ALTER TABLE",
-            GROUP_FORMAT,
-            "ADD locale_${locale} VARCHAR(1000) NOT NULL DEFAULT ''"
-    })
-    void addLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
+    default void existGroup(String user, String group) {
+        I18nQuery i18nQuery = I18nQuery.builder().user(user).group(group).build();
+        i18nQuery.setPageSize(1);
+        count(i18nQuery);
+    }
 
-    @Select({LIST_, GROUP_FORMAT, _LIMIT_1})
-    Object existGroup(@Param("user") String user, @Param("group") String group);
-
-    @Select({"SELECT locale_${locale} FROM ", GROUP_FORMAT, _LIMIT_1})
-    Object existLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
+    default void existLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale) {
+        langWithDefaultsByGroupAndLocale(user, group, locale);
+    }
 
     @Update({
             "CREATE TABLE",
@@ -103,6 +91,13 @@ public interface I18nMapper {
     })
     void createGroupTable(@Param("user") String owner, @Param("group") String name);
 
+    @Update({
+        "ALTER TABLE",
+        GROUP_FORMAT,
+        "ADD locale_${locale} VARCHAR(1000) NOT NULL DEFAULT ''"
+    })
+    void addLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
+
     @Update("DROP TABLE IF EXISTS" + GROUP_FORMAT)
-    void deleteGroupTable(@Param("user") String owner, @Param("group") String name);
+    void dropGroupTable(@Param("user") String owner, @Param("group") String name);
 }

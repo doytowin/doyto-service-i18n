@@ -1,17 +1,21 @@
 USE i18n;
 
-CREATE TABLE i18n.i18n_resource_group
+drop table if exists i18n_resource_group
+CREATE TABLE i18n_resource_group
 (
     id         INT(11)      NOT NULL AUTO_INCREMENT,
-    name       VARCHAR(100) NOT NULL,
+    name varchar(100) not null,
+    owner varchar(32) not null,
+    label varchar(100) default '' null,
     createTime TIMESTAMP    NOT NULL DEFAULT current_timestamp,
     updateTime TIMESTAMP    NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
     valid      BOOLEAN      NOT NULL DEFAULT TRUE,
+    deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id),
     CONSTRAINT UNIQUE INDEX i18n_group (name)
 );
 
-CREATE TABLE i18n.i18n_resource_locale
+CREATE TABLE i18n_resource_locale
 (
     id INT(11) NOT NULL AUTO_INCREMENT,
     group_id INT(11) NOT NULL,
@@ -19,7 +23,7 @@ CREATE TABLE i18n.i18n_resource_locale
 
     createTime TIMESTAMP NOT NULL DEFAULT current_timestamp,
     updateTime TIMESTAMP NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-    statu TINYINT(1) NOT NULL DEFAULT 0,
+    status TINYINT(1) NOT NULL DEFAULT 0,
     PRIMARY KEY (id)
 );
 

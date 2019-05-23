@@ -1,0 +1,20 @@
+spring:
+  security:
+    user:
+      name: i18n
+      password: i18n
+      roles: i18n,admin
+
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.zaxxer.hikari.HikariDataSource
+    url: jdbc:mysql://${MYSQL_DEFAULT_HOST:localhost}:${MYSQL_DEFAULT_PORT:3306}/local?autoReconnect=true&useUnicode=true&characterEncoding=utf-8&zeroDateTimeBehavior=CONVERT_TO_NULL&allowMultiQueries=true&useSSL=false&allowPublicKeyRetrieval=true
+    username: ${MYSQL_DEFAULT_USER:local}
+    password: ${MYSQL_DEFAULT_PASS:local_pass}
+    hikari:
+      jdbc-url: ${spring.datasource.url}
+
+logging:
+  level:
+    org.springframework.security.web: info
+

@@ -12,7 +12,7 @@ import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 import win.doyto.auth.component.CurrentUserMethodArgumentResolver;
-import win.doyto.web.spring.CommonWebMvcConfiguration;
+import win.doyto.common.web.WebMvcConfigurerAdapter;
 
 /**
  * WebMvcConfigurer
@@ -21,7 +21,7 @@ import win.doyto.web.spring.CommonWebMvcConfiguration;
  */
 @Slf4j
 @Configuration
-public class WebMvcConfigurer extends CommonWebMvcConfiguration {
+public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 
     @Bean
     public HandlerInterceptor logInterceptor() {

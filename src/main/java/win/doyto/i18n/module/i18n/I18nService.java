@@ -1,24 +1,22 @@
 package win.doyto.i18n.module.i18n;
 
-import java.util.*;
-import javax.annotation.Resource;
-
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import win.doyto.i18n.component.baidu.BaiduTran;
-import win.doyto.i18n.component.baidu.BaiduTranApi;
-import win.doyto.i18n.exception.RestNotFoundException;
-import win.doyto.i18n.module.group.ResourceGroup;
-import win.doyto.i18n.module.group.ResourceGroupService;
-import win.doyto.i18n.module.locale.ResourceLocale;
-import win.doyto.i18n.module.locale.ResourceLocaleMapper;
-import win.doyto.i18n.module.locale.ResourceLocaleService;
-import win.doyto.web.PageResponse;
-import win.doyto.web.RestEnum;
-import win.doyto.web.RestError;
+import win.doyto.common.web.ErrorCode;
+import win.doyto.i18n.module.baidu.BaiduTran;
+import win.doyto.i18n.module.baidu.BaiduTranApi;
+import win.doyto.i18n.module.group.GroupApi;
+import win.doyto.i18n.module.group.GroupResponse;
+import win.doyto.i18n.module.locale.*;
+import win.doyto.query.core.PageList;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 
 /**
  * I18nService
@@ -37,13 +35,10 @@ public class I18nService {
     private BaiduTranApi baiduTranApi;
 
     @Resource
-    private ResourceGroupService resourceGroupService;
+    GroupApi groupApi;
 
     @Resource
-    private ResourceLocaleService resourceLocaleService;
-
-    @Resource
-    private ResourceLocaleMapper resourceLocaleMapper;
+    private LocaleApi localeApi;
 
     private static String getGroupName(String user, String group) {
         return user + "_" + group;
@@ -51,23 +46,20 @@ public class I18nService {
 
     public List query(String user, String group) {
         checkGroup(user, group);
-        return i18nMapper.langByGroup(user, group);
+        return i18nMapper.query(I18nQuery.builder().user(user).group(group).build());
     }
 
-    public PageResponse query(I18n i18n) {
-        checkGroup(i18n.getUser(), i18n.getGroup());
-        PageResponse<LinkedHashMap<String, ?>> pageList = new PageResponse<>();
-        pageList.setList(i18nMapper.query(i18n));
-        pageList.setTotal(i18nMapper.count(i18n));
-        return pageList;
+    public PageList page(I18nQuery i18nQuery) {
+        checkGroup(i18nQuery.getUser(), i18nQuery.getGroup());
+        return new PageList<>(i18nMapper.query(i18nQuery), i18nMapper.count(i18nQuery));
     }
 
-    public List<Lang> query(String user, String group, String locale) {
+    public List<LangView> query(String user, String group, String locale) {
         checkGroup(user, group);
         return i18nMapper.langByGroupAndLocale(user, group, locale);
     }
 
-    public List<Lang> queryWithDefaults(String user, String group, String locale) {
+    public List<LangView> queryWithDefaults(String user, String group, String locale) {
         checkGroupAndLocale(user, group, locale);
         return i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
     }
@@ -76,14 +68,12 @@ public class I18nService {
         try {
             i18nMapper.existGroup(user, group);
         } catch (Exception e) {
-            throw new RestNotFoundException("多语言分组未配置: " + getGroupName(user, group));
+            ErrorCode.fail(ErrorCode.build(-1 ,"多语言分组未配置: " + getGroupName(user, group)));
         }
     }
 
     public void checkGroupAndLocale(String user, String group, String locale) {
-        if (!existLocale(user, group, locale)) {
-            throw new RestNotFoundException("多语言分组[" + getGroupName(user, group) + "]未配置语种: " + locale);
-        }
+        ErrorCode.assertTrue(existLocale(user, group, locale), ErrorCode.build(-1, "多语言分组[" + getGroupName(user, group) + "]未配置语种: " + locale));
     }
 
     private boolean existLocale(String user, String group, String locale) {
@@ -115,24 +105,24 @@ public class I18nService {
     public void autoTranslate(String user, String group, String locale) {
         checkGroupAndLocale(user, group, locale);
 
-        List<Lang> langList = i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
+        List<LangView> langViewList = i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
 
-        ResourceLocale resourceLocale = resourceLocaleService.getByGroupAndLocale(group, locale);
+        LocaleResponse localeResponse = localeApi.getByGroupAndLocale(group, locale);
 
-        String to = resourceLocale.getBaiduTranLang();
+        String to = localeResponse.getBaiduTranLang();
         Map<String, String> translationMap = new HashMap<>();
-        for (Lang lang : langList) {
-            if (StringUtils.isBlank(lang.getValue())) {
-                BaiduTran baiduTran = baiduTranApi.getTrans(lang.getDefaults(), "auto", to);
+        for (LangView langView : langViewList) {
+            if (StringUtils.isBlank(langView.getValue())) {
+                BaiduTran baiduTran = baiduTranApi.getTrans(langView.getDefaults(), "auto", to);
                 if (baiduTran.fail()) {
                     log.error("翻译接口调用失败: {}[{}]", baiduTran.getErrorMsg(), baiduTran.getErrorCode());
                 }
                 try {
                     if (baiduTran.getTransResult() != null) {
-                        translationMap.put(lang.getLabel(), baiduTran.getTransResult()[0].getDst());
+                        translationMap.put(langView.getLabel(), baiduTran.getTransResult()[0].getDst());
                     }
                 } catch (Exception e) {
-                    log.error("获取翻译失败: " + lang.getLabel(), e);
+                    log.error("获取翻译失败: " + langView.getLabel(), e);
                 }
             }
         }
@@ -145,28 +135,16 @@ public class I18nService {
     }
 
     @Transactional
-    public RestError createGroup(String owner, String group, String label, String locale) {
-        insertGroup(owner, group, label);
+    public void createGroup(String owner, String group, String label, String locale) {
+        groupApi.insertGroup(owner, group, label);
         createGroupTable(owner, group);
         addLocaleOnGroup(owner, group, locale);
-        return RestEnum.Success.value();
-    }
-
-    private void insertGroup(String owner, String name, String label) {
-        ResourceGroup resourceGroup;
-        resourceGroup = new ResourceGroup();
-        resourceGroup.setOwner(owner);
-        resourceGroup.setName(name);
-        resourceGroup.setLabel(label);
-        resourceGroup.setCreateTime(new Date());
-        resourceGroupService.add(resourceGroup);
     }
 
     @Transactional
-    public ResourceLocale addLocale(ResourceLocale resourceLocale) {
-        resourceLocaleService.add(resourceLocale);
-        ResourceGroup group = resourceGroupService.get(resourceLocale.getGroupId());
-        addLocaleOnGroup(group.getOwner(), group.getName(), resourceLocale.getLocale());
-        return resourceLocale;
+    public void addLocale(LocaleRequest request) {
+        localeApi.create(request);
+        GroupResponse group = groupApi.get(request.getGroupId());
+        addLocaleOnGroup(group.getOwner(), group.getName(), request.getLocale());
     }
 }
