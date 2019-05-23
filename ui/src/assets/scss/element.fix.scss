@@ -1,0 +1,22 @@
+.el-table, .el-table__fixed-right, .el-table__fixed {
+  &::before{
+    top:0
+  }
+  .el-button--text {
+    padding:0;
+  }
+}
+
+.module-view {
+  .el-row{
+    padding: 10px 5px;
+    border-bottom:solid #efefef 1px;
+
+    &:last-child{
+      border-bottom:none;
+    }
+  }
+}
+.el-col{
+  min-height:1px
+}

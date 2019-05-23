@@ -1,0 +1,40 @@
+* {
+  margin:0;
+  padding:0;
+}
+html {
+  font-size:14px;
+}
+html, body {
+  height:100%;
+  overflow:hidden;
+}
+#app {
+  height:100%;
+  overflow:hidden;
+}
+.table td {
+  word-break:keep-all
+}
+.module-wrapper {
+  height:100%;
+  display:flex;
+  flex-direction:column;
+
+  > header {
+    flex:0 0 50px
+  }
+  > section {
+    flex:1 1 0;
+    overflow-y:auto;
+  }
+  > footer {
+    flex:0 0 30px;
+    padding:6px 0;
+  }
+}
+:focus {
+  outline:none
+}
+@import 'transition.scss';
+@import 'element.fix.scss';

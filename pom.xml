@@ -132,4 +132,63 @@
 
     </dependencies>
 
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>exec-maven-plugin</artifactId>
+                <version>1.6.0</version>
+                <executions>
+                    <!-- Required: The following will ensure `npm install` is called
+                         before anything else during the 'Default Lifecycle' -->
+                    <execution>
+                        <id>npm install (initialize)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>initialize</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>install</argument>
+                                <argument>--prefix</argument>
+                                <argument>./ui/</argument>
+                                <argument>--registry</argument>
+                                <argument>https://registry.npm.taobao.org</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+
+                    <!-- Required: This following calls `npm run build` where 'build' is
+                         the script name I used in my project, change this if yours is different -->
+                    <execution>
+                        <id>npm run build (compile)</id>
+                        <goals>
+                            <goal>exec</goal>
+                        </goals>
+                        <phase>compile</phase>
+                        <configuration>
+                            <executable>npm</executable>
+                            <arguments>
+                                <argument>run</argument>
+                                <argument>build</argument>
+                                <argument>--prefix</argument>
+                                <argument>./ui/</argument>
+                            </arguments>
+                        </configuration>
+                    </execution>
+                </executions>
+
+                <configuration>
+                    <environmentVariables>
+                        <!-- The following parameters create an NPM sandbox for CI -->
+                        <NPM_CONFIG_PREFIX>${basedir}/target/npm</NPM_CONFIG_PREFIX>
+                        <NPM_CONFIG_CACHE>${basedir}/target//npm/cache</NPM_CONFIG_CACHE>
+                        <NPM_CONFIG_TMP>${basedir}/target/npm/temp</NPM_CONFIG_TMP>
+                    </environmentVariables>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
 </project>
