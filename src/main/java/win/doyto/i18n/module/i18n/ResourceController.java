@@ -7,9 +7,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import win.doyto.auth.annotation.CurrentUser;
 import win.doyto.common.web.JsonBody;
-import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.i18n.module.locale.LocaleQuery;
 import win.doyto.i18n.module.locale.LocaleResponse;
+import win.doyto.i18n.module.locale.LocaleService;
 
 import java.util.List;
 import javax.annotation.Resource;
@@ -26,13 +26,13 @@ import javax.annotation.Resource;
 public class ResourceController {
 
     @Resource
-    LocaleApi localeApi;
+    LocaleService localeService;
 
     @RequestMapping(value = "{group}/locale", method = RequestMethod.GET)
     public List<LocaleResponse> locale(@CurrentUser String username, LocaleQuery localeQuery, @PathVariable String group) {
         localeQuery.setOwner(username);
         localeQuery.setGroup(group);
-        return localeApi.query(localeQuery);
+        return localeService.list(localeQuery);
     }
 
 }

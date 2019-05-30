@@ -1,18 +1,16 @@
 package win.doyto.i18n.module.i18n;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
-
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.session.RowBounds;
 import org.junit.Ignore;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.i18n.common.TestConstant;
-import win.doyto.i18n.module.i18n.I18nMapper;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 
 import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 
@@ -53,10 +51,5 @@ public class I18nMapperTest extends I18nAppTest {
         map.put("修改", "修改");
         int ret = i18nMapper.saveTranslation(DEFAULT_USER, group, "zh_CN", map);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
-    }
-
-    @Test
-    public void createGroupTable() {
-        i18nMapper.createGroupTable("test", "group");
     }
 }

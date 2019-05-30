@@ -1,24 +1,16 @@
 package win.doyto.i18n.module.locale;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import win.doyto.query.mybatis.AbstractMyBatisService;
+
+import java.util.List;
 
 /**
- * ResourceLocaleService
+ * LocaleService
  *
- * @author f0rb on 2017-04-16.
+ * @author f0rb on 2019-05-23
  */
-@Slf4j
-@Service
-class LocaleService
-        extends AbstractMyBatisService<LocaleEntity, Integer, LocaleQuery> {
+public interface LocaleService {
+    LocaleResponse getByGroupAndLocale(String group, String locale);
 
-    public LocaleService(LocaleMapper localeMapper) {
-        super(localeMapper);
-    }
+    void create(LocaleRequest request);
 
-    public LocaleEntity getByGroupAndLocale(String group, String locale) {
-        return get(LocaleQuery.builder().group(group).locale(locale).build());
-    }
-
+    List<LocaleResponse> list(LocaleQuery localeQuery);
 }

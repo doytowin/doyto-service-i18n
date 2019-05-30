@@ -13,6 +13,7 @@ import javax.validation.constraints.Pattern;
 @Getter
 @Setter
 public class GroupRequest {
+    private Integer id;
 
     @Pattern(regexp = ".+")
     private String name;

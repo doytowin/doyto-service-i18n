@@ -1,36 +1,26 @@
 package win.doyto.i18n.module.group;
 
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.stereotype.Service;
-import win.doyto.common.web.ErrorCode;
-import win.doyto.i18n.common.I18nErrorCode;
-import win.doyto.query.mybatis.AbstractMyBatisService;
-
-import java.util.Date;
+import win.doyto.query.service.PageList;
 
 /**
- * GroupDefaultService
+ * GroupService
  *
- * @author f0rb on 2017-03-29.
+ * @author f0rb on 2019-05-23
  */
-@Slf4j
-@Service
-class GroupService extends AbstractMyBatisService<GroupEntity, Integer, GroupQuery> {
+public interface GroupService {
 
-    public GroupService(GroupMapper groupMapper) {
-        super(groupMapper);
-    }
+    void insertGroup(String owner, String group, String label);
 
-    public GroupEntity getByName(String owner, String name) {
-        return query(GroupQuery.builder().owner(owner).nameLike(name).build()).get(0);
-    }
+    GroupResponse getById(Integer groupId);
 
-    public void updateLabel(Integer groupId, String label) {
-        GroupEntity origin = get(groupId);
-        ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
-        origin.setLabel(label);
-        origin.setUpdateTime(new Date());
-        update(origin);
-    }
+    GroupResponse getGroup(String username, String group);
+
+    PageList<GroupResponse> page(GroupQuery query);
+
+    PageList<GroupResponse> page(String owner, GroupQuery groupQuery);
+
+    void updateLabel(GroupRequest groupRequest);
+
+    void delete(String owner, Integer groupId);
 
 }

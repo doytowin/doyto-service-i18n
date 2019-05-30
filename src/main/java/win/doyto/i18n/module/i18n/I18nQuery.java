@@ -15,7 +15,7 @@ import win.doyto.query.core.QueryTable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@QueryTable(table = I18nMapper.GROUP_FORMAT, entityClass = I18nEntity.class)
+@QueryTable(table = I18nMapper.GROUP_FORMAT)
 public class I18nQuery extends PageQuery {
 
     private String user;

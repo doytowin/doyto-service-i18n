@@ -1,6 +1,5 @@
 package win.doyto.i18n.module.group;
 
-import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -8,7 +7,8 @@ import win.doyto.auth.annotation.CurrentUser;
 import win.doyto.common.web.ErrorCode;
 import win.doyto.common.web.JsonBody;
 import win.doyto.i18n.common.I18nErrorCode;
-import win.doyto.query.core.PageList;
+import win.doyto.query.service.AbstractCrudService;
+import win.doyto.query.service.PageList;
 
 import java.util.Date;
 import javax.validation.Valid;
@@ -23,13 +23,7 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping({"/api/resource-group", "/api/group"})
 @PreAuthorize("hasAnyRole('i18n')")
-class GroupController implements GroupApi {
-
-    private GroupService groupService;
-
-    public GroupController(GroupService groupService) {
-        this.groupService = groupService;
-    }
+class GroupController extends AbstractCrudService<GroupEntity, Integer, GroupQuery> implements GroupService {
 
     @GetMapping
     public PageList<GroupResponse> page(@CurrentUser String owner, GroupQuery groupQuery) {
@@ -38,21 +32,25 @@ class GroupController implements GroupApi {
     }
 
     public PageList<GroupResponse> page(GroupQuery groupQuery) {
-        return groupService.page(groupQuery, GroupResponse::build);
+        return page(groupQuery, GroupResponse::build);
     }
 
     @PostMapping("update/label")
-    public void updateLabel(@RequestBody @Valid UpdateGroupLabelRequest group) {
-        groupService.updateLabel(group.getId(), group.getLabel());
+    public void updateLabel(@RequestBody @Valid GroupRequest group) {
+        GroupEntity origin = get(group.getId());
+        ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
+        origin.setLabel(group.getLabel());
+        origin.setUpdateTime(new Date());
+        update(origin);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
     public void delete(@CurrentUser String owner, @PathVariable("id") Integer id) {
-        GroupEntity groupEntity = groupService.get(id);
+        GroupEntity groupEntity = get(id);
         ErrorCode.assertNotNull(groupEntity, I18nErrorCode.RECORD_NOT_FOUND);
         groupEntity.setOwner(owner);
         groupEntity.setDeleted(true);
-        groupService.update(groupEntity);
+        update(groupEntity);
     }
 
     public void insertGroup(String owner, String name, String label) {
@@ -65,24 +63,20 @@ class GroupController implements GroupApi {
         groupEntity.setDeleted(false);
         groupEntity.setCreateTime(new Date());
         groupEntity.setUpdateTime(new Date());
-        groupService.create(groupEntity);
+        create(groupEntity);
     }
 
     @Override
-    public GroupResponse get(Integer groupId) {
-        return GroupResponse.build(groupService.get(groupId));
+    public GroupResponse getById(Integer groupId) {
+        GroupEntity groupEntity = get(groupId);
+        ErrorCode.assertTrue(groupEntity != null && !groupEntity.getDeleted(), I18nErrorCode.RECORD_NOT_FOUND);
+        return GroupResponse.build(groupEntity);
     }
 
     @Override
     public GroupResponse getGroup(String username, String group) {
-        GroupEntity group1 = groupService.getByName(username, group);
-        ErrorCode.assertNotNull(group1, I18nErrorCode.RECORD_NOT_FOUND);
-        return GroupResponse.build(group1);
-    }
-
-    @Data
-    public static class UpdateGroupLabelRequest {
-        private Integer id;
-        private String label;
+        GroupEntity groupEntity = get(GroupQuery.builder().owner(username).nameLike(group).build());
+        ErrorCode.assertNotNull(groupEntity, I18nErrorCode.RECORD_NOT_FOUND);
+        return GroupResponse.build(groupEntity);
     }
 }

@@ -13,7 +13,7 @@ import java.util.Map;
  * @author f0rb on 2017-03-30.
  */
 @Mapper
-@SuppressWarnings({"squid:S00115", "squid:S1214"})
+@SuppressWarnings({"squid:S1214"})
 public interface I18nMapper {
 
     String GROUP_FORMAT = "i18n_data_${user}_${group}";
@@ -77,27 +77,4 @@ public interface I18nMapper {
         langWithDefaultsByGroupAndLocale(user, group, locale);
     }
 
-    @Update({
-            "CREATE TABLE",
-            GROUP_FORMAT,
-            "(",
-            "    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,",
-            "    label VARCHAR(100) NOT NULL,",
-            "    defaults VARCHAR(200) DEFAULT '' NOT NULL,",
-            "    memo VARCHAR(200) DEFAULT '',",
-            "    valid BIT(1) DEFAULT TRUE NOT NULL,",
-            "    CONSTRAINT UNIQUE INDEX i18n_group_i18n_label_index (label)",
-            ")"
-    })
-    void createGroupTable(@Param("user") String owner, @Param("group") String name);
-
-    @Update({
-        "ALTER TABLE",
-        GROUP_FORMAT,
-        "ADD locale_${locale} VARCHAR(1000) NOT NULL DEFAULT ''"
-    })
-    void addLocaleOnGroup(@Param("user") String user, @Param("group") String group, @Param("locale") String locale);
-
-    @Update("DROP TABLE IF EXISTS" + GROUP_FORMAT)
-    void dropGroupTable(@Param("user") String owner, @Param("group") String name);
 }

@@ -15,7 +15,7 @@ import win.doyto.query.core.QueryTable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@QueryTable(table = LocaleEntity.TABLE, entityClass = LocaleEntity.class)
+@QueryTable(table = LocaleEntity.TABLE)
 public class LocaleQuery extends PageQuery {
 
     @QueryField(and = "groupId = (select id from " + "i18n_resource_group" + " where name = #{group})")

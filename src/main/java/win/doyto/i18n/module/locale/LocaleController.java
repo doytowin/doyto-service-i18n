@@ -7,6 +7,7 @@ import win.doyto.auth.annotation.CurrentUser;
 import win.doyto.common.web.ErrorCode;
 import win.doyto.common.web.JsonBody;
 import win.doyto.i18n.common.I18nErrorCode;
+import win.doyto.query.service.AbstractCrudService;
 
 import java.util.List;
 import javax.validation.Valid;
@@ -21,53 +22,45 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/locale")
 @PreAuthorize("hasAnyRole('i18n')")
-class LocaleController implements LocaleApi {
-    private LocaleService localeService;
-
-    public LocaleController(LocaleService localeService) {
-        this.localeService = localeService;
-    }
-
+class LocaleController extends AbstractCrudService<LocaleEntity, Integer, LocaleQuery> implements LocaleService {
+    
     @RequestMapping(method = RequestMethod.GET)
     public Object page(
             @CurrentUser String username,
             @Valid LocaleQuery localeQuery
     ) {
         localeQuery.setOwner(username);
-        return localeService.page(localeQuery);
+        return page(localeQuery, LocaleResponse::build);
     }
 
-    @RequestMapping(value = "/{id}", method = {RequestMethod.PUT, RequestMethod.POST})
-    public Object save(
+    @PutMapping("{id}")
+    public void save(
             @CurrentUser String username,
             @RequestBody @Valid LocaleRequest resourceLocale,
             @PathVariable(value = "id", required = false) Integer id
     ) {
-        LocaleEntity origin = localeService.get(id);
+        LocaleEntity origin = get(id);
         ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
         ErrorCode.assertTrue(username.equals(origin.getOwner()), I18nErrorCode.RECORD_NOT_FOUND);
         origin.setLanguage(resourceLocale.getLanguage());
         origin.setBaiduTranLang(resourceLocale.getBaiduTranLang());
-        return localeService.save(origin);
+        update(origin);
     }
 
     @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public Object delete(@PathVariable("id") Integer id) {
-        return localeService.delete(id);
+    public void deleteById(@PathVariable("id") Integer id) {
+        super.delete(id);
     }
 
-    @Override
     public LocaleResponse getByGroupAndLocale(String group, String locale) {
-        return LocaleResponse.build(localeService.getByGroupAndLocale(group, locale));
+        return LocaleResponse.build(get(LocaleQuery.builder().group(group).locale(locale).build()));
     }
 
-    @Override
     public void create(LocaleRequest request) {
-        localeService.create(request.toResourceLocale());
+        create(request.toResourceLocale());
     }
 
-    @Override
-    public List<LocaleResponse> query(LocaleQuery localeQuery) {
-        return localeService.query(localeQuery, LocaleResponse::build);
+    public List<LocaleResponse> list(LocaleQuery localeQuery) {
+        return query(localeQuery, LocaleResponse::build);
     }
 }

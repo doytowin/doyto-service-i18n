@@ -1,6 +1,9 @@
 package win.doyto.i18n.module.group;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.Setter;
 import win.doyto.query.core.PageQuery;
 import win.doyto.query.core.QueryTable;
 
@@ -13,7 +16,7 @@ import win.doyto.query.core.QueryTable;
 @Setter
 @Builder
 @AllArgsConstructor
-@QueryTable(table = GroupEntity.TABLE, entityClass = GroupEntity.class)
+@QueryTable(table = GroupEntity.TABLE)
 public class GroupQuery extends PageQuery {
 
     public GroupQuery() {//lombok

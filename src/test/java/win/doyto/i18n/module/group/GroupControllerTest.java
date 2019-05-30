@@ -4,7 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import win.doyto.common.web.ErrorCodeException;
 import win.doyto.i18n.common.TestConstant;
-import win.doyto.query.core.PageList;
+import win.doyto.query.service.PageList;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -20,21 +20,24 @@ import static org.junit.Assert.fail;
  */
 public class GroupControllerTest {
 
-    public static final List<GroupEntity> INIT_LIST = new ArrayList<>();
     public static final Integer INIT_I18N_SIZE = 8;
     public static final String NOISE_USER = "noise";
     private static final String FIELD_MESSAGE = "message";
 
     static {
-        for (int i = 0; i < INIT_I18N_SIZE; i++) {
-            INIT_LIST.add(newGroup(i + ""));
-        }
-        INIT_LIST.add(newGroup("99", NOISE_USER));
+        initGroups();
     }
 
-    private final MockGroupMapper mockGroupMapper = new MockGroupMapper();
-    private final GroupService groupService = new GroupService(mockGroupMapper);
-    private final GroupController groupController = new GroupController(groupService);
+    private static List<GroupEntity> initGroups() {
+        List<GroupEntity> groupEntities = new ArrayList<>();
+        for (int i = 0; i < INIT_I18N_SIZE; i++) {
+            groupEntities.add(newGroup(i + ""));
+        }
+        groupEntities.add(newGroup("99", NOISE_USER));
+        return groupEntities;
+    }
+
+    private GroupService groupService;
 
     private static GroupEntity newGroup(String suffix) {
         return newGroup(suffix, TestConstant.DEFAULT_USER);
@@ -53,7 +56,8 @@ public class GroupControllerTest {
 
     @Before
     public void setUp() {
-        groupService.save(INIT_LIST);
+        groupService = new GroupController();
+        ((GroupController) groupService).batchInsert(initGroups());
     }
 
     @Test
@@ -61,15 +65,14 @@ public class GroupControllerTest {
         int pageSize = 3;
         GroupQuery groupQuery = GroupQuery.builder().build();
         groupQuery.setPageNumber(1).setPageSize(pageSize);
-        PageList<GroupResponse> page = groupController.page(TestConstant.DEFAULT_USER, groupQuery);
+        PageList<GroupResponse> page = groupService.page(TestConstant.DEFAULT_USER, groupQuery);
         assertThat(page.getTotal()).isEqualTo((long) INIT_I18N_SIZE);
         assertThat(page.getList())
                 .hasSize(pageSize)
                 .extracting(GroupResponse::getOwner)
                 .containsOnly(TestConstant.DEFAULT_USER);
 
-        PageList<GroupResponse> testUserPage = groupController.page(
-            NOISE_USER, GroupQuery.builder().build());
+        PageList<GroupResponse> testUserPage = groupService.page(NOISE_USER, GroupQuery.builder().build());
         assertThat(testUserPage.getTotal()).isEqualTo(1);
         assertThat(testUserPage.getList())
             .hasSize(1)
@@ -78,31 +81,28 @@ public class GroupControllerTest {
 
     @Test
     public void test_updateLabel() {
-        GroupController.UpdateGroupLabelRequest updateGroupLabelRequest
-                = new GroupController.UpdateGroupLabelRequest();
-        updateGroupLabelRequest.setId(1);
+        GroupRequest groupRequest = new GroupRequest();
+        groupRequest.setId(1);
         String newLabelName = "test label";
-        updateGroupLabelRequest.setLabel(newLabelName);
+        groupRequest.setLabel(newLabelName);
         try {
-            groupController.updateLabel(updateGroupLabelRequest);
+            groupService.updateLabel(groupRequest);
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
-
-        GroupEntity groupEntity = groupService.get(1);
-        assertThat(groupEntity).hasFieldOrPropertyWithValue("label", newLabelName);
+        GroupResponse groupResponse = groupService.getById(1);
+        assertThat(groupResponse).hasFieldOrPropertyWithValue("label", newLabelName);
     }
 
     @Test
     public void test_updateLabel_by_nonexistent_id() {
-        GroupController.UpdateGroupLabelRequest updateGroupLabelRequest
-                = new GroupController.UpdateGroupLabelRequest();
-        updateGroupLabelRequest.setId(-1);
-        updateGroupLabelRequest.setLabel("test label");
+        GroupRequest groupRequest = new GroupRequest();
+        groupRequest.setId(-1);
+        groupRequest.setLabel("test label");
 
         try {
-            groupController.updateLabel(updateGroupLabelRequest);
+            groupService.updateLabel(groupRequest);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
@@ -115,20 +115,27 @@ public class GroupControllerTest {
 
     @Test
     public void test_delete() {
-        groupController.delete(1);
+        groupService.delete("i18n", 1);
 
-        GroupEntity groupEntity = groupService.get(1);
-        assertThat(groupEntity).hasFieldOrPropertyWithValue("deleted", true);
+        try {
+            groupService.getById(1);
+            fail();
+        } catch (ErrorCodeException e) {
+            assertThat(e.getErrorCode())
+                .hasFieldOrPropertyWithValue("success", false)
+                .hasFieldOrPropertyWithValue("code", 10002)
+                .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
+        }
 
         GroupQuery groupQuery = GroupQuery.builder().build();
-        PageList<GroupResponse> page = groupController.page(TestConstant.DEFAULT_USER, groupQuery);
+        PageList<GroupResponse> page = groupService.page(TestConstant.DEFAULT_USER, groupQuery);
         assertThat(page.getTotal()).isEqualTo(INIT_I18N_SIZE - 1);
     }
 
     @Test
     public void test_delete_by_nonexistent_id() {
         try {
-            groupController.delete(-1);
+            groupService.delete("i18n", -1);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())

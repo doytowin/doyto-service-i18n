@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import win.doyto.common.web.JsonBody;
 import win.doyto.i18n.module.locale.LocaleQuery;
-import win.doyto.i18n.module.locale.LocaleApi;
+import win.doyto.i18n.module.locale.LocaleService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -23,11 +23,11 @@ import java.util.List;
 public class OpenI18nController {
     private I18nService i18nService;
 
-    private LocaleApi localeApi;
+    private LocaleService localeService;
 
-    public OpenI18nController(I18nService i18nService, LocaleApi localeApi) {
+    public OpenI18nController(I18nService i18nService, LocaleService localeService) {
         this.i18nService = i18nService;
-        this.localeApi = localeApi;
+        this.localeService = localeService;
     }
 
     /**
@@ -48,7 +48,7 @@ public class OpenI18nController {
     @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
     public Object query(LocaleQuery localeQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
         localeQuery.setGroup(group);
-        return localeApi.query(localeQuery);
+        return localeService.list(localeQuery);
     }
 
     @RequestMapping(value = "{user}/{group}/{locale}.json", method = RequestMethod.GET)

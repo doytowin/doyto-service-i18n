@@ -9,9 +9,7 @@ import win.doyto.i18n.common.TestConstant;
  * @author f0rb on 2018-08-27.
  */
 public class LocaleEntityControllerTest {
-    private final MockLocaleMapper resourceLocaleMapper = new MockLocaleMapper();
-    private final LocaleService localeService = new LocaleService(resourceLocaleMapper);
-    private final LocaleController resourceLocaleController = new LocaleController(localeService);
+    private final LocaleController resourceLocaleController = new LocaleController();
 
     @Test
     public void page() {

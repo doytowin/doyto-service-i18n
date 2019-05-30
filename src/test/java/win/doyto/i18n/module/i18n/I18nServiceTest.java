@@ -1,19 +1,16 @@
 package win.doyto.i18n.module.i18n;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import javax.annotation.Resource;
-
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Ignore;
 import org.junit.Test;
 import win.doyto.i18n.I18nAppTest;
-import win.doyto.i18n.module.i18n.I18nQuery;
-import win.doyto.i18n.module.i18n.LangView;
-import win.doyto.i18n.module.i18n.I18nService;
-import win.doyto.query.core.PageList;
+import win.doyto.query.service.PageList;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import javax.annotation.Resource;
 
 import static org.junit.Assert.assertEquals;
 import static win.doyto.i18n.common.TestConstant.DEFAULT_GROUP;

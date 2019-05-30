@@ -5,10 +5,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.auth.annotation.CurrentUser;
 import win.doyto.common.web.JsonBody;
-import win.doyto.i18n.module.group.GroupApi;
 import win.doyto.i18n.module.group.GroupResponse;
+import win.doyto.i18n.module.group.GroupService;
 import win.doyto.i18n.module.locale.LocaleRequest;
-import win.doyto.query.core.PageList;
+import win.doyto.query.service.PageList;
 
 import java.util.Map;
 import javax.annotation.Resource;
@@ -86,7 +86,7 @@ public class I18nController {
     }
 
     @Resource
-    GroupApi groupApi;
+    GroupService groupService;
 
     @PostMapping("addLocale")
     public void add(
@@ -94,7 +94,7 @@ public class I18nController {
         @RequestBody @Valid LocaleRequest request
     ) {
         request.setUsername(username);
-        GroupResponse groupResponse = groupApi.getGroup(username, request.getGroup());
+        GroupResponse groupResponse = groupService.getGroup(username, request.getGroup());
         request.setGroupId(groupResponse.getId());
         i18nService.addLocale(request);
     }

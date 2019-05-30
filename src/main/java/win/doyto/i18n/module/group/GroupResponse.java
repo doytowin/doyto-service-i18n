@@ -18,11 +18,14 @@ public class GroupResponse {
 
     private String name;
 
+    private String label;
+
     static GroupResponse build(GroupEntity groupEntity) {
         GroupResponse groupResponse = new GroupResponse();
         groupResponse.setId(groupEntity.getId());
         groupResponse.setName(groupEntity.getName());
         groupResponse.setOwner(groupEntity.getOwner());
+        groupResponse.setLabel(groupEntity.getLabel());
         return groupResponse;
     }
 }

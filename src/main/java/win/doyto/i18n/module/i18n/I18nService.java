@@ -8,10 +8,12 @@ import org.springframework.transaction.annotation.Transactional;
 import win.doyto.common.web.ErrorCode;
 import win.doyto.i18n.module.baidu.BaiduTran;
 import win.doyto.i18n.module.baidu.BaiduTranApi;
-import win.doyto.i18n.module.group.GroupApi;
 import win.doyto.i18n.module.group.GroupResponse;
-import win.doyto.i18n.module.locale.*;
-import win.doyto.query.core.PageList;
+import win.doyto.i18n.module.group.GroupService;
+import win.doyto.i18n.module.locale.LocaleRequest;
+import win.doyto.i18n.module.locale.LocaleResponse;
+import win.doyto.i18n.module.locale.LocaleService;
+import win.doyto.query.service.PageList;
 
 import java.util.HashMap;
 import java.util.List;
@@ -32,13 +34,16 @@ public class I18nService {
     private I18nMapper i18nMapper;
 
     @Resource
+    private I18nTableMapper i18nTableMapper;
+
+    @Resource
     private BaiduTranApi baiduTranApi;
 
     @Resource
-    GroupApi groupApi;
+    GroupService groupService;
 
     @Resource
-    private LocaleApi localeApi;
+    private LocaleService localeService;
 
     private static String getGroupName(String user, String group) {
         return user + "_" + group;
@@ -90,7 +95,7 @@ public class I18nService {
     public String addLocaleOnGroup(String user, String group, String locale) {
         checkGroup(user, group);
         if (!existLocale(user, group, locale)) {
-            i18nMapper.addLocaleOnGroup(user, group, locale);
+            i18nTableMapper.addLocaleOnGroup(user, group, locale);
         }
         return locale;
     }
@@ -107,7 +112,7 @@ public class I18nService {
 
         List<LangView> langViewList = i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
 
-        LocaleResponse localeResponse = localeApi.getByGroupAndLocale(group, locale);
+        LocaleResponse localeResponse = localeService.getByGroupAndLocale(group, locale);
 
         String to = localeResponse.getBaiduTranLang();
         Map<String, String> translationMap = new HashMap<>();
@@ -131,20 +136,20 @@ public class I18nService {
     }
 
     public void createGroupTable(String user, String name) {
-        i18nMapper.createGroupTable(user, name);
+        i18nTableMapper.createGroupTable(user, name);
     }
 
     @Transactional
     public void createGroup(String owner, String group, String label, String locale) {
-        groupApi.insertGroup(owner, group, label);
+        groupService.insertGroup(owner, group, label);
         createGroupTable(owner, group);
         addLocaleOnGroup(owner, group, locale);
     }
 
     @Transactional
     public void addLocale(LocaleRequest request) {
-        localeApi.create(request);
-        GroupResponse group = groupApi.get(request.getGroupId());
+        localeService.create(request);
+        GroupResponse group = groupService.getById(request.getGroupId());
         addLocaleOnGroup(group.getOwner(), group.getName(), request.getLocale());
     }
 }
