@@ -19,9 +19,6 @@
     <properties>
         <start-class>win.doyto.i18n.I18nApp</start-class>
         <docker.expose>10301</docker.expose>
-
-        <query.version>0.1.1-SNAPSHOT</query.version>
-
     </properties>
 
     <dependencies>
@@ -48,18 +45,6 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.6</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mybatis</groupId>
-            <artifactId>mybatis</artifactId>
-            <version>${mybatis.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>org.mybatis.spring.boot</groupId>
-            <artifactId>mybatis-spring-boot-starter</artifactId>
-            <version>2.0.1</version>
         </dependency>
 
         <dependency>
@@ -121,7 +106,7 @@
         <dependency>
             <groupId>win.doyto</groupId>
             <artifactId>doyto-query</artifactId>
-            <version>${query.version}</version>
+            <version>0.1.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>win.doyto</groupId>

@@ -15,12 +15,14 @@ import win.doyto.query.core.QueryTable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@QueryTable(table = I18nMapper.GROUP_FORMAT)
+@QueryTable(table = I18nEntity.GROUP_FORMAT)
 public class I18nQuery extends PageQuery {
 
     private String user;
 
     private String group;
+
+    private String locale;
 
     private Boolean valid = true;
 

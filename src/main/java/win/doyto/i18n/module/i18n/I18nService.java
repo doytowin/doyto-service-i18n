@@ -31,10 +31,7 @@ import javax.annotation.Resource;
 public class I18nService {
 
     @Resource
-    private I18nMapper i18nMapper;
-
-    @Resource
-    private I18nTableMapper i18nTableMapper;
+    private I18nCrudService i18nMapper;
 
     @Resource
     private BaiduTranApi baiduTranApi;
@@ -51,12 +48,12 @@ public class I18nService {
 
     public List query(String user, String group) {
         checkGroup(user, group);
-        return i18nMapper.query(I18nQuery.builder().user(user).group(group).build());
+        return i18nMapper.queryAll(I18nQuery.builder().user(user).group(group).build());
     }
 
     public PageList page(I18nQuery i18nQuery) {
         checkGroup(i18nQuery.getUser(), i18nQuery.getGroup());
-        return new PageList<>(i18nMapper.query(i18nQuery), i18nMapper.count(i18nQuery));
+        return new PageList<>(i18nMapper.queryAll(i18nQuery), i18nMapper.count(i18nQuery));
     }
 
     public List<LangView> query(String user, String group, String locale) {
@@ -95,7 +92,7 @@ public class I18nService {
     public String addLocaleOnGroup(String user, String group, String locale) {
         checkGroup(user, group);
         if (!existLocale(user, group, locale)) {
-            i18nTableMapper.addLocaleOnGroup(user, group, locale);
+            i18nMapper.addLocaleOnGroup(user, group, locale);
         }
         return locale;
     }
@@ -136,7 +133,7 @@ public class I18nService {
     }
 
     public void createGroupTable(String user, String name) {
-        i18nTableMapper.createGroupTable(user, name);
+        i18nMapper.createGroupTable(user, name);
     }
 
     @Transactional

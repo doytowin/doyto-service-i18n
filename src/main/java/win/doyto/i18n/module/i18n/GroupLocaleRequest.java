@@ -4,6 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 /**
  * GroupLocaleRequest
@@ -14,11 +15,14 @@ import javax.validation.constraints.NotNull;
 @Setter
 public class GroupLocaleRequest {
     @NotNull
+    @Size(max = 15)
     private String group;
 
     @NotNull
+    @Size(max = 15)
     private String label;
 
     @NotNull
+    @Size(max = 7)
     private String locale;
 }

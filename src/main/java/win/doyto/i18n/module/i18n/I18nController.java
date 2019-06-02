@@ -80,7 +80,7 @@ public class I18nController {
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public void createGroup(
         @CurrentUser String username,
-        @RequestBody GroupLocaleRequest request
+        @RequestBody @Valid GroupLocaleRequest request
     ) {
         i18nService.createGroup(username, request.getGroup(), request.getLabel(), request.getLocale());
     }

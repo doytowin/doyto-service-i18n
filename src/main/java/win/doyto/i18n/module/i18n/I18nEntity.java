@@ -1,14 +1,18 @@
 package win.doyto.i18n.module.i18n;
 
-import java.util.Date;
-
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.query.entity.IntegerId;
+import win.doyto.query.entity.CommonEntity;
+
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Setter
-public class I18nEntity extends IntegerId {
+@Entity
+@Table(name = I18nEntity.GROUP_FORMAT)
+public class I18nEntity extends CommonEntity<Integer, Integer> {
+    public static final String GROUP_FORMAT = "i18n_data_${user}_${group}";
     private static final long serialVersionUID = 1L;
 
     private String user;
@@ -20,10 +24,6 @@ public class I18nEntity extends IntegerId {
     private String defaults;
 
     private String memo;
-
-    private Date createTime;
-
-    private Date updateTime;
 
     private Boolean valid;
 
