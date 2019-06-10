@@ -30,10 +30,10 @@
 </template>
 
 <script type="text/javascript">
-import DwLeftMenu from '../partial/DwLeftMenu'
-import DwLang from '../partial/DwLang'
+  import DwLeftMenu from '../partial/DwLeftMenu'
+  import DwLang from '../partial/DwLang'
 
-export default {
+  export default {
   name: 'dashboard',
   data () {
     return {
@@ -48,7 +48,7 @@ export default {
     DwLeftMenu, DwLang
   },
   beforeCreate () {
-    axios.get(Cons.apiHost + 'auth/user').then(rsp => {
+    axios.get(Cons.apiHost + 'api/user').then(rsp => {
       let json = rsp.data
       if (json.success) {
         this.user = json.data

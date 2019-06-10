@@ -24,10 +24,10 @@
   </div>
 </template>
 <script type="text/javascript">
-// import Cons from '../components/Cons'
-import axios from 'axios'
+  // import Cons from '../components/Cons'
+  import axios from 'axios'
 
-export default {
+  export default {
   data () {
     return {
       username: '',
@@ -53,7 +53,7 @@ export default {
       params.append('rememberMe', true)
       axios.post('/login', params)
         .then((response) => {
-          console.log(response)
+          // console.log(response)
           const ret = response.data
           if (ret.success) {
             if (this.$route.query.redirect) {

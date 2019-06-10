@@ -1,11 +1,28 @@
 // The Vue build version to load with the `import` command
 // (runtime-only or standalone) has been set in webpack.base.conf with an alias.
 /* eslint-disable import/first */
+
 import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
-
+import store from './store'
 import VueResource from 'vue-resource'
+// axios跨域
+import axios from 'axios'
+import ElementUI from 'element-ui'
+import 'element-ui/lib/theme-chalk/index.css'
+import 'element-ui/lib/theme-chalk/display.css'
+import './assets/scss/global.scss'
+
+import Util from './components/Util'
+import Cons from './components/Cons'
+import Crud from './components/Crud'
+import DwPage from './partial/DwPage.vue'
+/** vue-i18n **/
+import VueI18n from 'vue-i18n'
+
+Vue.config.productionTip = false
+
 Vue.use(VueResource)
 Vue.http.interceptors.push(function (request, next) { // 拦截器
 // 跨域携带cookie
@@ -13,30 +30,17 @@ Vue.http.interceptors.push(function (request, next) { // 拦截器
   next()
 })
 
-// axios跨域
-import axios from 'axios'
 window.axios = axios
 axios.defaults.withCredentials = true
 
-import ElementUI from 'element-ui'
 Vue.use(ElementUI)
 
-import 'element-ui/lib/theme-chalk/index.css'
-import 'element-ui/lib/theme-chalk/display.css'
-import './assets/scss/global.scss'
-
-import Util from './components/Util'
 window.Util = Util
-import Cons from './components/Cons'
 window.Cons = Cons
-import Crud from './components/Crud'
 window.Crud = Crud
 
-import DwPage from './partial/DwPage.vue'
 Vue.component(DwPage.name, DwPage)
 
-/** vue-i18n **/
-import VueI18n from 'vue-i18n'
 Vue.use(VueI18n)
 const i18n = new VueI18n({})
 
@@ -134,12 +138,12 @@ new Vue({
         this.lang = localStorage.lang = lang
         this.$emit('loaded')
       }, res => {
-        alert('服务访问出错')
+        //alert('服务访问出错')
         this.$emit('loaded')
       })
     }
   },
   router,
-  template: '<App/>',
-  components: { App }
-})
+  store,
+  render: h => h(App)
+}).$mount('#app')
