@@ -46,7 +46,7 @@ public class GroupControllerTest {
     private static GroupEntity newGroup(String suffix, String owner) {
         GroupEntity groupEntity = new GroupEntity();
         groupEntity.setOwner(owner);
-        groupEntity.setName("i18n" + suffix);
+        groupEntity.setGroupName("i18n" + suffix);
         groupEntity.setLabel("i18n多语言" + suffix);
         groupEntity.setCreateTime(new Date());
         groupEntity.setValid(true);

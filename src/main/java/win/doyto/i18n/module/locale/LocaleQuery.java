@@ -1,9 +1,8 @@
 package win.doyto.i18n.module.locale;
 
 import lombok.*;
+import win.doyto.query.annotation.SubQuery;
 import win.doyto.query.core.PageQuery;
-import win.doyto.query.core.QueryField;
-import win.doyto.query.core.QueryTable;
 
 /**
  * toResourceLocale
@@ -15,11 +14,10 @@ import win.doyto.query.core.QueryTable;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-@QueryTable(table = LocaleEntity.TABLE)
 public class LocaleQuery extends PageQuery {
 
-    @QueryField(and = "groupId = (select id from " + "i18n_resource_group" + " where name = #{group})")
-    private String group;
+    @SubQuery(column = "groupId", left = "id", table = "i18n_resource_group")
+    private String groupName;
 
     private Integer groupId;
 

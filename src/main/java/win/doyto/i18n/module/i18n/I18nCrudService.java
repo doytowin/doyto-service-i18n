@@ -66,14 +66,22 @@ public class I18nCrudService extends AbstractCrudService<I18nEntity, Integer, I1
         return matcher.appendTail(sb).toString();
     }
 
-    @Override
-    public List<Map<String, Object>> queryAll(I18nQuery i18nQuery) {
-        return dataAccess.queryColumns(i18nQuery, COLUMN_MAP_ROW_MAPPER, "*");
+    private static String buildInsert(Map<String, String> langMap, List<Object> args) {
+        buildInsertArgs(langMap, args);
+        return buildInsertSql(langMap.size());
+    }
+
+    private static void buildInsertArgs(Map<String, String> langMap, List<Object> args) {
+        langMap.keySet().forEach(key -> {
+            args.add(key);
+            args.add(key);
+            args.add(langMap.get(key));
+        });
     }
 
     @Override
-    public long count(I18nQuery i18nQuery) {
-        return dataAccess.count(i18nQuery);
+    public List<Map<String, Object>> queryAll(I18nQuery i18nQuery) {
+        return dataAccess.queryColumns(i18nQuery, COLUMN_MAP_ROW_MAPPER, "*");
     }
 
     @Override
@@ -97,20 +105,7 @@ public class I18nCrudService extends AbstractCrudService<I18nEntity, Integer, I1
         String sql = buildInsert(langMap, args);
 
         sql = replaceHolderEx(sql, user, group, locale);
-        return jdbcOperations.update(sql, args);
-    }
-
-    private String buildInsert(Map<String, String> langMap, List<Object> args) {
-        buildInsertArgs(langMap, args);
-        return buildInsertSql(langMap.size());
-    }
-
-    private void buildInsertArgs(Map<String, String> langMap, List<Object> args) {
-        langMap.keySet().forEach(key -> {
-            args.add(key);
-            args.add(key);
-            args.add(langMap.get(key));
-        });
+        return jdbcOperations.update(sql, args.toArray());
     }
 
     void createGroupTable(String owner, String group) {

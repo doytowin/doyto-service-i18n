@@ -31,7 +31,7 @@ public class ResourceController {
     @RequestMapping(value = "{group}/locale", method = RequestMethod.GET)
     public List<LocaleResponse> locale(@CurrentUser String username, LocaleQuery localeQuery, @PathVariable String group) {
         localeQuery.setOwner(username);
-        localeQuery.setGroup(group);
+        localeQuery.setGroupName(group);
         return localeService.list(localeQuery);
     }
 

@@ -57,7 +57,7 @@ class GroupController extends AbstractCrudService<GroupEntity, Integer, GroupQue
         GroupEntity groupEntity;
         groupEntity = new GroupEntity();
         groupEntity.setOwner(owner);
-        groupEntity.setName(name);
+        groupEntity.setGroupName(name);
         groupEntity.setLabel(label);
         groupEntity.setValid(true);
         groupEntity.setDeleted(false);

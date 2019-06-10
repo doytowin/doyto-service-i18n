@@ -47,7 +47,7 @@ public class OpenI18nController {
 
     @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
     public Object query(LocaleQuery localeQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
-        localeQuery.setGroup(group);
+        localeQuery.setGroupName(group);
         return localeService.list(localeQuery);
     }
 

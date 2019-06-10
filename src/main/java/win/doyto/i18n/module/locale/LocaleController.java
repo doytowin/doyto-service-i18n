@@ -53,7 +53,7 @@ class LocaleController extends AbstractCrudService<LocaleEntity, Integer, Locale
     }
 
     public LocaleResponse getByGroupAndLocale(String group, String locale) {
-        return LocaleResponse.build(get(LocaleQuery.builder().group(group).locale(locale).build()));
+        return LocaleResponse.build(get(LocaleQuery.builder().groupName(group).locale(locale).build()));
     }
 
     public void create(LocaleRequest request) {

@@ -23,7 +23,7 @@ public class GroupResponse {
     static GroupResponse build(GroupEntity groupEntity) {
         GroupResponse groupResponse = new GroupResponse();
         groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getName());
+        groupResponse.setName(groupEntity.getGroupName());
         groupResponse.setOwner(groupEntity.getOwner());
         groupResponse.setLabel(groupEntity.getLabel());
         return groupResponse;

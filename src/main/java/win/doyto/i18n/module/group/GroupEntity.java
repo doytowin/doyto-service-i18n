@@ -1,13 +1,12 @@
 package win.doyto.i18n.module.group;
 
-import java.util.Date;
-
-import javax.persistence.Entity;
-import javax.persistence.Table;
-
 import lombok.Getter;
 import lombok.Setter;
 import win.doyto.query.entity.IntegerId;
+
+import java.util.Date;
+import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Getter
 @Setter
@@ -21,7 +20,7 @@ class GroupEntity extends IntegerId {
 
     private String owner;
 
-    private String name;
+    private String groupName;
 
     private String label;
 
