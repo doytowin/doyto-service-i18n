@@ -145,6 +145,8 @@ public class I18nService {
 
     @Transactional
     public void addLocale(LocaleRequest request) {
+        GroupResponse groupResponse = groupService.getGroup(request.getUsername(), request.getGroup());
+        request.setGroupId(groupResponse.getId());
         localeService.create(request);
         GroupResponse group = groupService.getById(request.getGroupId());
         addLocaleOnGroup(group.getOwner(), group.getName(), request.getLocale());
