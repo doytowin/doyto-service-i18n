@@ -2,6 +2,7 @@ package win.doyto.i18n.module.locale;
 
 import lombok.Getter;
 import lombok.Setter;
+import win.doyto.auth.core.UsernameAware;
 
 /**
  * LocaleRequest
@@ -10,7 +11,7 @@ import lombok.Setter;
  */
 @Getter
 @Setter
-public class LocaleRequest {
+public class LocaleRequest implements UsernameAware {
     private String username;
     private Integer groupId;
     private String group;

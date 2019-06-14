@@ -77,18 +77,15 @@ public class I18nController {
 
     @RequestMapping(value = "create", method = RequestMethod.POST)
     public void createGroup(
-        @CurrentUser String username,
         @RequestBody @Valid GroupLocaleRequest request
     ) {
-        i18nService.createGroup(username, request.getGroup(), request.getLabel(), request.getLocale());
+        i18nService.createGroup(request.getUsername(), request.getGroup(), request.getLabel(), request.getLocale());
     }
 
     @PostMapping("addLocale")
     public void add(
-        @CurrentUser String username,
         @RequestBody @Valid LocaleRequest request
     ) {
-        request.setUsername(username);
         i18nService.addLocale(request);
     }
 

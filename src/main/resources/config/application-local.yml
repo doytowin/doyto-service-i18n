@@ -13,8 +13,3 @@ spring:
     password: ${MYSQL_DEFAULT_PASS:local_pass}
     hikari:
       jdbc-url: ${spring.datasource.url}
-
-logging:
-  level:
-    org.springframework.security.web: info
-

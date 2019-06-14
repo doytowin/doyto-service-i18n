@@ -1,9 +1,5 @@
 package win.doyto.i18n;
 
-import java.util.Arrays;
-import javax.annotation.PostConstruct;
-import javax.annotation.Resource;
-
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -19,6 +15,9 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import win.doyto.i18n.module.group.GroupControllerTest;
+
+import java.util.Arrays;
+import javax.annotation.Resource;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
