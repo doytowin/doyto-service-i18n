@@ -1,9 +1,5 @@
 package win.doyto.i18n.configurer;
 
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,8 +7,13 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import win.doyto.auth.annotation.EnableSessionAuthentication;
 import win.doyto.auth.component.CurrentUserMethodArgumentResolver;
 import win.doyto.common.web.WebMvcConfigurerAdapter;
+
+import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * WebMvcConfigurer
@@ -21,6 +22,7 @@ import win.doyto.common.web.WebMvcConfigurerAdapter;
  */
 @Slf4j
 @Configuration
+@EnableSessionAuthentication
 public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
 
     @Bean
