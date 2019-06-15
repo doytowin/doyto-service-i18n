@@ -2,12 +2,11 @@ package win.doyto.i18n.module.i18n;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.common.web.ErrorCode;
-import win.doyto.i18n.module.baidu.BaiduTran;
 import win.doyto.i18n.module.baidu.BaiduTranApi;
+import win.doyto.i18n.module.baidu.BaiduTranResponse;
 import win.doyto.i18n.module.group.GroupResponse;
 import win.doyto.i18n.module.group.GroupService;
 import win.doyto.i18n.module.locale.LocaleRequest;
@@ -15,7 +14,7 @@ import win.doyto.i18n.module.locale.LocaleResponse;
 import win.doyto.i18n.module.locale.LocaleService;
 import win.doyto.query.service.PageList;
 
-import java.util.HashMap;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
@@ -27,11 +26,10 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service
-@EnableConfigurationProperties
 public class I18nService {
 
     @Resource
-    private I18nCrudService i18nMapper;
+    private LangService langService;
 
     @Resource
     private BaiduTranApi baiduTranApi;
@@ -48,27 +46,27 @@ public class I18nService {
 
     public List query(String user, String group) {
         checkGroup(user, group);
-        return i18nMapper.queryAll(I18nQuery.builder().user(user).group(group).build());
+        return langService.queryAll(I18nQuery.builder().user(user).group(group).build());
     }
 
     public PageList page(I18nQuery i18nQuery) {
         checkGroup(i18nQuery.getUser(), i18nQuery.getGroup());
-        return new PageList<>(i18nMapper.queryAll(i18nQuery), i18nMapper.count(i18nQuery));
+        return new PageList<>(langService.queryAll(i18nQuery), langService.count(i18nQuery));
     }
 
     public List<LangView> query(String user, String group, String locale) {
         checkGroup(user, group);
-        return i18nMapper.langByGroupAndLocale(user, group, locale);
+        return langService.langByGroupAndLocale(user, group, locale);
     }
 
     public List<LangView> queryWithDefaults(String user, String group, String locale) {
         checkGroupAndLocale(user, group, locale);
-        return i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
+        return langService.query(user, group, locale);
     }
 
     public void checkGroup(String user, String group) {
         try {
-            i18nMapper.existGroup(user, group);
+            langService.existGroup(user, group);
         } catch (Exception e) {
             ErrorCode.fail(ErrorCode.build(-1 ,"多语言分组未配置: " + getGroupName(user, group)));
         }
@@ -80,7 +78,7 @@ public class I18nService {
 
     private boolean existLocale(String user, String group, String locale) {
         try {
-            i18nMapper.existLocaleOnGroup(user, group, locale);
+            langService.existLocaleOnGroup(user, group, locale);
         } catch (Exception e) {
             log.info("多语言分组[{}]不存在语种: {}", getGroupName(user, group), locale);
             return false;
@@ -92,54 +90,64 @@ public class I18nService {
     public String addLocaleOnGroup(String user, String group, String locale) {
         checkGroup(user, group);
         if (!existLocale(user, group, locale)) {
-            i18nMapper.addLocaleOnGroup(user, group, locale);
+            langService.addLocaleOnGroup(user, group, locale);
         }
         return locale;
+    }
+
+    private void saveTranslation(List<LangView> langViewList) {
+        int ret = langService.batchInsert(langViewList, "locale_${locale}");
+        log.info("保存翻译完毕: {} / {}", ret, langViewList.size());
     }
 
     @Transactional
     public void saveTranslation(String user, String group, String locale, Map<String, String> translationMap) {
         addLocaleOnGroup(user, group, locale);
-        int ret = i18nMapper.saveTranslation(user, group, locale, translationMap);
-        log.info("保存翻译完毕: {} / {}", ret, translationMap.size());
+        List<LangView> langViewList = new ArrayList<>(translationMap.size());
+        for (Map.Entry<String, String> entry : translationMap.entrySet()) {
+            LangView langView = new LangView();
+            langView.setUser(user);
+            langView.setGroup(group);
+            langView.setLocale(locale);
+            langView.setLabel(entry.getKey());
+            langView.setDefaults(entry.getKey());
+            langView.setValue(entry.getValue());
+            langViewList.add(langView);
+        }
+        saveTranslation(langViewList);
     }
 
+    @Transactional
     public void autoTranslate(String user, String group, String locale) {
         checkGroupAndLocale(user, group, locale);
 
-        List<LangView> langViewList = i18nMapper.langWithDefaultsByGroupAndLocale(user, group, locale);
+        List<LangView> langViewList = langService.query(user, group, locale);
 
         LocaleResponse localeResponse = localeService.getByGroupAndLocale(group, locale);
 
         String to = localeResponse.getBaiduTranLang();
-        Map<String, String> translationMap = new HashMap<>();
         for (LangView langView : langViewList) {
-            if (StringUtils.isBlank(langView.getValue())) {
-                BaiduTran baiduTran = baiduTranApi.getTrans(langView.getDefaults(), "auto", to);
-                if (baiduTran.fail()) {
-                    log.error("翻译接口调用失败: {}[{}]", baiduTran.getErrorMsg(), baiduTran.getErrorCode());
-                }
-                try {
-                    if (baiduTran.getTransResult() != null) {
-                        translationMap.put(langView.getLabel(), baiduTran.getTransResult()[0].getDst());
+            langView.setUser(user);
+            langView.setGroup(group);
+            langView.setLocale(locale);
+            if (StringUtils.isNotBlank(langView.getDefaults()) && StringUtils.isBlank(langView.getValue())) {
+                BaiduTranResponse baiduTranResponse = baiduTranApi.getTrans(langView.getDefaults(), "auto", to);
+                if (baiduTranResponse.success()) {
+                    if (baiduTranResponse.getTransResult() != null) {
+                        langView.setValue(baiduTranResponse.getTransResult()[0].getDst());
                     }
-                } catch (Exception e) {
-                    log.error("获取翻译失败: " + langView.getLabel(), e);
+                } else {
+                    log.error("翻译接口调用失败: {}[{}]", baiduTranResponse.getErrorMsg(), baiduTranResponse.getErrorCode());
                 }
             }
         }
-        int ret = translationMap.isEmpty() ? 0 : i18nMapper.saveTranslation(user, group, locale, translationMap);
-        log.info("自动翻译完毕: {} / {}", ret, translationMap.size());
-    }
-
-    public void createGroupTable(String user, String name) {
-        i18nMapper.createGroupTable(user, name);
+        saveTranslation(langViewList);
     }
 
     @Transactional
     public void createGroup(String owner, String group, String label, String locale) {
         groupService.insertGroup(owner, group, label);
-        createGroupTable(owner, group);
+        langService.createGroupTable(owner, group);
         addLocaleOnGroup(owner, group, locale);
     }
 

@@ -68,9 +68,9 @@
   }
 </style>
 <script type="text/javascript">
-import Cons from '../components/Cons'
+  import Cons from '../components/Cons'
 
-// 保存每条数据的原始值, 需要尝试在v-for中完成
+  // 保存每条数据的原始值, 需要尝试在v-for中完成
 function _recordOrigin (list) {
   for (let i = 0; i < list.length; i++) {
     let resource = list[i]
@@ -168,12 +168,16 @@ export default {
       axios.post(url, params).then(response => {
         // get body data
         let json = response.data
+        bus.$emit('loaded')
+        if (!json.success) {
+          return Util.handleFailure(json)
+        }
+
         let data = json.data
         _recordOrigin(data)
         this.list = data
         // 重新加载列表后清理上次编辑的记录
         this.lastEdit = undefined
-        bus.$emit('loaded')
         bus.$emit('alert', {
           content: '标签保存成功: ' + r.label,
           state: 'success',

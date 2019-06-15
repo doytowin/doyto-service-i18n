@@ -14,11 +14,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 
 
 /**
- * AbstractControllerTest
+ * ControllerTestBase
  *
  * @author f0rb on 2018-08-15.
  */
-public class AbstractControllerTest {
+public abstract class ControllerTestBase {
     public static final String EXPECTED_TRUE = "true";
     public static final String $_SUCCESS = "$.success";
     public static final String $_DATA = "$.data";

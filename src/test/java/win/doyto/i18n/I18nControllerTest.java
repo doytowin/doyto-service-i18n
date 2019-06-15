@@ -26,7 +26,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @SpringBootTest(classes = I18nApp.class)
 @ActiveProfiles({"test"})
 @Ignore
-public class I18nControllerTest extends AbstractControllerTest {
+public class I18nControllerTest extends ControllerTestBase {
     @Resource
     protected WebApplicationContext wac;
 
