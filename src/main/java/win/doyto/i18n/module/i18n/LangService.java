@@ -46,7 +46,7 @@ public class LangService extends AbstractDynamicService<LangView, Integer, I18nQ
     }
 
     public List<Map<String, Object>> queryAll(I18nQuery i18nQuery) {
-        return dataAccess.queryColumns(i18nQuery, COLUMN_MAP_ROW_MAPPER, "*");
+        return queryColumns(i18nQuery, COLUMN_MAP_ROW_MAPPER, "*");
     }
 
     /**
@@ -58,7 +58,7 @@ public class LangService extends AbstractDynamicService<LangView, Integer, I18nQ
      */
     public List<LangView> langByGroupAndLocale(String user, String group, String locale) {
         I18nQuery i18nQuery = I18nQuery.builder().user(user).group(group).locale(locale).build();
-        return dataAccess.queryColumns(
+        return queryColumns(
             i18nQuery, new BeanPropertyRowMapper<>(LangView.class),
             "label, defaults, IF(locale_${locale} IS NULL OR LENGTH(locale_${locale}) = 0, defaults, locale_${locale}) AS value");
     }
@@ -83,7 +83,7 @@ public class LangService extends AbstractDynamicService<LangView, Integer, I18nQ
             String fieldName = matcher.group(1);
             String replacement = String.valueOf(params.getOrDefault(fieldName, ""));
             replacement = StringUtils.remove(replacement, ' ');
-            matcher = matcher.appendReplacement(sb, replacement);
+            matcher.appendReplacement(sb, replacement);
         } while (matcher.find());
         return matcher.appendTail(sb).toString();
     }
