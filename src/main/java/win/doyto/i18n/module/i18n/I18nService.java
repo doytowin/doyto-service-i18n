@@ -5,8 +5,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.common.web.ErrorCode;
-import win.doyto.i18n.module.baidu.BaiduTranApi;
 import win.doyto.i18n.module.baidu.BaiduTranResponse;
+import win.doyto.i18n.module.baidu.BaiduTranService;
 import win.doyto.i18n.module.group.GroupResponse;
 import win.doyto.i18n.module.group.GroupService;
 import win.doyto.i18n.module.locale.LocaleRequest;
@@ -32,7 +32,7 @@ public class I18nService {
     private LangService langService;
 
     @Resource
-    private BaiduTranApi baiduTranApi;
+    private BaiduTranService baiduTranService;
 
     @Resource
     GroupService groupService;
@@ -131,7 +131,7 @@ public class I18nService {
             langView.setGroup(group);
             langView.setLocale(locale);
             if (StringUtils.isNotBlank(langView.getDefaults()) && StringUtils.isBlank(langView.getValue())) {
-                BaiduTranResponse baiduTranResponse = baiduTranApi.getTrans(langView.getDefaults(), "auto", to);
+                BaiduTranResponse baiduTranResponse = baiduTranService.translate(langView.getDefaults(), "auto", to);
                 if (baiduTranResponse.success()) {
                     if (baiduTranResponse.getTransResult() != null) {
                         langView.setValue(baiduTranResponse.getTransResult()[0].getDst());
