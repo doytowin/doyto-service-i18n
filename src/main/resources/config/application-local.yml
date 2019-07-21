@@ -1,9 +1,17 @@
 spring:
+  application:
+    name: @project.artifactId@-local
   security:
     user:
       name: i18n
       password: i18n
       roles: i18n, admin
+  sleuth:
+    messaging:
+      enabled: false
+  cloud:
+    bus:
+      enabled: false
 
 logging:
   level:
