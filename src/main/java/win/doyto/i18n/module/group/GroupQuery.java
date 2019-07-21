@@ -25,7 +25,7 @@ public class GroupQuery extends PageQuery {
 
     private String owner;
 
-    private String nameLike;
+    private String groupNameLike;
 
     private Boolean valid;
 

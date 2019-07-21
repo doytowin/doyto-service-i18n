@@ -75,7 +75,7 @@ class GroupController extends AbstractCrudService<GroupEntity, Integer, GroupQue
 
     @Override
     public GroupResponse getGroup(String username, String group) {
-        GroupEntity groupEntity = get(GroupQuery.builder().owner(username).nameLike(group).build());
+        GroupEntity groupEntity = get(GroupQuery.builder().owner(username).groupNameLike(group).build());
         ErrorCode.assertNotNull(groupEntity, I18nErrorCode.RECORD_NOT_FOUND);
         return GroupResponse.build(groupEntity);
     }
