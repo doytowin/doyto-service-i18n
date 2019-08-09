@@ -1,8 +1,6 @@
 package win.doyto.i18n.module.i18n;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.jdbc.core.BeanPropertyRowMapper;
-import org.springframework.jdbc.core.ColumnMapRowMapper;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Service;
 import win.doyto.query.service.AbstractDynamicService;
@@ -24,7 +22,6 @@ import static win.doyto.i18n.module.i18n.I18nEntity.GROUP_FORMAT;
 @Service
 public class LangService extends AbstractDynamicService<LangView, Integer, I18nQuery> {
 
-    private static final ColumnMapRowMapper COLUMN_MAP_ROW_MAPPER = new ColumnMapRowMapper();
 
     @Override
     protected String resolveCacheKey(LangView i18nLangView) {
@@ -45,8 +42,8 @@ public class LangService extends AbstractDynamicService<LangView, Integer, I18nQ
         count(i18nQuery);
     }
 
-    public List<Map<String, Object>> queryAll(I18nQuery i18nQuery) {
-        return queryColumns(i18nQuery, COLUMN_MAP_ROW_MAPPER, "*");
+    public List<Map> queryAll(I18nQuery i18nQuery) {
+        return queryColumns(i18nQuery, Map.class, "*");
     }
 
     /**
@@ -59,7 +56,7 @@ public class LangService extends AbstractDynamicService<LangView, Integer, I18nQ
     public List<LangView> langByGroupAndLocale(String user, String group, String locale) {
         I18nQuery i18nQuery = I18nQuery.builder().user(user).group(group).locale(locale).build();
         return queryColumns(
-            i18nQuery, new BeanPropertyRowMapper<>(LangView.class),
+            i18nQuery, LangView.class,
             "label, defaults, IF(locale_${locale} IS NULL OR LENGTH(locale_${locale}) = 0, defaults, locale_${locale}) AS value");
     }
 
