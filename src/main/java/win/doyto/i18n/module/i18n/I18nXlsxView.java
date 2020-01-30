@@ -1,18 +1,18 @@
 package win.doyto.i18n.module.i18n;
 
-import java.io.UnsupportedEncodingException;
-import java.util.LinkedHashMap;
-import java.util.List;
-import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import lombok.extern.slf4j.Slf4j;
+import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.view.document.AbstractXlsxView;
+
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_STRING_ARRAY;
 
@@ -30,19 +30,18 @@ public class I18nXlsxView extends AbstractXlsxView {
 
     @Override
     @SuppressWarnings("unchecked")
-    protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) throws Exception {
+    protected void buildExcelDocument(Map<String, Object> model, Workbook workbook, HttpServletRequest request, HttpServletResponse response) {
 
-        List<LinkedHashMap<String, Object>> data = (List<LinkedHashMap<String, Object>>) model.get("data");
+        List<Map<String, Object>> data = (List<Map<String, Object>>) model.get("data");
 
         String groupName = (String) model.get("group");
-        String sheetName = groupName;
         String filename = "国际化_" + groupName;
-        Sheet sheet = workbook.createSheet(sheetName);
+        Sheet sheet = workbook.createSheet(groupName);
         sheet.setDefaultColumnWidth(10);
         sheet.setDefaultRowHeight((short) 300);
 
         int row = 0;
-        for (LinkedHashMap<String, Object> result : data) {
+        for (Map<String, Object> result : data) {
             if (row % 100 == 0 && log.isDebugEnabled()) {
                 log.debug("已处理{}行数据", row );
             }
@@ -51,17 +50,7 @@ public class I18nXlsxView extends AbstractXlsxView {
             Row hssfRow = sheet.createRow(row);
             Object[] dataRow = result.values().toArray();
             for (int col = 0; col < dataRow.length; col++) {
-                if (dataRow[col] != null) {
-                    if (dataRow[col] instanceof Number) {
-                        if (dataRow[col] instanceof Double) {
-                            hssfRow.createCell(col).setCellValue((Double) dataRow[col]);
-                        } else {
-                            hssfRow.createCell(col).setCellValue(Double.valueOf(String.valueOf(dataRow[col])));
-                        }
-                    } else {
-                        hssfRow.createCell(col).setCellValue(String.valueOf(dataRow[col]));
-                    }
-                }
+                writeCell(hssfRow.createCell(col), dataRow[col]);
             }
 
             // 最后填充标题并且设置自动列宽
@@ -78,18 +67,29 @@ public class I18nXlsxView extends AbstractXlsxView {
         setResponseFilename(filename, request, response);
     }
 
+    private void writeCell(Cell cell, Object datum) {
+        if (datum != null) {
+            if (datum instanceof Number) {
+                if (datum instanceof Double) {
+                    cell.setCellValue((Double) datum);
+                } else {
+                    cell.setCellValue(Double.parseDouble(String.valueOf(datum)));
+                }
+            } else {
+                cell.setCellValue(String.valueOf(datum));
+            }
+        }
+    }
+
     private void setResponseFilename(String filename, HttpServletRequest request, HttpServletResponse response) {
         if (filename != null && filename.length() > 0) {
             if (!filename.endsWith(".xls") || !filename.endsWith(".xlsx")) {
                 filename = filename + ".xlsx";
             }
-            try {
-                String userAgent = request.getHeader("User-Agent");
-                byte[] bytes = userAgent.contains("MSIE") ? filename.getBytes() : filename.getBytes("UTF-8"); // filename.getBytes("UTF-8")处理safari的乱码问题
-                filename = new String(bytes, "ISO-8859-1"); // 各浏览器基本都支持ISO编码
-                response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", filename)); // 文件名外的双引号处理firefox的空格截断问题
-            } catch (UnsupportedEncodingException e) {//忽略
-            }
+            String userAgent = request.getHeader("User-Agent");
+            byte[] bytes = userAgent.contains("MSIE") ? filename.getBytes() : filename.getBytes(StandardCharsets.UTF_8); // filename.getBytes("UTF-8")处理safari的乱码问题
+            filename = new String(bytes, StandardCharsets.ISO_8859_1); // 各浏览器基本都支持ISO编码
+            response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", filename)); // 文件名外的双引号处理firefox的空格截断问题
         }
     }
 }
