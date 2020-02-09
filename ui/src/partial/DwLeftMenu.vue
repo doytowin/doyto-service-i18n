@@ -1,73 +1,49 @@
 <template>
-  <aside id="leftMenu">
-    <el-menu :router="true">
-      <el-submenu index="111">
+  <section>
+    <el-menu :router="true" :collapse="$root.isCollapse">
+      <el-menu-item index="/dashboard/resource/group">
+        <i class="el-icon-menu"/>
+        <span slot="title">资源分组</span>
+      </el-menu-item>
+      <el-submenu index="translation">
         <template slot="title">
-          <i class="el-icon-setting"></i>{{sysMenu.label}}
+          <i class="el-icon-goods"/>
+          <span slot="title" v-t>资源翻译</span>
         </template>
-        <el-menu-item-group v-for="(group) in sysMenu.sub" :key="group.id">
-          <template slot="title">{{group.label}}</template>
-          <el-menu-item v-for="(child) in group.sub" :key="child.url" :index="child.url">
-            {{child.label}}
-          </el-menu-item>
-        </el-menu-item-group>
+        <el-submenu :router="true" v-for="group in i18nGroups" :key="group.id" :index="'menu-' + group.id" :unique-opened="true" :collapse="$root.isCollapse">
+          <template slot="title">
+            <i class="el-icon-s-grid"/>{{group.label || group.name}}
+          </template>
+          <el-menu-item-group>
+            <el-menu-item :index="'/dashboard/i18n/' + group.name" v-t>
+              <t>概览</t>
+            </el-menu-item>
+            <el-menu-item :index="'/dashboard/resource/' + group.name +'/locale'">
+              <t>语种</t><t></t><t>管理</t>
+            </el-menu-item>
+            <el-menu-item :index="'/dashboard/i18n/' + group.name + '/zh_CN'">
+              <t>词条</t><t></t><t>翻译</t>
+            </el-menu-item>
+          </el-menu-item-group>
+        </el-submenu>
       </el-submenu>
     </el-menu>
-    <el-menu :router="true" v-for="(group, $i) in i18nGroups" :key="group.id" index="menu" :unique-opened="true">
-      <el-submenu :index="$i+''">
-        <template slot="title">
-          <i class="el-icon-info"></i>{{group.label || group.name}}
-        </template>
-        <el-menu-item-group>
-          <el-menu-item :index="'/dashboard/i18n/' + group.name" v-t>
-            概览
-          </el-menu-item>
-          <el-menu-item :index="'/dashboard/resource/' + group.name +'/locale'">
-            <t>语种</t><t>_</t><t>管理</t>
-          </el-menu-item>
-          <el-menu-item :index="'/dashboard/i18n/' + group.name + '/zh_CN'">
-            <t>资源</t><t>_</t><t>翻译</t>
-          </el-menu-item>
-        </el-menu-item-group>
-      </el-submenu>
-    </el-menu>
-  </aside>
+  </section>
 </template>
 <script type="text/javascript">
 export default{
   data () {
     return {
-      // 系统配置
-      sysMenu: {
-        'label': '后台管理面板',
-        'name': 'admin',
-        'sub': [{
-          'label': '系统配置',
-          'name': 'sysconf',
-          'sub': [
-            {
-              'label': '资源分组管理',
-              'url': '/dashboard/resource/group'
-            }
-          ]
-        }]
-      },
-      i18nGroups: [
-        {
-          'id': 1,
-          'name': 'i18n',
-          'label': '多语言'
-        }
-      ]
+      i18nGroups: []
     }
   },
   created () {
-    // let vm = this
-    console.log(Cons.apiHost)
-    axios.get('/api/resource-group').then(rsp => {
-      let ret = rsp.data
-      if (ret.success) {
-        // vm.i18nGroups = ret.data.list
+    axios.get(Cons.api('api/resource-group')).then(rsp => {
+      let data = rsp.data
+      if (data.success) {
+        this.i18nGroups = data.data.list
+      } else {
+        Util.handleFailure(data)
       }
     })
   }

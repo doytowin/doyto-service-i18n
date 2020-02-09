@@ -44,12 +44,6 @@ Vue.component(DwPage.name, DwPage)
 Vue.use(VueI18n)
 const i18n = new VueI18n({})
 
-// Vue.directive('t', {})
-Vue.component('t', {
-  render: function (createElement) {
-    return this.$slots.default[0]
-  }
-})
 Vue.directive('t', {
   bind (el, binding, vnode) {
     el.originText = el.innerText.trim()
@@ -67,10 +61,8 @@ Vue.directive('t', {
 Vue.component('t', {
   render: function () {
     // console.log(this)
-    if (!this.$root.lang) {
-      return this.$slots.default[0]
-    }
-    return this.$root._v(this.$t(this.$slots.default[0].text))
+    let key = this.$slots.default ? this.$slots.default[0].text : ' ';
+    return this.$root._v(this.$root.lang ? this.$t(key) : key);
   }
 })
 /** vue-i18n **/
@@ -82,6 +74,7 @@ new Vue({
   el: '#app',
   data () {
     return {
+      isCollapse: false,
       lang: undefined,
       languages: [],
       system: {
@@ -89,7 +82,7 @@ new Vue({
       }
     }
   },
-  created() {
+  beforeCreate() {
     let vm = this
     window.addEventListener('resize', function () {
       vm.$emit('resize')
@@ -105,22 +98,22 @@ new Vue({
     Util.handleFailure = function (data) {
       // const data = response.data
       if (data && !data.success) {
-        if (data.code === 1) {
+        if (data.code === 101) {
           vm.$router.replace('/?redirect=' + encodeURIComponent(location.hash.substring(1)))
         } else {
-          Util.alert(data.info || '服务访问出错')
+          Util.alert(data.message || '服务访问出错')
         }
       } else {
         // Util.alert('服务访问出错')
-        location.href = Cons.url + '#/?redirect=' + encodeURIComponent(location.hash.substring(1))
+        location.href = Cons.apiHost + '#/?redirect=' + encodeURIComponent(location.hash.substring(1))
       }
     }
   },
   i18n,
-  mounted () {
-    this.switchLang(localStorage.lang || 'zh_CN')
+  created () {
+    this.switchLocale(localStorage.lang || 'zh_CN')
 
-    axios.get(Cons.openapi + 'i18n/i18n/locale').then(
+    axios.get(Cons.openApi('i18n/i18n/locale')).then(
       response => {
         let json = response.data
         if (json.success) {
@@ -130,9 +123,9 @@ new Vue({
     )
   },
   methods: {
-    switchLang (lang) {
+    switchLocale (lang) {
       this.$emit('loading')
-      axios.get(Cons.openapi + 'i18n/i18n/' + lang + '.json').then(res => {
+      axios.get(Cons.openApi('i18n/i18n/' + lang + '.json')).then(res => {
         i18n.locale = lang
         i18n.setLocaleMessage(lang, res.data.data)
         this.lang = localStorage.lang = lang

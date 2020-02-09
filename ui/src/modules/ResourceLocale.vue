@@ -1,14 +1,14 @@
 <template>
   <div class="module-wrapper" ref="wrapper">
     <header ref="header">
-      <el-button type="success" @click="crud.record={};crud.adding=true"><t>添加</t>{{$t(' ')}}<t>语种</t></el-button>
+      <el-button type="success" @click="crud.record={'group':group};crud.adding=true"><t>添加</t>{{$t(' ')}}<t>语种</t></el-button>
     </header>
     <section>
       <el-table :data="crud.p.list" stripe style="width: 100%" fixed>
-        <el-table-column type="index" width="40" fixed align="center"></el-table-column>
-        <el-table-column prop="locale" :label="$t('语种')"></el-table-column>
-        <el-table-column prop="language" :label="$t('语言本称')"></el-table-column>
-        <el-table-column prop="baiduTranLang" :label="$t('百度翻译') + $t('语言')"></el-table-column>
+        <el-table-column type="index" width="40" fixed align="center"/>
+        <el-table-column prop="locale" :label="$t('语种')"/>
+        <el-table-column prop="language" :label="$t('语言本称')"/>
+        <el-table-column prop="baiduLocale" :label="$t('百度翻译') + $t('语言')"/>
         <el-table-column :label="$t('操作')" width="140">
           <template slot-scope="scope">
             <el-button type="text" @click="crud.edit(scope.row);crud.editing=true" v-t>编辑</el-button>
@@ -18,23 +18,22 @@
       </el-table>
     </section>
     <footer ref="footer">
-      <dw-page :p="crud.p"></dw-page>
+      <dw-page :p="crud.p"/>
     </footer>
 
     <el-dialog :title="$t('添加') + $t(' ') + $t('语种')" :visible.sync="crud.adding" :modal-append-to-body="false">
       <el-form label-width="100px">
         <el-form-item :label="$t('语种')">
-          <el-input v-model="crud.record.locale"></el-input>
+          <el-input v-model="crud.record.locale"/>
         </el-form-item>
         <el-form-item :label="$t('语言本称')">
-          <el-input v-model="crud.record.language"></el-input>
+          <el-input v-model="crud.record.language"/>
         </el-form-item>
         <el-form-item :label="$t('百度翻译') + $t('语言')">
-          <el-select v-model="crud.record.baiduTranLang" placeholder="请选择">
+          <el-select v-model="crud.record.baiduLocale" placeholder="请选择">
             <el-option v-for="option in baiduLanguages" :key="option.value" :label="option.label" :value="option.value"/>
           </el-select>
-          <!--<el-input v-model="crud.record.baiduTranLang"></el-input>-->
-          <p>查看 <a href="http://api.fanyi.baidu.com/api/trans/product/apidoc#languageList" target="_blank">http://api.fanyi.baidu.com/api/trans/product/apidoc</a></p>
+          <p><el-link type="primary" href="http://api.fanyi.baidu.com/api/trans/product/apidoc#languageList" :underline="false" target="_blank">查看语言列表</el-link></p>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -46,17 +45,16 @@
     <el-dialog :title="$t('编辑') + $t(' ') + $t('语种')" :visible.sync="crud.editing" :modal-append-to-body="false">
       <el-form label-width="100px">
         <el-form-item :label="$t('语种')">
-          <el-input v-model="crud.record.locale"></el-input>
+          <el-input v-model="crud.record.locale"/>
         </el-form-item>
         <el-form-item :label="$t('语言本称')">
-          <el-input v-model="crud.record.language"></el-input>
+          <el-input v-model="crud.record.language"/>
         </el-form-item>
         <el-form-item :label="$t('百度翻译') + $t('语言')">
-          <el-select v-model="crud.record.baiduTranLang" placeholder="请选择">
+          <el-select v-model="crud.record.baiduLocale" placeholder="请选择">
             <el-option v-for="option in baiduLanguages" :key="option.value" :label="option.label" :value="option.value"/>
           </el-select>
-          <!--<el-input v-model="crud.record.baiduTranLang"></el-input>-->
-          <p>查看 <a href="http://api.fanyi.baidu.com/api/trans/product/apidoc#languageList" target="_blank">http://api.fanyi.baidu.com/api/trans/product/apidoc</a></p>
+          <p><el-link type="primary" href="http://api.fanyi.baidu.com/api/trans/product/apidoc#languageList" :underline="false" target="_blank">查看语言列表</el-link></p>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -181,7 +179,6 @@ export default {
         }
       ],
       group: this.$route.params.group,
-      tableHeight: 0,
       crud: new Crud(this.$resource(this.getUrl()))
     }
   },
@@ -191,16 +188,14 @@ export default {
   methods: {
     getUrl () {
       let group = this.$route.params.group
-      let url = ('{host}api/locale/{id}?group=' + group)
-        .replace(/{host}/, Cons.apiHost)
-      return url
+      return ('{host}api/locale/{id}?group=' + group).replace(/{host}/, Cons.apiHost)
     },
     refresh () {
       this.group = this.$route.params.group
       const crud = new Crud(this.$resource(this.getUrl()))
-      // this.crud.record.baiduTranLang = 'auto'
+      // this.crud.record.baiduLocale = 'auto'
       crud.add = (record) => {
-        axios.post('api/i18n/addLocale', record).then(rps => {
+        axios.post(Cons.apiHost + 'api/i18n/addLocale', record).then(rps => {
           crud.p.load()
         })
       }

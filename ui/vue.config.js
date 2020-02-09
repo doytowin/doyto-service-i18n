@@ -1,38 +1,27 @@
-let host = 'http://localhost:10301/';
+
+let proxy = (host) => {
+  return {
+    target: host || 'http://localhost:10301/',
+    changeOrigin: true,
+    onProxyReq(proxyReq) {
+      let port = proxyReq.connection._port ? ':' + proxyReq.connection._port : '';
+      console.log(proxyReq.agent.protocol + '//' + proxyReq.connection._host + port + proxyReq.path)
+    }
+  }
+};
 
 module.exports = {
   devServer: {
     proxy: {
-      '/api': {
-        target: host + '',
-        changeOrigin: true,
-        onProxyReq(proxyReq, req, res) {
-          console.log(proxyReq.agent.protocol + '//' + proxyReq.connection._host + proxyReq.path)
-        }
-      },
-      '/openapi': {
-        target: host,
-        changeOrigin: true,
-        onProxyReq(proxyReq, req, res) {
-          console.log(proxyReq.agent.protocol + '//' + proxyReq.connection._host + proxyReq.path)
-        }
-      },
-      '/static': {
-        target: host,
-        changeOrigin: true,
-        onProxyReq(proxyReq, req, res) {
-          console.log(proxyReq.agent.protocol + '//' + proxyReq.connection._host + ':' + proxyReq.connection._port + proxyReq.path)
-        }
-      },
-      '/login': {
-        target: host,
-        changeOrigin: true,
-        onProxyReq(proxyReq, req, res) {
-          console.log(proxyReq.agent.protocol + '//' + proxyReq.connection._host + ':' + proxyReq.connection._port + proxyReq.path)
-        }
-      }
+      '/user': proxy('http://localhost:10301/api/'),
+      '/login': proxy(),
+      '/logout': proxy(),
+      '/api': proxy(),
+      '/openapi': proxy(),
+      '/static': proxy()
     }
   },
 
+  publicPath: './',
   outputDir: '../target/classes/static'
 }

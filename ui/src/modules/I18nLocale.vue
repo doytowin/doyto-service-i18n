@@ -1,20 +1,20 @@
 <template>
   <div id="i18n-locale" class="module-wrapper" ref="wrapper">
     <header ref="header">
-      <el-button @click="add();beforeAdd();" type="success" style="float:right" v-t>添加</el-button>
-      <el-button @click="baiduTranslate" variant="primary" class="float-right mr-2" v-t>百度翻译</el-button>
+      <el-button @click="add();beforeAdd()" type="success"><t>添加</t>{{$t(' ')}}<t>词条</t></el-button>
+      <el-button @click="baiduTranslate" type="primary" style="float:right" v-t>百度翻译</el-button>
     </header>
     <section>
       <el-table :data="list" stripe style="width: 100%" fixed>
-        <el-table-column type="index" width="40" fixed align="center"></el-table-column>
-        <el-table-column prop="label" :label="$t('标签')" width="140"></el-table-column>
-        <el-table-column prop="defaults" :label="$t('默认文本')" width="140"></el-table-column>
+        <el-table-column type="index" width="40" fixed align="center"/>
+        <el-table-column prop="label" :label="$t('标签')" width="140"/>
+        <el-table-column prop="defaults" :label="$t('默认文本')" width="140"/>
         <el-table-column>
           <template slot-scope="scope" slot="header">
             <el-dropdown @command="changeLocale">
               <span class="el-dropdown-link">
                 <t>locale_{{locale}}</t>
-                <i class="el-icon-arrow-down el-icon--right"></i>
+                <i class="el-icon-arrow-down el-icon--right"/>
               </span>
               <el-dropdown-menu slot="dropdown">
                 <el-dropdown-item :command="item.locale" v-for="(item) in locales" v-t>locale_{{item.locale}}</el-dropdown-item>
@@ -25,7 +25,7 @@
             <div class="dw-editor">
               <el-input type="text" v-model="scope.row.value"
                         @keyup.enter.native="save(scope.row)" @focus="save(lastEdit)" @blur="lastEdit=scope.row"
-                        :tabindex="scope.$index + 1000 + ''" :placeholder="scope.row.defaults"></el-input>
+                        :tabindex="scope.$index + 1000 + ''" :placeholder="scope.row.defaults"/>
               <span v-if="(scope.row._origin_!==scope.row.value)" class="dw-button">
                 <el-button @click="scope.row.value = scope.row._origin_" type="text" style="margin-right:10px;color:#aaa" v-t>取消</el-button>
                 <el-button @click="save(scope.row)" type="text" v-t>保存</el-button>
@@ -35,16 +35,16 @@
         </el-table-column>
       </el-table>
     </section>
-    <el-dialog :title="$t('添加') + $t('标签')" :visible.sync="adding" :modal-append-to-body="false">
+    <el-dialog :title="$t('添加') + $t(' ') + $t('词条')" :visible.sync="adding" :modal-append-to-body="false">
       <el-form label-width="100px">
         <el-form-item :label="$t('标签')">
-          <el-input v-model="lastAdd.label" ref="newLabel"></el-input>
+          <el-input v-model="lastAdd.label" ref="newLabel"/>
         </el-form-item>
         <el-form-item :label="$t('默认文本')">
-          <el-input v-model="lastAdd.defaults"></el-input>
+          <el-input v-model="lastAdd.defaults"/>
         </el-form-item>
         <el-form-item :label="$t('翻译')">
-          <el-input v-model="lastAdd.value"></el-input>
+          <el-input v-model="lastAdd.value"/>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -98,18 +98,6 @@ export default {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     this.init()
-    let url = '{host}api/resource/{group}/locale/'
-      .replace(/{host}/, Cons.apiHost)
-      .replace(/{group}/, this.group)
-
-    axios.get(url).then(
-      response => {
-        let json = response.data
-        if (json.success) {
-          this.locales = json.data
-        }
-      }
-    )
   },
   watch: {
     // 如果路由有变化，会再次执行该方法
@@ -150,6 +138,15 @@ export default {
           this.$root.$emit('loaded')
         }
       )
+
+      axios.get(Cons.api('api/resource/' + this.group + '/locale')).then(
+        response => {
+          let json = response.data
+          if (json.success) {
+            this.locales = json.data
+          }
+        }
+      )
     },
     save (r) {
       // console.log(r)
@@ -161,8 +158,7 @@ export default {
       let params = {}
       params[r.label] = r.value
 
-      let url = '{host}api/i18n/{group}/{locale}'
-        .replace(/{host}/, Cons.apiHost)
+      let url = Cons.api('api/i18n/{group}/{locale}')
         .replace(/{group}/, this.group)
         .replace(/{locale}/, this.locale)
       axios.post(url, params).then(response => {

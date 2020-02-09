@@ -1,19 +1,34 @@
 <template>
-  <div id="dashboard">
-    <el-container style="height:100%">
-      <el-aside class="west-wrapper" width="220px" :style="{left: showMenu ? 0 : '-280px'}">
-        <div class="card-header" style="padding:0 1.25rem;height:40px;line-height:40px;">
-          <i @click="showMenu = !showMenu" class="fa fa-bars hidden-sm-up mr-2"></i>
-          <t>国际化管理系统</t> <b>{{username}}</b>
+  <div id="dashboard" class="full-height">
+    <el-container class="full-height">
+      <el-header height="40px">
+        <div style="font-size:1.5rem;height:40px;line-height:40px;display:inline-block">
+          <span @click="$root.isCollapse=!$root.isCollapse" style="margin-right:10px;cursor:pointer">
+            <i v-if="!$root.isCollapse" class="el-icon-s-fold"/>
+            <i v-if="$root.isCollapse" class="el-icon-s-unfold"/>
+          </span>
+          <t>国际化管理系统</t>
         </div>
-        <dw-left-menu></dw-left-menu>
-        <dw-lang></dw-lang>
-      </el-aside>
-
+        <el-menu default-active="5" mode="horizontal" style="float:right">
+          <el-submenu index="5" @select="$root.switchLocale" background-color="#d9edf7">
+            <template slot="title">
+              <t v-for="option in $root.languages" v-if="option.locale === $root.lang">{{option.language}}</t>
+            </template>
+            <el-menu-item v-for="(option, $i) in $root.languages" :index="'5-' + $i" @click="$root.switchLocale(option.locale)">{{option.language}}</el-menu-item>
+          </el-submenu>
+          <el-submenu index="1">
+            <template slot="title">{{username}}</template>
+            <el-menu-item index="exit" @click="logout">退出</el-menu-item>
+          </el-submenu>
+        </el-menu>
+      </el-header>
       <el-container>
-        <el-main>
+        <el-aside :width="$root.isCollapse ? '60px' : '200px'" class="module-wrapper west-wrapper">
+          <dw-left-menu/>
+        </el-aside>
+        <el-main style="padding-bottom:0">
           <transition name="fade">
-            <router-view></router-view>
+            <router-view/>
           </transition>
         </el-main>
       </el-container>
@@ -23,43 +38,39 @@
       <div class="mask"></div>
       <div class="loader"></div>
     </div>
-    <div v-if="showMenu">
-      <div @click="showMenu=false" class="menu-mask"></div>
-    </div>
   </div>
 </template>
 
 <script type="text/javascript">
   import DwLeftMenu from '../partial/DwLeftMenu'
-  import DwLang from '../partial/DwLang'
+  import axios from "axios";
 
   export default {
-  name: 'dashboard',
-  data () {
-    return {
-      loading: 0,
-      showMenu: true,
-      alerts: [],
-      user: null,
-      username: ''
-    }
-  },
-  components: {
-    DwLeftMenu, DwLang
-  },
-  beforeCreate () {
-    axios.get(Cons.apiHost + 'api/user').then(rsp => {
-      let json = rsp.data
-      if (json.success) {
-        this.user = json.data
-        if (this.user) {
-          this.username = this.user.username
-        }
-      } else {
-        Util.handleFailure(json)
+    name: 'dashboard',
+    data() {
+      return {
+        loading: 0,
+        alerts: [],
+        user: null,
+        username: ''
       }
-    })
-  },
+    },
+    components: {
+      DwLeftMenu
+    },
+    beforeCreate() {
+      axios.get(Cons.authUrl + 'user').then(rsp => {
+        let json = rsp.data
+        if (json.success) {
+          this.user = json.data
+          if (this.user) {
+            this.username = this.user.username
+          }
+        } else {
+          Util.handleFailure(json)
+        }
+      })
+    },
   mounted () {
     let vm = this
     vm.$root.$on('loading', function () {
@@ -88,54 +99,84 @@
       vm.alerts.push(a)
     })
 
-    vm.showMenu = document.body.clientWidth > 767
-    window.addEventListener('resize', function () {
-      vm.showMenu = document.body.clientWidth > 767
-    })
   },
-  methods: {}
-}
+    methods: {
+      logout() {
+        axios.post(Cons.authUrl + 'logout')
+        .then((response) => {
+          const ret = response.data
+          if (ret.success) {
+            this.$router.replace('/')
+          } else {
+            this.$message({
+              message: (ret && ret.info) || '退出失败',
+              type: 'error'
+            })
+          }
+        })
+      }
+    }
+  }
 </script>
 <style lang="scss">
-  $maskZIndex:999;
-  $appZIndex:10;
+  $maskZIndex: 999;
+  $appZIndex: 10;
+  $headerHeight: 40px;
 
   #dashboard {
-    height:100%;
+
     ::-webkit-input-placeholder { /* WebKit browsers */
-      color:#ccc;
-    }
-    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
-      color:#ccc;
-      opacity:1;
-    }
-    ::-moz-placeholder { /* Mozilla Firefox 19+ */
-      color:#ccc;
-      opacity:1;
-    }
-    :-ms-input-placeholder { /* Internet Explorer 10+ */
-      color:#ccc;
+      color: #ccc;
     }
 
-    -webkit-font-smoothing:antialiased;
-    -moz-osx-font-smoothing:grayscale;
-    color:#2c3e50;
+    :-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+      color: #ccc;
+      opacity: 1;
+    }
+
+    ::-moz-placeholder { /* Mozilla Firefox 19+ */
+      color: #ccc;
+      opacity: 1;
+    }
+
+    :-ms-input-placeholder { /* Internet Explorer 10+ */
+      color: #ccc;
+    }
+
+    .el-header {
+      background-color: #d9edf7;
+      /*padding:0;*/
+      .el-menu--horizontal {
+        background-color: #d9edf7;
+
+        > .el-menu-item, > .el-submenu .el-submenu__title {
+          height: $headerHeight;
+          line-height: $headerHeight;
+        }
+      }
+    }
+
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    color: #2c3e50;
     /*margin-top:60px;*/
     .west-wrapper {
-      border-right:solid 1px #e6e6e6;
-      background-color:#d9edf7;
-      position:relative;
-      height:100%;
-      max-height:100%;
-      overflow-y:auto;
-      .dw-lang {
-        position:absolute;
-        bottom:0;
-        left:0;
-        right:0;
-      }
+      border-right: solid 1px #e6e6e6;
+      background-color: #d9edf7;
+      /*position: relative;*/
+      /*height: 100%;*/
+      /*max-height: 100%;*/
+      /*overflow-y: auto;*/
+
+      /*.dw-lang {*/
+      /*  position: absolute;*/
+      /*  bottom: 0;*/
+      /*  left: 0;*/
+      /*  right: 0;*/
+      /*}*/
+
       .el-menu {
-        border-right:none;
+        border-right: none;
       }
     }
 

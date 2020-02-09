@@ -65,7 +65,7 @@ Util.handleFailure = function (data) {
     if (data.code === 1) {
       location.href = 'login?redirect=' + encodeURIComponent(location.href)
     } else {
-      Util.alert(data.info || '服务访问出错')
+      Util.alert(data.message || '服务访问出错')
     }
   } else {
     // Util.alert('服务访问出错')

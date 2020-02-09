@@ -75,12 +75,12 @@ let Crud = function (R, successFunc, errorFunc) {
     }
     self.p.loading = true
     if (!record.id) {
-      record.createdAt = new Date()
       record.status = 1
       record.valid = 1
+        R.save(record).then(onSuccess, onError)
+    } else {
+        R.update({id: record.id}, record).then(onSuccess, onError)
     }
-    // R.save(record, onSuccess, onError)
-    R.save({id: record.id}, record).then(onSuccess, onError)
   }
 
   self.remove = function (record, message) {

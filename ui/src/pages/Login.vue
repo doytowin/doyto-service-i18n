@@ -51,7 +51,7 @@
       params.append('username', this.username)
       params.append('password', this.password)
       params.append('rememberMe', true)
-      axios.post('/login', params)
+      axios.post(Cons.authUrl + 'login', params)
         .then((response) => {
           // console.log(response)
           const ret = response.data
