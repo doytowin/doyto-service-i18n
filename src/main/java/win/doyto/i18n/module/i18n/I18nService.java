@@ -4,11 +4,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import win.doyto.common.web.ErrorCode;
+import win.doyto.common.web.response.ErrorCode;
 import win.doyto.i18n.module.baidu.BaiduTranResponse;
 import win.doyto.i18n.module.baidu.BaiduTranService;
+import win.doyto.i18n.module.group.GroupApi;
 import win.doyto.i18n.module.group.GroupResponse;
-import win.doyto.i18n.module.group.GroupService;
 import win.doyto.i18n.module.locale.LocaleRequest;
 import win.doyto.i18n.module.locale.LocaleResponse;
 import win.doyto.i18n.module.locale.LocaleService;
@@ -35,7 +35,7 @@ public class I18nService {
     private BaiduTranService baiduTranService;
 
     @Resource
-    GroupService groupService;
+    GroupApi groupApi;
 
     @Resource
     private LocaleService localeService;
@@ -125,7 +125,7 @@ public class I18nService {
 
         LocaleResponse localeResponse = localeService.getByGroupAndLocale(group, locale);
 
-        String to = localeResponse.getBaiduTranLang();
+        String to = localeResponse.getBaiduLocale();
         for (LangView langView : langViewList) {
             langView.setUser(user);
             langView.setGroup(group);
@@ -145,18 +145,27 @@ public class I18nService {
     }
 
     @Transactional
-    public void createGroup(String owner, String group, String label, String locale) {
-        groupService.insertGroup(owner, group, label);
+    public void createGroup(String owner, String group, String label) {
+        groupApi.insertGroup(owner, group, label);
         langService.createGroupTable(owner, group);
-        addLocaleOnGroup(owner, group, locale);
+        this.insertZhCn(owner, group);
+    }
+
+    private void insertZhCn(String owner, String group) {
+        LocaleRequest localeRequest = new LocaleRequest();
+        localeRequest.setUsername(owner);
+        localeRequest.setGroup(group);
+        localeRequest.setLocale("zh_CN");
+        localeRequest.setLanguage("简体中文");
+        localeRequest.setBaiduLocale("zh");
+        this.addLocale(localeRequest);
     }
 
     @Transactional
     public void addLocale(LocaleRequest request) {
-        GroupResponse groupResponse = groupService.getGroup(request.getUsername(), request.getGroup());
+        GroupResponse groupResponse = groupApi.getGroup(request.getUsername(), request.getGroup());
         request.setGroupId(groupResponse.getId());
-        localeService.create(request);
-        GroupResponse group = groupService.getById(request.getGroupId());
-        addLocaleOnGroup(group.getOwner(), group.getName(), request.getLocale());
+        localeService.add(request);
+        this.addLocaleOnGroup(groupResponse.getOwner(), groupResponse.getName(), request.getLocale());
     }
 }

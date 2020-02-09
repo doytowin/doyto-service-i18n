@@ -4,7 +4,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import win.doyto.query.core.PageQuery;
+
+import javax.persistence.Transient;
 
 /**
  * I18nQuery
@@ -14,14 +17,16 @@ import win.doyto.query.core.PageQuery;
  */
 @Getter
 @Setter
-@Builder
+@SuperBuilder
 @AllArgsConstructor
 public class I18nQuery extends PageQuery {
     public I18nQuery() {// no lombok here
     }
 
+    @Transient
     private String user;
 
+    @Transient
     private String group;
 
     private String locale;

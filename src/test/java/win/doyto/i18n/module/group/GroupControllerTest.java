@@ -1,8 +1,8 @@
 package win.doyto.i18n.module.group;
 
-import org.junit.Before;
-import org.junit.Test;
-import win.doyto.common.web.ErrorCodeException;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import win.doyto.common.web.response.ErrorCodeException;
 import win.doyto.i18n.common.TestConstant;
 import win.doyto.query.service.PageList;
 
@@ -11,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.fail;
 
 /**
  * GroupControllerTest
@@ -28,7 +28,7 @@ public class GroupControllerTest {
         initGroups();
     }
 
-    private static List<GroupEntity> initGroups() {
+    public static List<GroupEntity> initGroups() {
         List<GroupEntity> groupEntities = new ArrayList<>();
         for (int i = 0; i < INIT_I18N_SIZE; i++) {
             groupEntities.add(newGroup(i + ""));
@@ -37,7 +37,7 @@ public class GroupControllerTest {
         return groupEntities;
     }
 
-    private GroupService groupService;
+    private GroupController groupController;
 
     private static GroupEntity newGroup(String suffix) {
         return newGroup(suffix, TestConstant.DEFAULT_USER);
@@ -46,7 +46,7 @@ public class GroupControllerTest {
     private static GroupEntity newGroup(String suffix, String owner) {
         GroupEntity groupEntity = new GroupEntity();
         groupEntity.setOwner(owner);
-        groupEntity.setGroupName("i18n" + suffix);
+        groupEntity.setName("i18n" + suffix);
         groupEntity.setLabel("i18n多语言" + suffix);
         groupEntity.setCreateTime(new Date());
         groupEntity.setValid(true);
@@ -54,10 +54,11 @@ public class GroupControllerTest {
         return groupEntity;
     }
 
-    @Before
+    @BeforeEach
     public void setUp() {
-        groupService = new GroupController();
-        ((GroupController) groupService).batchInsert(initGroups());
+        GroupService groupService = new GroupService();
+        groupService.batchInsert(initGroups());
+        groupController = new GroupController(groupService);
     }
 
     @Test
@@ -65,14 +66,14 @@ public class GroupControllerTest {
         int pageSize = 3;
         GroupQuery groupQuery = GroupQuery.builder().build();
         groupQuery.setPageNumber(1).setPageSize(pageSize);
-        PageList<GroupResponse> page = groupService.page(TestConstant.DEFAULT_USER, groupQuery);
+        PageList<GroupResponse> page = groupController.page(TestConstant.DEFAULT_USER, groupQuery);
         assertThat(page.getTotal()).isEqualTo((long) INIT_I18N_SIZE);
         assertThat(page.getList())
                 .hasSize(pageSize)
                 .extracting(GroupResponse::getOwner)
                 .containsOnly(TestConstant.DEFAULT_USER);
 
-        PageList<GroupResponse> testUserPage = groupService.page(NOISE_USER, GroupQuery.builder().build());
+        PageList<GroupResponse> testUserPage = groupController.page(NOISE_USER, GroupQuery.builder().build());
         assertThat(testUserPage.getTotal()).isEqualTo(1);
         assertThat(testUserPage.getList())
             .hasSize(1)
@@ -86,12 +87,12 @@ public class GroupControllerTest {
         String newLabelName = "test label";
         groupRequest.setLabel(newLabelName);
         try {
-            groupService.updateLabel(groupRequest);
+            groupController.updateLabel(groupRequest);
         } catch (Exception e) {
             fail(e.getMessage());
         }
 
-        GroupResponse groupResponse = groupService.getById(1);
+        GroupResponse groupResponse = groupController.getById(1);
         assertThat(groupResponse).hasFieldOrPropertyWithValue("label", newLabelName);
     }
 
@@ -102,12 +103,12 @@ public class GroupControllerTest {
         groupRequest.setLabel("test label");
 
         try {
-            groupService.updateLabel(groupRequest);
+            groupController.updateLabel(groupRequest);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 10002)
+                .hasFieldOrPropertyWithValue("code", 1001)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
 
@@ -115,32 +116,32 @@ public class GroupControllerTest {
 
     @Test
     public void test_delete() {
-        groupService.delete("i18n", 1);
+        groupController.delete("i18n", 1);
 
         try {
-            groupService.getById(1);
+            groupController.getById(1);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 10002)
+                .hasFieldOrPropertyWithValue("code", 1001)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
 
         GroupQuery groupQuery = GroupQuery.builder().build();
-        PageList<GroupResponse> page = groupService.page(TestConstant.DEFAULT_USER, groupQuery);
+        PageList<GroupResponse> page = groupController.page(TestConstant.DEFAULT_USER, groupQuery);
         assertThat(page.getTotal()).isEqualTo(INIT_I18N_SIZE - 1);
     }
 
     @Test
     public void test_delete_by_nonexistent_id() {
         try {
-            groupService.delete("i18n", -1);
+            groupController.delete("i18n", -1);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 10002)
+                .hasFieldOrPropertyWithValue("code", 1001)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
     }

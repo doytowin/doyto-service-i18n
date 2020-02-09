@@ -1,9 +1,8 @@
 package win.doyto.i18n.module.group;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
+import win.doyto.auth.core.UsernameAware;
 import win.doyto.query.core.PageQuery;
 
 /**
@@ -13,12 +12,10 @@ import win.doyto.query.core.PageQuery;
  */
 @Getter
 @Setter
-@Builder
+@SuperBuilder
+@NoArgsConstructor
 @AllArgsConstructor
-public class GroupQuery extends PageQuery {
-
-    public GroupQuery() {//lombok
-    }
+public class GroupQuery extends PageQuery implements UsernameAware {
 
     @Builder.Default
     private Boolean deleted = false;
@@ -29,4 +26,8 @@ public class GroupQuery extends PageQuery {
 
     private Boolean valid;
 
+    @Override
+    public void setUsername(String username) {
+        this.setOwner(username);
+    }
 }

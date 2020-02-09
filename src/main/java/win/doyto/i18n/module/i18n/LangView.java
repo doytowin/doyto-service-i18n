@@ -32,4 +32,9 @@ public class LangView extends IntegerId {
 
     @Column(name = "locale_${locale}")
     private String value;
+
+    @Override
+    public LangIdWrapper toIdWrapper() {
+        return new LangIdWrapper(id, user, group);
+    }
 }

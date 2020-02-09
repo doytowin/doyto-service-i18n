@@ -2,8 +2,7 @@ package win.doyto.i18n.module.i18n;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Ignore;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import win.doyto.i18n.I18nAppTest;
 import win.doyto.query.service.PageList;
 
@@ -12,7 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static win.doyto.i18n.common.TestConstant.DEFAULT_GROUP;
 import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 
@@ -22,7 +21,6 @@ import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
  * @author f0rb on 2017-03-31.
  */
 @Slf4j
-@Ignore
 public class I18nServiceTest extends I18nAppTest {
     @Resource
     private I18nService i18nService;
@@ -48,7 +46,6 @@ public class I18nServiceTest extends I18nAppTest {
     }
 
     @Test
-    //@org.springframework.test.annotation.Commit
     public void testSaveTranslation() throws Exception {
         String user = DEFAULT_USER;
         String group = DEFAULT_GROUP;

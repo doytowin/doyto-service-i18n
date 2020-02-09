@@ -2,7 +2,7 @@ package win.doyto.i18n.module.i18n;
 
 import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,17 +20,6 @@ import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
 public class LangServiceTest {
 
     private LangService langService = new LangService();
-
-    //@Test
-    //public void langByGroup() throws Exception {
-    //    List ret = i18nMapper.langByGroup(DEFAULT_USER, group);
-    //    log.info("结果\n{}", JSON.toJSONString(ret, true));
-    //}
-    //@Test
-    //public void pageLangByGroup() throws Exception {
-    //    List ret = i18nMapper.pageLangByGroup(DEFAULT_USER, group, new RowBounds(5, 10));
-    //    log.info("结果\n{}", JSON.toJSONString(ret, true));
-    //}
 
     @Test
     public void langByGroupAndLocale() throws Exception {

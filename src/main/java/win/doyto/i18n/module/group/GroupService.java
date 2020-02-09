@@ -1,26 +1,16 @@
 package win.doyto.i18n.module.group;
 
-import win.doyto.query.service.PageList;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+import win.doyto.query.service.AbstractCrudService;
 
 /**
- * GroupService
+ * GroupServiceImpl
  *
- * @author f0rb on 2019-05-23
+ * @author f0rb on 2020-02-06
  */
-public interface GroupService {
-
-    void insertGroup(String owner, String group, String label);
-
-    GroupResponse getById(Integer groupId);
-
-    GroupResponse getGroup(String username, String group);
-
-    PageList<GroupResponse> page(GroupQuery query);
-
-    PageList<GroupResponse> page(String owner, GroupQuery groupQuery);
-
-    void updateLabel(GroupRequest groupRequest);
-
-    void delete(String owner, Integer groupId);
+@Slf4j
+@Service
+public class GroupService extends AbstractCrudService<GroupEntity, Integer, GroupQuery> {
 
 }

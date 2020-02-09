@@ -3,6 +3,8 @@ package win.doyto.i18n.module.group;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.util.Date;
+
 /**
  * GroupResponse
  *
@@ -20,12 +22,6 @@ public class GroupResponse {
 
     private String label;
 
-    static GroupResponse build(GroupEntity groupEntity) {
-        GroupResponse groupResponse = new GroupResponse();
-        groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getGroupName());
-        groupResponse.setOwner(groupEntity.getOwner());
-        groupResponse.setLabel(groupEntity.getLabel());
-        return groupResponse;
-    }
+    private Date createTime;
+
 }

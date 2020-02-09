@@ -2,7 +2,7 @@ package win.doyto.i18n.common;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import win.doyto.common.web.ErrorCode;
+import win.doyto.common.web.response.ErrorCode;
 
 /**
  * I18nErrorCode
@@ -13,8 +13,7 @@ import win.doyto.common.web.ErrorCode;
 @Getter
 @AllArgsConstructor
 public enum I18nErrorCode implements ErrorCode {
-    LOGIN_EXPIRED(1, "登录过期"),
-    RECORD_NOT_FOUND(10002, "查询记录不存在")
+    RECORD_NOT_FOUND(1001, "查询记录不存在")
     ;
 
     private final Integer code;

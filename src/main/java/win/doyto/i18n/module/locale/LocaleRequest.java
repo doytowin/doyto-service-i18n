@@ -16,16 +16,6 @@ public class LocaleRequest implements UsernameAware {
     private Integer groupId;
     private String group;
     private String locale;
-    private String baiduTranLang;
+    private String baiduLocale;
     private String language;
-
-    public LocaleEntity toResourceLocale() {
-        LocaleEntity localeEntity = new LocaleEntity();
-        localeEntity.setOwner(username);
-        localeEntity.setGroupId(groupId);
-        localeEntity.setLocale(locale);
-        localeEntity.setBaiduTranLang(baiduTranLang);
-        localeEntity.setLanguage(language);
-        return localeEntity;
-    }
 }

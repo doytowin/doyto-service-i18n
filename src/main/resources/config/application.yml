@@ -1,7 +1,13 @@
+server:
+  port: @docker.expose@
+
+# /info 端点的显示
+info:
+  name: @project.artifactId@
+  version: @project.version@
+  date: @project.build.timestamp@
+  description: @project.description@
+
 spring:
   application:
     name: @project.artifactId@
-
-logging:
-  level:
-    org.springframework.web.servlet.mvc.method.annotation: TRACE

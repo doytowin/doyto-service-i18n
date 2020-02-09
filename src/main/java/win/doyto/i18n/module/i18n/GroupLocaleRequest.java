@@ -26,7 +26,4 @@ public class GroupLocaleRequest implements UsernameAware {
     @Size(max = 15)
     private String label;
 
-    @NotNull
-    @Size(max = 7)
-    private String locale;
 }

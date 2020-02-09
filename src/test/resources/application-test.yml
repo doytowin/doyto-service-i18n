@@ -2,3 +2,10 @@ logging:
   level:
     root: info
     win.doyto.i18n.module: debug
+
+spring:
+  security:
+    user:
+      name: i18n
+      password: i18n
+      roles: i18n, admin

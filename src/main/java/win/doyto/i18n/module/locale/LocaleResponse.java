@@ -13,7 +13,7 @@ import lombok.Setter;
 public class LocaleResponse {
     private Integer id;
 
-    private String baiduTranLang;
+    private String baiduLocale;
 
     private String owner;
 
@@ -21,13 +21,4 @@ public class LocaleResponse {
 
     private String language;
 
-    static LocaleResponse build(LocaleEntity localeEntity) {
-        LocaleResponse localeResponse = new LocaleResponse();
-        localeResponse.setId(localeEntity.getId());
-        localeResponse.setOwner(localeEntity.getOwner());
-        localeResponse.setLocale(localeEntity.getLocale());
-        localeResponse.setLanguage(localeEntity.getLanguage());
-        localeResponse.setBaiduTranLang(localeEntity.getBaiduTranLang());
-        return localeResponse;
-    }
 }

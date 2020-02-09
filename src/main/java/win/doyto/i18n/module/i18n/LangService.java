@@ -22,12 +22,6 @@ import static win.doyto.i18n.module.i18n.I18nEntity.GROUP_FORMAT;
 @Service
 public class LangService extends AbstractDynamicService<LangView, Integer, I18nQuery> {
 
-
-    @Override
-    protected String resolveCacheKey(LangView i18nLangView) {
-        return i18nLangView.getId() + "";
-    }
-
     public List<LangView> query(String user, String group, String locale) {
         return query(I18nQuery.builder().user(user).group(group).locale(locale).build());
     }

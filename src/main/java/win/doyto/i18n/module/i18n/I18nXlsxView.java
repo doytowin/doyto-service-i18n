@@ -41,6 +41,10 @@ public class I18nXlsxView extends AbstractXlsxView {
         sheet.setDefaultRowHeight((short) 300);
 
         int row = 0;
+        for (Map<String, Object> rowData : data) {
+            rowData.remove("id");
+            rowData.remove("valid");
+        }
         for (Map<String, Object> result : data) {
             if (row % 100 == 0 && log.isDebugEnabled()) {
                 log.debug("已处理{}行数据", row );

@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import win.doyto.auth.annotation.CurrentUser;
-import win.doyto.common.web.JsonBody;
+import win.doyto.common.web.response.JsonBody;
 import win.doyto.i18n.module.locale.LocaleQuery;
 import win.doyto.i18n.module.locale.LocaleResponse;
 import win.doyto.i18n.module.locale.LocaleService;

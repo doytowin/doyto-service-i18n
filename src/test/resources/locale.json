@@ -1,0 +1,24 @@
+[
+  {
+    "groupId": "1",
+    "username": "i18n",
+    "locale": "zh_CN",
+    "baiduLocale": "zh",
+    "language": "简体中文"
+  },
+  {
+    "groupId": "1",
+    "username": "i18n",
+    "locale": "en_US",
+    "baiduLocale": "en",
+    "language": "English"
+  },
+  {
+    "groupId": "1",
+    "username": "i18n",
+    "locale": "ja_JP",
+    "baiduLocale": "jp",
+    "language": "日本語"
+  }
+
+]

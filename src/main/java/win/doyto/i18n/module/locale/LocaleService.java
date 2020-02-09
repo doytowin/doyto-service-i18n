@@ -10,7 +10,7 @@ import java.util.List;
 public interface LocaleService {
     LocaleResponse getByGroupAndLocale(String group, String locale);
 
-    void create(LocaleRequest request);
+    void add(LocaleRequest request);
 
     List<LocaleResponse> list(LocaleQuery localeQuery);
 }
