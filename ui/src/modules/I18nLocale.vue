@@ -138,8 +138,7 @@ export default {
           this.$root.$emit('loaded')
         }
       )
-
-      axios.get(Cons.api('api/resource/' + this.group + '/locale')).then(
+      axios.get(Cons.api('api/locale?group=' + this.group)).then(
         response => {
           let json = response.data
           if (json.success) {

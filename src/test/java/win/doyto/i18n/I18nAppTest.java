@@ -1,5 +1,6 @@
 package win.doyto.i18n;
 
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -42,6 +44,16 @@ public abstract class I18nAppTest {
 
     @Resource
     protected MockMvc mockMvc;
+
+    @BeforeEach
+    protected void login() throws Exception {
+        if (mockHttpSession == null) {
+            RequestBuilder builder = post("/login")
+                    .param("username", "i18n")
+                    .param("password", "i18n");
+            mockHttpSession = (MockHttpSession) mockMvc.perform(builder).andReturn().getRequest().getSession();
+        }
+    }
 
     protected ResultActions performAndExpectSuccess(RequestBuilder requestBuilder) throws Exception {
         return mockMvc.perform(requestBuilder)

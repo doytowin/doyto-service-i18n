@@ -9,11 +9,7 @@ import win.doyto.query.service.PageList;
  */
 public interface GroupApi {
 
-    void insertGroup(String owner, String group, String label);
-
     GroupResponse getById(Integer groupId);
-
-    GroupResponse getGroup(String username, String group);
 
     PageList<GroupResponse> page(GroupQuery query);
 

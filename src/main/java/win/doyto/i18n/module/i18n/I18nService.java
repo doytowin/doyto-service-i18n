@@ -1,23 +1,15 @@
 package win.doyto.i18n.module.i18n;
 
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.common.web.response.ErrorCode;
-import win.doyto.i18n.module.baidu.BaiduTranResponse;
-import win.doyto.i18n.module.baidu.BaiduTranService;
-import win.doyto.i18n.module.group.GroupApi;
-import win.doyto.i18n.module.group.GroupResponse;
-import win.doyto.i18n.module.locale.LocaleRequest;
-import win.doyto.i18n.module.locale.LocaleResponse;
-import win.doyto.i18n.module.locale.LocaleService;
+import win.doyto.query.service.AbstractDynamicService;
 import win.doyto.query.service.PageList;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 
 /**
  * I18nService
@@ -26,47 +18,59 @@ import javax.annotation.Resource;
  */
 @Slf4j
 @Service
-public class I18nService {
-
-    @Resource
-    private LangService langService;
-
-    @Resource
-    private BaiduTranService baiduTranService;
-
-    @Resource
-    GroupApi groupApi;
-
-    @Resource
-    private LocaleService localeService;
+public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQuery> {
 
     private static String getGroupName(String user, String group) {
         return user + "_" + group;
     }
 
+    public List<I18nView> query(String user, String group, String locale) {
+        return query(I18nQuery.builder().user(user).group(group).locale(locale).build());
+    }
+
+    public void existGroup(String user, String group) {
+        I18nQuery i18nQuery = I18nQuery.builder().user(user).group(group).build();
+        i18nQuery.setPageSize(1);
+        count(i18nQuery);
+    }
+
+    public List<Map> queryAll(I18nQuery i18nQuery) {
+        return queryColumns(i18nQuery, Map.class, "*");
+    }
+
+    /**
+     * 如果locale_${locale}为null, 则以默认值替代
+     *
+     * @param group  资源分组名
+     * @param locale 语种
+     * @return {label,value}
+     */
+    public List<I18nView> queryWithDefault(String user, String group, String locale) {
+        checkGroup(user, group);
+        I18nQuery i18nQuery = I18nQuery.builder().user(user).group(group).locale(locale).build();
+        return queryColumns(
+                i18nQuery, I18nView.class,
+                "label, defaults, IF(locale_${locale} IS NULL OR LENGTH(locale_${locale}) = 0, defaults, locale_${locale}) AS value");
+    }
+
     public List query(String user, String group) {
         checkGroup(user, group);
-        return langService.queryAll(I18nQuery.builder().user(user).group(group).build());
+        return queryAll(I18nQuery.builder().user(user).group(group).build());
     }
 
     public PageList page(I18nQuery i18nQuery) {
         checkGroup(i18nQuery.getUser(), i18nQuery.getGroup());
-        return new PageList<>(langService.queryAll(i18nQuery), langService.count(i18nQuery));
+        return new PageList<>(queryAll(i18nQuery), count(i18nQuery));
     }
 
-    public List<LangView> query(String user, String group, String locale) {
-        checkGroup(user, group);
-        return langService.langByGroupAndLocale(user, group, locale);
-    }
-
-    public List<LangView> queryWithDefaults(String user, String group, String locale) {
+    public List<I18nView> queryWithDefaults(String user, String group, String locale) {
         checkGroupAndLocale(user, group, locale);
-        return langService.query(user, group, locale);
+        return query(user, group, locale);
     }
 
     public void checkGroup(String user, String group) {
         try {
-            langService.existGroup(user, group);
+            existGroup(user, group);
         } catch (Exception e) {
             ErrorCode.fail(ErrorCode.build(-1 ,"多语言分组未配置: " + getGroupName(user, group)));
         }
@@ -78,94 +82,33 @@ public class I18nService {
 
     private boolean existLocale(String user, String group, String locale) {
         try {
-            langService.existLocaleOnGroup(user, group, locale);
+            query(user, group, locale);
+            return true;
         } catch (Exception e) {
             log.info("多语言分组[{}]不存在语种: {}", getGroupName(user, group), locale);
             return false;
         }
-        return true;
     }
 
-    @Transactional
-    public String addLocaleOnGroup(String user, String group, String locale) {
-        checkGroup(user, group);
-        if (!existLocale(user, group, locale)) {
-            langService.addLocaleOnGroup(user, group, locale);
-        }
-        return locale;
-    }
-
-    private void saveTranslation(List<LangView> langViewList) {
-        int ret = langService.batchInsert(langViewList, "locale_${locale}");
-        log.info("保存翻译完毕: {} / {}", ret, langViewList.size());
+    public void saveTranslation(List<I18nView> i18nViewList) {
+        int ret = batchInsert(i18nViewList, "locale_${locale}");
+        log.info("保存翻译完毕: {} / {}", ret, i18nViewList.size());
     }
 
     @Transactional
     public void saveTranslation(String user, String group, String locale, Map<String, String> translationMap) {
-        addLocaleOnGroup(user, group, locale);
-        List<LangView> langViewList = new ArrayList<>(translationMap.size());
+        List<I18nView> i18nViewList = new ArrayList<>(translationMap.size());
         for (Map.Entry<String, String> entry : translationMap.entrySet()) {
-            LangView langView = new LangView();
-            langView.setUser(user);
-            langView.setGroup(group);
-            langView.setLocale(locale);
-            langView.setLabel(entry.getKey());
-            langView.setDefaults(entry.getKey());
-            langView.setValue(entry.getValue());
-            langViewList.add(langView);
+            I18nView i18nView = new I18nView();
+            i18nView.setUser(user);
+            i18nView.setGroup(group);
+            i18nView.setLocale(locale);
+            i18nView.setLabel(entry.getKey());
+            i18nView.setDefaults(entry.getKey());
+            i18nView.setValue(entry.getValue());
+            i18nViewList.add(i18nView);
         }
-        saveTranslation(langViewList);
+        saveTranslation(i18nViewList);
     }
 
-    @Transactional
-    public void autoTranslate(String user, String group, String locale) {
-        checkGroupAndLocale(user, group, locale);
-
-        List<LangView> langViewList = langService.query(user, group, locale);
-
-        LocaleResponse localeResponse = localeService.getByGroupAndLocale(group, locale);
-
-        String to = localeResponse.getBaiduLocale();
-        for (LangView langView : langViewList) {
-            langView.setUser(user);
-            langView.setGroup(group);
-            langView.setLocale(locale);
-            if (StringUtils.isNotBlank(langView.getDefaults()) && StringUtils.isBlank(langView.getValue())) {
-                BaiduTranResponse baiduTranResponse = baiduTranService.translate(langView.getDefaults(), "auto", to);
-                if (baiduTranResponse.success()) {
-                    if (baiduTranResponse.getTransResult() != null) {
-                        langView.setValue(baiduTranResponse.getTransResult()[0].getDst());
-                    }
-                } else {
-                    log.error("翻译接口调用失败: {}[{}]", baiduTranResponse.getErrorMsg(), baiduTranResponse.getErrorCode());
-                }
-            }
-        }
-        saveTranslation(langViewList);
-    }
-
-    @Transactional
-    public void createGroup(String owner, String group, String label) {
-        groupApi.insertGroup(owner, group, label);
-        langService.createGroupTable(owner, group);
-        this.insertZhCn(owner, group);
-    }
-
-    private void insertZhCn(String owner, String group) {
-        LocaleRequest localeRequest = new LocaleRequest();
-        localeRequest.setUsername(owner);
-        localeRequest.setGroup(group);
-        localeRequest.setLocale("zh_CN");
-        localeRequest.setLanguage("简体中文");
-        localeRequest.setBaiduLocale("zh");
-        this.addLocale(localeRequest);
-    }
-
-    @Transactional
-    public void addLocale(LocaleRequest request) {
-        GroupResponse groupResponse = groupApi.getGroup(request.getUsername(), request.getGroup());
-        request.setGroupId(groupResponse.getId());
-        localeService.add(request);
-        this.addLocaleOnGroup(groupResponse.getOwner(), groupResponse.getName(), request.getLocale());
-    }
 }

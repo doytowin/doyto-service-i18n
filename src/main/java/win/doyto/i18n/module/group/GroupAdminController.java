@@ -43,7 +43,7 @@ public class GroupAdminController extends AbstractRestController<GroupEntity, In
         GroupEntity groupEntity = new GroupEntity();
         groupEntity.setName(groupRequest.getName());
         groupEntity.setLabel(groupRequest.getLabel());
-        groupEntity.setOwner(groupRequest.getName());
+        groupEntity.setOwner(groupRequest.getOwner());
         return groupEntity;
     }
 

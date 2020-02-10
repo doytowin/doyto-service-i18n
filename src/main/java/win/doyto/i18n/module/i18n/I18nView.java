@@ -8,6 +8,8 @@ import javax.persistence.Column;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
+
 /**
  * Lang
  *
@@ -15,8 +17,10 @@ import javax.persistence.Transient;
  */
 @Getter
 @Setter
-@Table(name = I18nEntity.GROUP_FORMAT)
-public class LangView extends IntegerId {
+@Table(name = GROUP_FORMAT)
+public class I18nView extends IntegerId {
+    public static final String GROUP_FORMAT = "i18n_data_${user}_${group}";
+
     @Transient
     private String user;
 
@@ -34,7 +38,7 @@ public class LangView extends IntegerId {
     private String value;
 
     @Override
-    public LangIdWrapper toIdWrapper() {
-        return new LangIdWrapper(id, user, group);
+    public I18nIdWrapper toIdWrapper() {
+        return new I18nIdWrapper(id, user, group);
     }
 }

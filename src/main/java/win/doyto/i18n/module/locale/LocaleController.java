@@ -42,6 +42,7 @@ class LocaleController extends AbstractIQRSController<LocaleEntity, Integer, Loc
         localeEntity.setLocale(localeRequest.getLocale());
         localeEntity.setBaiduTranLang(localeRequest.getBaiduLocale());
         localeEntity.setLanguage(localeRequest.getLanguage());
+        localeEntity.setDeleted(true);
         return localeEntity;
     }
 

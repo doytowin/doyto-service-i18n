@@ -12,7 +12,7 @@ import win.doyto.query.core.IdWrapper;
  */
 @Getter
 @RequiredArgsConstructor
-public class LangIdWrapper implements IdWrapper<Integer> {
+public class I18nIdWrapper implements IdWrapper<Integer> {
 
     @NonNull
     private Integer id;

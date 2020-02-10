@@ -27,7 +27,7 @@ public class I18nServiceTest extends I18nAppTest {
 
     @Test
     public void queryLanguageByLocale() throws Exception {
-        List<LangView> ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP, "zh_CN");
+        List<I18nView> ret = i18nService.queryWithDefault(DEFAULT_USER, DEFAULT_GROUP, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
@@ -49,15 +49,9 @@ public class I18nServiceTest extends I18nAppTest {
     public void testSaveTranslation() throws Exception {
         String user = DEFAULT_USER;
         String group = DEFAULT_GROUP;
-        String locale;
-
-        locale = i18nService.addLocaleOnGroup(user, group, "zh_CN");
-        log.info("多语言分组[{}]添加语种: {}", group, locale);
-        locale = i18nService.addLocaleOnGroup(user, group, "en_US");
-        log.info("多语言分组[{}]添加语种: {}", group, locale);
 
         Map<String, String> langMap;
-        List<LangView> ret;
+        List<I18nView> ret;
 
         langMap = new HashMap<>();
         langMap.put("test_msg", "测试");
@@ -73,9 +67,9 @@ public class I18nServiceTest extends I18nAppTest {
         ret = i18nService.queryWithDefaults(user, group, "en_US");
         log.info("test_en_US: \n{}", JSON.toJSONString(ret, true));
 
-        for (LangView langView : ret) {
-            if (langMap.containsKey(langView.getLabel())) {
-                assertEquals(langView.getValue(), langMap.get(langView.getLabel()));
+        for (I18nView i18nView : ret) {
+            if (langMap.containsKey(i18nView.getLabel())) {
+                assertEquals(i18nView.getValue(), langMap.get(i18nView.getLabel()));
             }
         }
 

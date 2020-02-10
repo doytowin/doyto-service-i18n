@@ -23,13 +23,13 @@ create table i18n_resource_locale
     owner varchar(31) not null,
     groupId int not null,
     locale varchar(10) not null,
+    baiduTranLang varchar(10) not null,
+    language varchar(100) null,
+    deleted bit default b'0' not null,
     createUserId int not null,
     createTime timestamp default CURRENT_TIMESTAMP not null,
     updateUserId int not null,
     updateTime datetime,
-    status tinyint default '1' not null,
-    baiduTranLang varchar(10) not null,
-    language varchar(100) null,
     constraint i18n_resource_locale_i18n_group_id_fk
     foreign key (groupId) references i18n_resource_group (id)
 );
@@ -47,7 +47,7 @@ CREATE TABLE i18n_data_i18n_i18n
     memo VARCHAR(1000) DEFAULT '' NOT NULL,
     createTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
-    valid bit DEFAULT '1' NOT NULL,
+    valid bit DEFAULT b'1' NOT NULL,
     locale_zh_CN VARCHAR(1000) DEFAULT '' NOT NULL,
     locale_en_US VARCHAR(1000) DEFAULT '' NOT NULL,
     locale_ja_JP VARCHAR(1000) DEFAULT '' NOT NULL,

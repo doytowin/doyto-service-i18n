@@ -47,7 +47,6 @@ const i18n = new VueI18n({})
 Vue.directive('t', {
   bind (el, binding, vnode) {
     el.originText = el.innerText.trim()
-    // console.log(vnode.context)
     if (vnode.context.$root.lang) {
       el.innerHTML = vnode.context.$t(el.originText)
     }
@@ -60,7 +59,6 @@ Vue.directive('t', {
 })
 Vue.component('t', {
   render: function () {
-    // console.log(this)
     let key = this.$slots.default ? this.$slots.default[0].text : ' ';
     return this.$root._v(this.$root.lang ? this.$t(key) : key);
   }
@@ -86,7 +84,6 @@ new Vue({
     let vm = this
     window.addEventListener('resize', function () {
       vm.$emit('resize')
-      console.log('$emit:resize')
     })
     Util.alert = function (o) {
       vm.$message({
@@ -96,16 +93,16 @@ new Vue({
     }
 
     Util.handleFailure = function (data) {
-      // const data = response.data
       if (data && !data.success) {
         if (data.code === 101) {
-          vm.$router.replace('/?redirect=' + encodeURIComponent(location.hash.substring(1)))
+          if (!location.hash.startsWith('#/?redirect=')) {
+            vm.$router.replace('/?redirect=' + encodeURIComponent(location.hash.substring(1)))
+          }
         } else {
           Util.alert(data.message || '服务访问出错')
         }
       } else {
-        // Util.alert('服务访问出错')
-        location.href = Cons.apiHost + '#/?redirect=' + encodeURIComponent(location.hash.substring(1))
+        location.href = Cons.api('#/?redirect=' + encodeURIComponent(location.hash.substring(1)))
       }
     }
   },
@@ -131,7 +128,6 @@ new Vue({
         this.lang = localStorage.lang = lang
         this.$emit('loaded')
       }, res => {
-        //alert('服务访问出错')
         this.$emit('loaded')
       })
     }

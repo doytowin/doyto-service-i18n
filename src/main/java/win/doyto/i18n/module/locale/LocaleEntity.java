@@ -8,7 +8,7 @@ import javax.persistence.Entity;
 import javax.persistence.Table;
 
 /**
- * toResourceLocale
+ * LocaleEntity
  *
  * @author f0rb on 2017-04-16.
  */
@@ -16,7 +16,7 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "i18n_resource_locale")
-class LocaleEntity extends CommonEntity<Integer, Integer> {
+public class LocaleEntity extends CommonEntity<Integer, Integer> {
 
     private static final long serialVersionUID = 1L;
 

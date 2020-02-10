@@ -1,6 +1,7 @@
 package win.doyto.i18n.module.i18n;
 
 import com.alibaba.fastjson.JSONObject;
+import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -12,23 +13,19 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * I18nController
+ * I18nOpenController
  *
  * @author f0rb on 2017-03-30.
  */
 @Slf4j
+@AllArgsConstructor
 @RestController
 @RequestMapping("/openapi")
 @JsonBody
-public class OpenI18nController {
+public class I18nOpenController {
+
     private I18nService i18nService;
-
     private LocaleService localeService;
-
-    public OpenI18nController(I18nService i18nService, LocaleService localeService) {
-        this.i18nService = i18nService;
-        this.localeService = localeService;
-    }
 
     /**
      * 导出所有的标签和语言
@@ -38,7 +35,7 @@ public class OpenI18nController {
      */
     @GetMapping("{user}/{group}.xlsx")
     public ModelAndView exportAllToExcel(@PathVariable("user") String user, @PathVariable("group") String group) {
-        List data = i18nService.query(user, group);
+        List<?> data = i18nService.query(user, group);
         HashMap<String, Object> map = new HashMap<>();
         map.put("data", data);
         map.put("group", group);
@@ -47,6 +44,7 @@ public class OpenI18nController {
 
     @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
     public Object query(LocaleQuery localeQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
+        localeQuery.setOwner(user);
         localeQuery.setGroupName(group);
         return localeService.list(localeQuery);
     }
@@ -58,12 +56,12 @@ public class OpenI18nController {
             @PathVariable("locale") String locale) {
 
         i18nService.checkGroupAndLocale(user, group, locale);
-        List<LangView> langViewList = i18nService.query(user, group, locale);
+        List<I18nView> i18nViewList = i18nService.queryWithDefault(user, group, locale);
 
         JSONObject root = new JSONObject();
 
-        for (LangView langView : langViewList) {
-            nestedJson(root, langView.getLabel().split("\\."), 0, langView.getValue());
+        for (I18nView i18nView : i18nViewList) {
+            nestedJson(root, i18nView.getLabel().split("\\."), 0, i18nView.getValue());
         }
 
         return root;

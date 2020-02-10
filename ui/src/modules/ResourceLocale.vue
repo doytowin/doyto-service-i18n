@@ -192,14 +192,7 @@ export default {
     },
     refresh () {
       this.group = this.$route.params.group
-      const crud = new Crud(this.$resource(this.getUrl()))
-      // this.crud.record.baiduLocale = 'auto'
-      crud.add = (record) => {
-        axios.post(Cons.apiHost + 'api/i18n/addLocale', record).then(rps => {
-          crud.p.load()
-        })
-      }
-      this.crud = crud
+      this.crud = new Crud(this.$resource(this.getUrl()))
     }
   },
   watch: {
