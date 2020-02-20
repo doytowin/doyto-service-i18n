@@ -1,13 +1,11 @@
 package win.doyto.i18n.module.locale;
 
-import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
 import win.doyto.auth.core.UsernameAware;
-import win.doyto.query.annotation.SubQuery;
 import win.doyto.query.core.PageQuery;
 
 /**
@@ -22,21 +20,15 @@ import win.doyto.query.core.PageQuery;
 @AllArgsConstructor
 public class LocaleQuery extends PageQuery implements UsernameAware {
 
-    private String owner;
+    private String createUserId;
 
-    @JsonAlias("group")
-    @SubQuery(column = "groupId", left = "id", table = "i18n_resource_group")
     private String groupName;
-
-    private Integer groupId;
 
     private String locale;
 
-    private String language;
-
     @Override
     public void setUsername(String username) {
-        this.setOwner(username);
+        this.setCreateUserId(username);
     }
 
     public void setGroup(String groupName) {

@@ -3,11 +3,14 @@ package win.doyto.i18n.module.i18n;
 import com.alibaba.fastjson.JSONObject;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 import win.doyto.common.web.response.JsonBody;
+import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.i18n.module.locale.LocaleQuery;
-import win.doyto.i18n.module.locale.LocaleService;
 
 import java.util.HashMap;
 import java.util.List;
@@ -25,7 +28,7 @@ import java.util.List;
 public class I18nOpenController {
 
     private I18nService i18nService;
-    private LocaleService localeService;
+    private LocaleApi localeApi;
 
     /**
      * 导出所有的标签和语言
@@ -42,14 +45,14 @@ public class I18nOpenController {
         return new ModelAndView(new I18nXlsxView(), map);
     }
 
-    @RequestMapping(value = "{user}/{group}/locale", method = RequestMethod.GET)
+    @GetMapping("{user}/{group}/locale")
     public Object query(LocaleQuery localeQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
-        localeQuery.setOwner(user);
+        localeQuery.setCreateUserId(user);
         localeQuery.setGroupName(group);
-        return localeService.list(localeQuery);
+        return localeApi.list(localeQuery);
     }
 
-    @RequestMapping(value = "{user}/{group}/{locale}.json", method = RequestMethod.GET)
+    @GetMapping("{user}/{group}/{locale}.json")
     public Object exportToJsonByLocale(
             @PathVariable("user") String user,
             @PathVariable("group") String group,

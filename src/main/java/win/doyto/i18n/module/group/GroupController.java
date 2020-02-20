@@ -35,8 +35,8 @@ class GroupController implements GroupApi {
     protected GroupResponse buildResponse(GroupEntity groupEntity) {
         GroupResponse groupResponse = new GroupResponse();
         groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getName());
-        groupResponse.setOwner(groupEntity.getOwner());
+        groupResponse.setName(groupEntity.getGroupName());
+        groupResponse.setOwner(groupEntity.getCreateUserId());
         groupResponse.setLabel(groupEntity.getLabel());
         groupResponse.setCreateTime(groupEntity.getCreateTime());
         return groupResponse;
@@ -56,11 +56,11 @@ class GroupController implements GroupApi {
         groupService.update(origin);
     }
 
-    @RequestMapping(value = "{id}", method = RequestMethod.DELETE)
-    public void delete(@CurrentUser String owner, @PathVariable("id") Integer id) {
+    @DeleteMapping("{id}")
+    public void delete(@CurrentUser String operator, @PathVariable("id") Integer id) {
         GroupEntity groupEntity = groupService.get(id);
         ErrorCode.assertNotNull(groupEntity, I18nErrorCode.RECORD_NOT_FOUND);
-        groupEntity.setOwner(owner);
+        ErrorCode.assertTrue(groupEntity.getCreateUserId().equals(operator), I18nErrorCode.RECORD_NOT_FOUND);
         groupEntity.setDeleted(true);
         groupService.update(groupEntity);
     }
@@ -68,15 +68,19 @@ class GroupController implements GroupApi {
     @PostMapping
     public void create(@RequestBody @Validated(CreateGroup.class) GroupRequest groupRequest) {
         GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setOwner(groupRequest.getOwner());
-        groupEntity.setName(groupRequest.getName());
+        groupEntity.setCreateUserId(groupRequest.getUsername());
+        groupEntity.setGroupName(groupRequest.getName());
         groupEntity.setLabel(groupRequest.getLabel());
         groupEntity.setValid(true);
         groupEntity.setDeleted(false);
         groupService.create(groupEntity);
     }
 
-    @Override
+    public PageList<GroupResponse> page(String username, GroupQuery groupQuery) {
+        groupQuery.setUsername(username);
+        return page(groupQuery);
+    }
+
     public GroupResponse getById(Integer groupId) {
         GroupEntity groupEntity = groupService.get(groupId);
         ErrorCode.assertTrue(groupEntity != null && !groupEntity.getDeleted(), I18nErrorCode.RECORD_NOT_FOUND);

@@ -11,7 +11,7 @@
         <el-table-column prop="baiduLocale" :label="$t('百度翻译') + $t('语言')"/>
         <el-table-column :label="$t('操作')" width="140">
           <template slot-scope="scope">
-            <el-button type="text" @click="crud.edit(scope.row);crud.editing=true" v-t>编辑</el-button>
+            <el-button type="text" @click="crud.edit(scope.row)" v-t>编辑</el-button>
             <el-button type="text" @click="crud.remove(scope.row)" v-t>删除</el-button>
           </template>
         </el-table-column>
@@ -38,7 +38,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="crud.adding = false" v-t>取消</el-button>
-        <el-button type="primary" @click="crud.add(crud.record);crud.adding=false" v-t>保存</el-button>
+        <el-button type="primary" @click="crud.save(crud.record)" v-t>保存</el-button>
       </div>
     </el-dialog>
 
@@ -59,7 +59,7 @@
       </el-form>
       <div slot="footer" class="dialog-footer">
         <el-button @click="crud.editing = false" v-t>取消</el-button>
-        <el-button type="primary" @click="crud.save(crud.record);crud.editing=false" v-t>保存</el-button>
+        <el-button type="primary" @click="crud.save(crud.record)" v-t>保存</el-button>
       </div>
     </el-dialog>
   </div>

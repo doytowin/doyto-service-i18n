@@ -26,7 +26,7 @@ public class LocaleControllerTest {
 
     @Test
     public void page() {
-        PageList<LocaleResponse> page = localeController.page(LocaleQuery.builder().owner(TestConstant.DEFAULT_USER).build());
+        PageList<LocaleResponse> page = localeController.page(LocaleQuery.builder().createUserId(TestConstant.DEFAULT_USER).build());
         assertThat(page.getTotal()).isEqualTo(3);
         assertThat(page.getList()).element(0)
                 .hasFieldOrPropertyWithValue("locale", "zh_CN")

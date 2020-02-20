@@ -4,7 +4,6 @@ import lombok.Getter;
 import lombok.Setter;
 import win.doyto.query.entity.CommonEntity;
 
-import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Table;
 
@@ -12,14 +11,11 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "i18n_resource_group")
-public class GroupEntity extends CommonEntity<Integer, Integer> {
+public class GroupEntity extends CommonEntity<Integer, String> {
 
     private static final long serialVersionUID = 1L;
 
-    private String owner;
-
-    @Column(name = "groupName")
-    private String name;
+    private String groupName;
 
     private String label;
 

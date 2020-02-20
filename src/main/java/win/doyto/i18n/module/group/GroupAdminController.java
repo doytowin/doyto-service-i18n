@@ -32,8 +32,8 @@ public class GroupAdminController extends AbstractRestController<GroupEntity, In
     protected GroupResponse buildResponse(GroupEntity groupEntity) {
         GroupResponse groupResponse = new GroupResponse();
         groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getName());
-        groupResponse.setOwner(groupEntity.getOwner());
+        groupResponse.setName(groupEntity.getGroupName());
+        groupResponse.setOwner(groupEntity.getCreateUserId());
         groupResponse.setLabel(groupEntity.getLabel());
         return groupResponse;
     }
@@ -41,9 +41,9 @@ public class GroupAdminController extends AbstractRestController<GroupEntity, In
     @Override
     protected GroupEntity buildEntity(GroupRequest groupRequest) {
         GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setName(groupRequest.getName());
+        groupEntity.setGroupName(groupRequest.getName());
         groupEntity.setLabel(groupRequest.getLabel());
-        groupEntity.setOwner(groupRequest.getOwner());
+        groupEntity.setCreateUserId(groupRequest.getUsername());
         return groupEntity;
     }
 

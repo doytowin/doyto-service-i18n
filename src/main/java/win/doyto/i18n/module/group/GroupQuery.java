@@ -17,10 +17,10 @@ import win.doyto.query.core.PageQuery;
 @AllArgsConstructor
 public class GroupQuery extends PageQuery implements UsernameAware {
 
+    private String createUserId;
+
     @Builder.Default
     private Boolean deleted = false;
-
-    private String owner;
 
     private String groupNameLike;
 
@@ -28,6 +28,6 @@ public class GroupQuery extends PageQuery implements UsernameAware {
 
     @Override
     public void setUsername(String username) {
-        this.setOwner(username);
+        this.setCreateUserId(username);
     }
 }

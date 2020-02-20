@@ -21,26 +21,26 @@ import javax.validation.Valid;
 @RestController
 @RequestMapping("/api/locale")
 @PreAuthorize("hasAnyRole('i18n')")
-class LocaleController extends AbstractIQRSController<LocaleEntity, Integer, LocaleQuery, LocaleRequest, LocaleResponse> implements LocaleService {
+class LocaleController extends AbstractIQRSController<LocaleEntity, Integer, LocaleQuery, LocaleRequest, LocaleResponse> implements LocaleApi {
 
     @Override
     protected LocaleResponse buildResponse(LocaleEntity localeEntity) {
         LocaleResponse localeResponse = new LocaleResponse();
         localeResponse.setId(localeEntity.getId());
-        localeResponse.setOwner(localeEntity.getOwner());
+        localeResponse.setOwner(localeEntity.getCreateUserId());
         localeResponse.setLocale(localeEntity.getLocale());
         localeResponse.setLanguage(localeEntity.getLanguage());
-        localeResponse.setBaiduLocale(localeEntity.getBaiduTranLang());
+        localeResponse.setBaiduLocale(localeEntity.getBaiduLocale());
         return localeResponse;
     }
 
     @Override
     protected LocaleEntity buildEntity(LocaleRequest localeRequest) {
         LocaleEntity localeEntity = new LocaleEntity();
-        localeEntity.setOwner(localeRequest.getUsername());
-        localeEntity.setGroupId(localeRequest.getGroupId());
+        localeEntity.setCreateUserId(localeRequest.getUsername());
+        localeEntity.setGroupName(localeRequest.getGroup());
         localeEntity.setLocale(localeRequest.getLocale());
-        localeEntity.setBaiduTranLang(localeRequest.getBaiduLocale());
+        localeEntity.setBaiduLocale(localeRequest.getBaiduLocale());
         localeEntity.setLanguage(localeRequest.getLanguage());
         localeEntity.setDeleted(true);
         return localeEntity;
@@ -54,15 +54,10 @@ class LocaleController extends AbstractIQRSController<LocaleEntity, Integer, Loc
     ) {
         LocaleEntity origin = get(id);
         ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
-        ErrorCode.assertTrue(Objects.equals(localeRequest.getUsername(), origin.getOwner()), I18nErrorCode.RECORD_NOT_FOUND);
+        ErrorCode.assertTrue(Objects.equals(localeRequest.getUsername(), origin.getCreateUserId()), I18nErrorCode.RECORD_NOT_FOUND);
         origin.setLanguage(localeRequest.getLanguage());
-        origin.setBaiduTranLang(localeRequest.getBaiduLocale());
+        origin.setBaiduLocale(localeRequest.getBaiduLocale());
         update(origin);
-    }
-
-    @Override
-    public LocaleResponse getByGroupAndLocale(String group, String locale) {
-        return buildResponse(get(LocaleQuery.builder().groupName(group).locale(locale).build()));
     }
 
 }

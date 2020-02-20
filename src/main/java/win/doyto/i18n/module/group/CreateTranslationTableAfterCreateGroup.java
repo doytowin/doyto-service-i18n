@@ -5,8 +5,8 @@ import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Component;
 import win.doyto.i18n.common.CommonUtils;
 import win.doyto.i18n.common.TranslationTableDialect;
+import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.i18n.module.locale.LocaleRequest;
-import win.doyto.i18n.module.locale.LocaleService;
 import win.doyto.query.entity.EntityAspect;
 
 import java.util.HashMap;
@@ -22,7 +22,7 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
 
     private JdbcOperations jdbcOperations;
 
-    private LocaleService localeService;
+    private LocaleApi localeApi;
 
     private TranslationTableDialect translationTableDialect;
 
@@ -37,10 +37,10 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
      */
     @Override
     public void afterCreate(GroupEntity groupEntity) {
-        String owner = groupEntity.getOwner();
-        String group = groupEntity.getName();
+        String owner = groupEntity.getCreateUserId();
+        String group = groupEntity.getGroupName();
         this.createGroupTable(owner, group);
-        this.insertZhCn(owner, groupEntity.getId());
+        this.insertZhCn(owner, group);
     }
 
     public void createGroupTable(String owner, String group) {
@@ -51,14 +51,14 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
         jdbcOperations.update(CommonUtils.replaceHolderEx(sql, params));
     }
 
-    private void insertZhCn(String owner, Integer groupId) {
+    private void insertZhCn(String owner, String group) {
         LocaleRequest localeRequest = new LocaleRequest();
         localeRequest.setUsername(owner);
-        localeRequest.setGroupId(groupId);
+        localeRequest.setGroup(group);
         localeRequest.setLocale("zh_CN");
         localeRequest.setLanguage("简体中文");
         localeRequest.setBaiduLocale("zh");
-        localeService.add(localeRequest);
+        localeApi.add(localeRequest);
     }
 
 }

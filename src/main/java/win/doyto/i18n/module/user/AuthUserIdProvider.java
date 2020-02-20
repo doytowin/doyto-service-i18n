@@ -13,16 +13,17 @@ import win.doyto.query.entity.UserIdProvider;
  * @author f0rb on 2020-02-09
  */
 @Component
-public class AuthUserIdProvider implements UserIdProvider<Integer> {
+public class AuthUserIdProvider implements UserIdProvider<String> {
 
     @Override
-    public Integer getUserId() {
+    public String getUserId() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
-            if (authentication.getPrincipal() instanceof AuthUser) {
-                return ((AuthUser) authentication.getPrincipal()).getId().intValue();
-            } else if (authentication.getPrincipal() instanceof User) {
-                return 1;
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof AuthUser) {
+                return ((AuthUser) principal).getUsername();
+            } else if (principal instanceof User) {
+                return ((User) principal).getUsername();
             }
         }
         return null;

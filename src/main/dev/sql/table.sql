@@ -3,33 +3,32 @@ USE i18n;
 drop table if exists i18n_resource_group;
 CREATE TABLE i18n_resource_group
 (
-    id         INT(11)      NOT NULL AUTO_INCREMENT,
-    name       varchar(100) not null,
-    owner      varchar(32)  not null,
-    label      varchar(100)          default '' null,
-    createTime TIMESTAMP    NOT NULL DEFAULT current_timestamp,
-    updateTime TIMESTAMP    NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-    valid      BOOLEAN      NOT NULL DEFAULT TRUE,
-    deleted    BOOLEAN      NOT NULL DEFAULT FALSE,
+    id           INT(11)      NOT NULL AUTO_INCREMENT,
+    groupName    varchar(100) not null,
+    label        varchar(100)          default '' null,
+    createUserId varchar(100) not null,
+    createTime   TIMESTAMP    NOT NULL DEFAULT current_timestamp,
+    updateUserId varchar(100) not null,
+    updateTime   TIMESTAMP    NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+    valid        BOOLEAN      NOT NULL DEFAULT TRUE,
+    deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id),
-    CONSTRAINT UNIQUE INDEX i18n_group (name)
+    CONSTRAINT UNIQUE INDEX i18n_group (groupName)
 );
 
 drop table if exists i18n_resource_locale;
 CREATE TABLE i18n_resource_locale
 (
-    id            INT(11)      NOT NULL AUTO_INCREMENT,
-    group_id      INT(11)      NOT NULL,
-    locale        VARCHAR(15)  not null,
-    owner         varchar(31)  not null,
-    groupId       int          not null,
-    baiduTranLang varchar(10)  not null,
-    language      varchar(100) null,
-    createUserId  int          not null,
-    createTime    TIMESTAMP    NOT NULL DEFAULT current_timestamp,
-    updateUserId  int          not null,
-    updateTime    TIMESTAMP    NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
-    deleted       BOOLEAN      NOT NULL DEFAULT FALSE,
+    id           INT(11)      NOT NULL AUTO_INCREMENT,
+    groupName    varchar(100) not null,
+    locale       VARCHAR(15)  not null,
+    baiduLocale  varchar(10)  not null,
+    language     varchar(100) null,
+    createUserId varchar(100) not null,
+    createTime   TIMESTAMP    NOT NULL DEFAULT current_timestamp,
+    updateUserId varchar(100) not null,
+    updateTime   TIMESTAMP    NOT NULL DEFAULT current_timestamp ON UPDATE current_timestamp,
+    deleted      BOOLEAN      NOT NULL DEFAULT FALSE,
     PRIMARY KEY (id)
 );
 

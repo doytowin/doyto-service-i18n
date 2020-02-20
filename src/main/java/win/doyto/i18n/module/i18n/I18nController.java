@@ -10,8 +10,7 @@ import win.doyto.auth.annotation.CurrentUser;
 import win.doyto.common.web.response.JsonBody;
 import win.doyto.i18n.module.baidu.BaiduTranResponse;
 import win.doyto.i18n.module.baidu.BaiduTranService;
-import win.doyto.i18n.module.locale.LocaleResponse;
-import win.doyto.i18n.module.locale.LocaleService;
+import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.query.service.PageList;
 
 import java.util.HashMap;
@@ -38,7 +37,7 @@ public class I18nController {
     private BaiduTranService baiduTranService;
 
     @Resource
-    private LocaleService localeService;
+    private LocaleApi localeApi;
 
     //importFromExcel
     //importFromJSON
@@ -89,9 +88,7 @@ public class I18nController {
 
         List<I18nView> i18nViewList = i18nService.query(user, group, locale);
 
-        LocaleResponse localeResponse = localeService.getByGroupAndLocale(group, locale);
-
-        String to = localeResponse.getBaiduLocale();
+        String to = localeApi.getBaiduLocale(user, group, locale);
         for (I18nView i18nView : i18nViewList) {
             i18nView.setUser(user);
             i18nView.setGroup(group);

@@ -28,10 +28,6 @@ public class GroupRequest implements UsernameAware {
     @Pattern(regexp = "\\w+")
     private String label;
 
-    private String owner;
+    private String username;
 
-    @Override
-    public void setUsername(String username) {
-        this.setOwner(username);
-    }
 }

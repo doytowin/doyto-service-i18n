@@ -16,17 +16,15 @@ import javax.persistence.Table;
 @Setter
 @Entity
 @Table(name = "i18n_resource_locale")
-public class LocaleEntity extends CommonEntity<Integer, Integer> {
+public class LocaleEntity extends CommonEntity<Integer, String> {
 
     private static final long serialVersionUID = 1L;
 
-    private Integer groupId;
-
-    private String owner;
+    private String groupName;
 
     private String locale;
 
-    private String baiduTranLang;
+    private String baiduLocale;
 
     private String language;
 
