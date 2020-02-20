@@ -1,17 +1,15 @@
 package win.doyto.i18n.module.group;
 
 import lombok.AllArgsConstructor;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Component;
 import win.doyto.i18n.common.CommonUtils;
+import win.doyto.i18n.common.TranslationTableDialect;
 import win.doyto.i18n.module.locale.LocaleRequest;
 import win.doyto.i18n.module.locale.LocaleService;
 import win.doyto.query.entity.EntityAspect;
 
 import java.util.HashMap;
-
-import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
 
 /**
  * GroupEntityAspect
@@ -25,6 +23,8 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
     private JdbcOperations jdbcOperations;
 
     private LocaleService localeService;
+
+    private TranslationTableDialect translationTableDialect;
 
     /**
      * 创建分组后
@@ -44,18 +44,7 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
     }
 
     public void createGroupTable(String owner, String group) {
-        String sql = StringUtils.join(new String[]{
-                "CREATE TABLE",
-                GROUP_FORMAT,
-                "(",
-                "    id INT(11) PRIMARY KEY NOT NULL AUTO_INCREMENT,",
-                "    label VARCHAR(100) NOT NULL,",
-                "    defaults VARCHAR(200) DEFAULT '' NOT NULL,",
-                "    memo VARCHAR(200) DEFAULT '',",
-                "    valid BIT(1) DEFAULT TRUE NOT NULL,",
-                "    CONSTRAINT UNIQUE INDEX i18n_group_i18n_label_index (label)",
-                ")"
-        }, " ");
+        String sql = translationTableDialect.buildTranslationTableDDL();
         HashMap<String, String> params = new HashMap<>();
         params.put("user", owner);
         params.put("group", group);

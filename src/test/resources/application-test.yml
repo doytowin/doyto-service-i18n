@@ -9,3 +9,8 @@ spring:
       name: i18n
       password: i18n
       roles: i18n, admin
+
+doyto:
+  query:
+    config:
+      dialect: win.doyto.i18n.common.HsqldbDialect
