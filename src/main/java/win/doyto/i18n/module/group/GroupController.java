@@ -24,7 +24,7 @@ import javax.validation.Valid;
 @Slf4j
 @JsonBody
 @RestController
-@RequestMapping({"/api/resource-group", "/api/group"})
+@RequestMapping("/api/group")
 @PreAuthorize("hasAnyRole('i18n')")
 @AllArgsConstructor
 class GroupController implements GroupApi {
