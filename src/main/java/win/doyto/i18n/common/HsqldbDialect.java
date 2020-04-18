@@ -1,8 +1,6 @@
 package win.doyto.i18n.common;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.context.annotation.Profile;
-import org.springframework.stereotype.Component;
 import win.doyto.query.core.Dialect;
 
 import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
@@ -12,8 +10,6 @@ import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
  *
  * @author f0rb on 2020-02-18
  */
-@Profile("test")
-@Component
 public class HsqldbDialect implements Dialect, TranslationTableDialect {
     @Override
     public String buildPageSql(String sql, int limit, long offset) {

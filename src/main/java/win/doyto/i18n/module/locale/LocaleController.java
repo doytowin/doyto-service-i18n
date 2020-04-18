@@ -3,10 +3,10 @@ package win.doyto.i18n.module.locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.common.web.controller.AbstractIQRSController;
-import win.doyto.common.web.response.ErrorCode;
-import win.doyto.common.web.response.JsonBody;
-import win.doyto.i18n.common.I18nErrorCode;
+import win.doyto.query.web.controller.AbstractIQRSController;
+import win.doyto.query.web.response.ErrorCode;
+import win.doyto.query.web.response.JsonBody;
+import win.doyto.query.web.response.PresetErrorCode;
 
 import java.util.Objects;
 import javax.validation.Valid;
@@ -53,8 +53,8 @@ class LocaleController extends AbstractIQRSController<LocaleEntity, Integer, Loc
             @RequestBody @Valid LocaleRequest localeRequest
     ) {
         LocaleEntity origin = get(id);
-        ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
-        ErrorCode.assertTrue(Objects.equals(localeRequest.getUsername(), origin.getCreateUserId()), I18nErrorCode.RECORD_NOT_FOUND);
+        ErrorCode.assertNotNull(origin, PresetErrorCode.ENTITY_NOT_FOUND);
+        ErrorCode.assertTrue(Objects.equals(localeRequest.getUsername(), origin.getCreateUserId()), PresetErrorCode.ENTITY_NOT_FOUND);
         origin.setLanguage(localeRequest.getLanguage());
         origin.setBaiduLocale(localeRequest.getBaiduLocale());
         update(origin);

@@ -1,0 +1,10 @@
+spring:
+  security:
+    user:
+      name: i18n
+      password: i18n
+      roles: i18n, admin
+
+logging:
+  level:
+    root: info

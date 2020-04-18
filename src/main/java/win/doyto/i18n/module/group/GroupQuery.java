@@ -2,7 +2,7 @@ package win.doyto.i18n.module.group;
 
 import lombok.*;
 import lombok.experimental.SuperBuilder;
-import win.doyto.auth.core.UsernameAware;
+import win.doyto.i18n.common.UsernameAware;
 import win.doyto.query.core.PageQuery;
 
 /**

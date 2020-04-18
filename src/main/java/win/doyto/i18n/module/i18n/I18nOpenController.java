@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-import win.doyto.common.web.response.JsonBody;
 import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.i18n.module.locale.LocaleQuery;
+import win.doyto.query.web.response.JsonBody;
 
 import java.util.HashMap;
 import java.util.List;

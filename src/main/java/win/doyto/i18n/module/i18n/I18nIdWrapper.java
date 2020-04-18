@@ -1,8 +1,6 @@
 package win.doyto.i18n.module.i18n;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
+import lombok.*;
 import win.doyto.query.core.IdWrapper;
 
 /**
@@ -11,10 +9,11 @@ import win.doyto.query.core.IdWrapper;
  * @author f0rb on 2020-01-30
  */
 @Getter
+@NoArgsConstructor
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class I18nIdWrapper implements IdWrapper<Integer> {
 
-    @NonNull
     private Integer id;
 
     @NonNull
@@ -23,8 +22,10 @@ public class I18nIdWrapper implements IdWrapper<Integer> {
     @NonNull
     private String group;
 
+    private String locale;
+
     @Override
     public String toCacheKey() {
-        return id + "";
+        return String.valueOf(id);
     }
 }

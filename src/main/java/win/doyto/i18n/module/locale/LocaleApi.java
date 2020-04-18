@@ -1,6 +1,6 @@
 package win.doyto.i18n.module.locale;
 
-import win.doyto.common.web.controller.RestApi;
+import win.doyto.query.web.controller.RestApi;
 
 import java.util.List;
 

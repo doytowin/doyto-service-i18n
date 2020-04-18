@@ -3,9 +3,9 @@ package win.doyto.i18n.module.i18n;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import win.doyto.common.web.response.ErrorCode;
 import win.doyto.query.service.AbstractDynamicService;
 import win.doyto.query.service.PageList;
+import win.doyto.query.web.response.ErrorCode;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.Map;
  */
 @Slf4j
 @Service
+@SuppressWarnings("java:S3740")
 public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQuery> {
 
     private static String getGroupName(String user, String group) {
@@ -90,8 +91,25 @@ public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQ
         }
     }
 
+    @Transactional
     public void saveTranslation(List<I18nView> i18nViewList) {
-        int ret = batchInsert(i18nViewList, "locale_${locale}");
+        if (i18nViewList.isEmpty()) {
+            log.info("翻译记录为空");
+            return;
+        }
+        I18nView first = i18nViewList.get(0);
+        I18nQuery query = I18nQuery.builder().user(first.getUser()).group(first.getGroup()).locale(first.getLocale()).build();
+        ArrayList<I18nView> addList = new ArrayList<>();
+        for (I18nView i18nView : i18nViewList) {
+            I18nView origin = get(query.setLabel(i18nView.getLabel()));
+            if (origin != null) {
+                i18nView.setId(origin.getId());
+                patch(i18nView);
+            } else {
+                addList.add(i18nView);
+            }
+        }
+        int ret = batchInsert(addList);
         log.info("保存翻译完毕: {} / {}", ret, i18nViewList.size());
     }
 

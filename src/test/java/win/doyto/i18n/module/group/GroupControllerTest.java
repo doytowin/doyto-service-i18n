@@ -2,9 +2,9 @@ package win.doyto.i18n.module.group;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import win.doyto.common.web.response.ErrorCodeException;
 import win.doyto.i18n.common.TestConstant;
 import win.doyto.query.service.PageList;
+import win.doyto.query.web.response.ErrorCodeException;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -108,7 +108,7 @@ public class GroupControllerTest {
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 1001)
+                .hasFieldOrPropertyWithValue("code", 9)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
 
@@ -124,7 +124,7 @@ public class GroupControllerTest {
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 1001)
+                .hasFieldOrPropertyWithValue("code", 9)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
 
@@ -141,7 +141,7 @@ public class GroupControllerTest {
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 1001)
+                .hasFieldOrPropertyWithValue("code", 9)
                 .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
         }
     }

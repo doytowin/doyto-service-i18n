@@ -39,6 +39,6 @@ public class I18nView extends IntegerId {
 
     @Override
     public I18nIdWrapper toIdWrapper() {
-        return new I18nIdWrapper(id, user, group);
+        return new I18nIdWrapper(id, user, group, locale);
     }
 }

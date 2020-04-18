@@ -5,7 +5,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.experimental.SuperBuilder;
-import win.doyto.auth.core.UsernameAware;
+import win.doyto.i18n.common.UsernameAware;
 import win.doyto.query.core.PageQuery;
 
 /**

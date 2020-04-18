@@ -2,7 +2,8 @@ package win.doyto.i18n;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.cloud.openfeign.EnableFeignClients;
+import org.springframework.boot.context.properties.ConfigurationPropertiesScan;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.ComponentScan;
 
 /**
@@ -11,8 +12,9 @@ import org.springframework.context.annotation.ComponentScan;
  * @author f0rb on 2017-03-29.
  */
 @SpringBootApplication
-@ComponentScan(basePackages = {"win.doyto.i18n", "win.doyto.common.web.component", "win.doyto.auth.component"})
-@EnableFeignClients
+@ConfigurationPropertiesScan
+@EnableConfigurationProperties
+@ComponentScan(basePackages = {"win.doyto.i18n", "win.doyto.query.web.component"})
 public class I18nApp {
     public static void main(String[] args) {
         SpringApplication.run(I18nApp.class, args);

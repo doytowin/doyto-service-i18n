@@ -1,5 +1,6 @@
 package win.doyto.i18n.module.baidu;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.Setter;
@@ -21,6 +22,7 @@ public class BaiduTranResponse {
     String to;
 
     @JsonAlias("trans_result")
+    @JSONField(name = "trans_result")
     BaiduTranEntry[] transResult;
 
     String monLang;

@@ -3,14 +3,14 @@ package win.doyto.i18n.module.group;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.auth.annotation.CurrentUser;
-import win.doyto.common.web.response.ErrorCode;
-import win.doyto.common.web.response.JsonBody;
-import win.doyto.i18n.common.I18nErrorCode;
 import win.doyto.query.service.PageList;
 import win.doyto.query.validation.CreateGroup;
+import win.doyto.query.web.response.ErrorCode;
+import win.doyto.query.web.response.JsonBody;
+import win.doyto.query.web.response.PresetErrorCode;
 
 import java.util.Date;
 import javax.annotation.Resource;
@@ -50,17 +50,21 @@ class GroupController implements GroupApi {
     @PutMapping("update/label")
     public void updateLabel(@RequestBody @Valid GroupRequest group) {
         GroupEntity origin = groupService.get(group.getId());
-        ErrorCode.assertNotNull(origin, I18nErrorCode.RECORD_NOT_FOUND);
+        ErrorCode.assertNotNull(origin, PresetErrorCode.ENTITY_NOT_FOUND);
         origin.setLabel(group.getLabel());
         origin.setUpdateTime(new Date());
         groupService.update(origin);
     }
 
     @DeleteMapping("{id}")
-    public void delete(@CurrentUser String operator, @PathVariable("id") Integer id) {
+    public void delete(Authentication user, @PathVariable("id") Integer id) {
+        delete(user.getName(), id);
+    }
+
+    public void delete(String operator, Integer id) {
         GroupEntity groupEntity = groupService.get(id);
-        ErrorCode.assertNotNull(groupEntity, I18nErrorCode.RECORD_NOT_FOUND);
-        ErrorCode.assertTrue(groupEntity.getCreateUserId().equals(operator), I18nErrorCode.RECORD_NOT_FOUND);
+        ErrorCode.assertNotNull(groupEntity, PresetErrorCode.ENTITY_NOT_FOUND);
+        ErrorCode.assertTrue(groupEntity.getCreateUserId().equals(operator), PresetErrorCode.ENTITY_NOT_FOUND);
         groupEntity.setDeleted(true);
         groupService.update(groupEntity);
     }
@@ -83,7 +87,7 @@ class GroupController implements GroupApi {
 
     public GroupResponse getById(Integer groupId) {
         GroupEntity groupEntity = groupService.get(groupId);
-        ErrorCode.assertTrue(groupEntity != null && !groupEntity.getDeleted(), I18nErrorCode.RECORD_NOT_FOUND);
+        ErrorCode.assertTrue(groupEntity != null && !groupEntity.getDeleted(), PresetErrorCode.ENTITY_NOT_FOUND);
         return buildResponse(groupEntity);
     }
 

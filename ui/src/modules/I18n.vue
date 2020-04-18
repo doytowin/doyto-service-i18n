@@ -9,10 +9,11 @@
     <section>
       <el-table :data="crud.p.list" stripe style="width: 100%" fixed>
         <el-table-column type="index" width="40" fixed align="center"/>
-        <el-table-column prop="label" :label="$t('标签')" width="140" :show-overflow-tooltip="true" fixed/>
-        <el-table-column prop="defaults" :label="$t('默认文本')" width="140" :show-overflow-tooltip="true" fixed/>
-        <el-table-column width="120" v-for="(v, k) in crud.p.list[0]" v-if="k.substring(0,7) === 'locale_'"
+        <el-table-column prop="LABEL" :label="$t('标签')" width="100" :show-overflow-tooltip="true" fixed/>
+        <el-table-column prop="DEFAULTS" :label="$t('默认文本')" width="100" :show-overflow-tooltip="true" fixed/>
+        <el-table-column width="140" v-for="(v, k) in crud.p.list[0]" v-if="k.substring(0,7) === 'LOCALE_'"
           :key="k" :prop="k" :label="$t(k)" :show-overflow-tooltip="true"/>
+        <el-table-column prop="MEMO" :label="$t('备注')" width="200" :show-overflow-tooltip="true" fixed/>
       </el-table>
     </section>
     <footer ref="footer">

@@ -11,10 +11,10 @@ public class I18nControllerTest extends I18nAppTest {
 
     @Test
     public void testPage() throws Exception {
-        performGetAndExpectSuccess("/api/i18n/i18n", "pageNumber=1", "pageSize=5")
-                .andExpect(jsonPath($_DATA_TOTAL).value(8))
+        performGetAndExpectSuccess("/api/i18n/i18n", "pageNumber=2", "pageSize=5")
+                .andExpect(jsonPath($_DATA_TOTAL).value(12))
                 .andExpect(jsonPath("$.data.list").isArray())
-                .andExpect(jsonPath("$.data.list.length()").value(3));
+                .andExpect(jsonPath("$.data.list.length()").value(2));
 
     }
 

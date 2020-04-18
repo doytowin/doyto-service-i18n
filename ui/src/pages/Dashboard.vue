@@ -59,7 +59,7 @@
       DwLeftMenu
     },
     beforeCreate() {
-      axios.get(Cons.authUrl + 'user').then(rsp => {
+      axios.get(Cons.authUrl + 'session/user').then(rsp => {
         let json = rsp.data
         if (json.success) {
           this.user = json.data

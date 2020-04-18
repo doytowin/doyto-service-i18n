@@ -16,7 +16,7 @@ public class GroupTest extends I18nAppTest {
 
     @Test
     void create() throws Exception {
-        performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test\",\"label\":\"test\"}")
+        performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test2\",\"label\":\"test2\"}")
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.success").value(true))

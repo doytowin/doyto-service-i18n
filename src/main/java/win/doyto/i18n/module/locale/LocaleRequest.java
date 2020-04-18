@@ -2,7 +2,7 @@ package win.doyto.i18n.module.locale;
 
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.auth.core.UsernameAware;
+import win.doyto.i18n.common.UsernameAware;
 
 /**
  * LocaleRequest

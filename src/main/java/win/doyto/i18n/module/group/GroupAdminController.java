@@ -4,10 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import win.doyto.common.web.controller.AbstractRestController;
-import win.doyto.common.web.response.JsonBody;
-
-import javax.annotation.Resource;
+import win.doyto.query.web.controller.AbstractRestController;
+import win.doyto.query.web.response.JsonBody;
 
 /**
  * GroupController
@@ -20,13 +18,6 @@ import javax.annotation.Resource;
 @RequestMapping("/admin/group")
 @PreAuthorize("hasAnyRole('admin', 'admin:i18n')")
 public class GroupAdminController extends AbstractRestController<GroupEntity, Integer, GroupQuery, GroupRequest, GroupResponse> {
-    @Resource
-    private GroupService groupService;
-
-    @Override
-    protected GroupService getService() {
-        return groupService;
-    }
 
     @Override
     protected GroupResponse buildResponse(GroupEntity groupEntity) {

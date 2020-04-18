@@ -1,9 +1,6 @@
 package win.doyto.i18n.module.baidu;
 
 import org.junit.jupiter.api.Test;
-import win.doyto.i18n.I18nAppTest;
-
-import javax.annotation.Resource;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -13,10 +10,9 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
  *
  * @author f0rb on 2020-02-06
  */
-class BaiduTranServiceTest extends I18nAppTest {
+class BaiduTranServiceTest {
 
-    @Resource
-    private BaiduTranService baiduTranService;
+    private BaiduTranService baiduTranService = new BaiduTranService();
 
     @Test
     void translate() {

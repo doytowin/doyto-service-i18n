@@ -1,10 +1,10 @@
 package win.doyto.i18n.module.baidu;
 
+import com.alibaba.fastjson.JSON;
+import lombok.SneakyThrows;
 import org.apache.commons.codec.digest.DigestUtils;
-import org.springframework.cloud.openfeign.FeignClient;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.apache.http.client.fluent.Request;
+import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,13 +14,11 @@ import java.util.Map;
  *
  * @author f0rb on 2019-06-12
  */
-@FeignClient(value = "baidu", url = "http://api.fanyi.baidu.com/api")
-public interface BaiduTranService {
+@Service
+public class BaiduTranService {
 
-    @RequestMapping(value = "/trans/vip/translate", method = RequestMethod.GET)
-    BaiduTranResponse translate(@RequestParam Map<String, String> params);
-
-    default BaiduTranResponse translate(String query, String from, String to) {
+    @SneakyThrows
+    public BaiduTranResponse translate(String query, String from, String to) {
         String appId = "20170417000044993";
         String securityKey = "VaF807U3s7X6ZpRkcThL";
         String salt = String.valueOf(System.currentTimeMillis());
@@ -34,7 +32,16 @@ public interface BaiduTranService {
         params.put("appid", appId);
         params.put("salt", salt);
         params.put("sign", sign);
-        return translate(params);
+
+        StringBuilder sb = new StringBuilder();
+        for (Map.Entry<String, String> entry : params.entrySet()) {
+            sb.append(entry.getKey()).append("=").append(entry.getValue()).append("&");
+        }
+
+        return Request.Get("http://api.fanyi.baidu.com/api/trans/vip/translate?" + sb.toString())
+                      .connectTimeout(1000).execute()
+                      .handleResponse(httpResponse -> JSON.parseObject(httpResponse.getEntity().getContent(), BaiduTranResponse.class));
+
     }
 
 }

@@ -11,7 +11,7 @@ import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
  *
  * @author f0rb on 2020-02-19
  */
-@Profile("!test")
+@Profile({"prod"})
 @Component
 public class MySQLDialect implements TranslationTableDialect {
 
