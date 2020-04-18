@@ -54,12 +54,12 @@ public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQ
                 "label, defaults, IF(locale_${locale} IS NULL OR LENGTH(locale_${locale}) = 0, defaults, locale_${locale}) AS value");
     }
 
-    public List query(String user, String group) {
+    public List<Map> query(String user, String group) {
         checkGroup(user, group);
         return queryAll(I18nQuery.builder().user(user).group(group).build());
     }
 
-    public PageList page(I18nQuery i18nQuery) {
+    public PageList<Map> page(I18nQuery i18nQuery) {
         checkGroup(i18nQuery.getUser(), i18nQuery.getGroup());
         return new PageList<>(queryAll(i18nQuery), count(i18nQuery));
     }

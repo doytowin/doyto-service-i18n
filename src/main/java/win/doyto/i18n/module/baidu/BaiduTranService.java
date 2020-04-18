@@ -15,6 +15,7 @@ import java.util.Map;
  * @author f0rb on 2019-06-12
  */
 @Service
+@SuppressWarnings("java:S4790")
 public class BaiduTranService {
 
     @SneakyThrows

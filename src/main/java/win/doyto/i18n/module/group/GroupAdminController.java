@@ -19,23 +19,4 @@ import win.doyto.query.web.response.JsonBody;
 @PreAuthorize("hasAnyRole('admin', 'admin:i18n')")
 public class GroupAdminController extends AbstractRestController<GroupEntity, Integer, GroupQuery, GroupRequest, GroupResponse> {
 
-    @Override
-    protected GroupResponse buildResponse(GroupEntity groupEntity) {
-        GroupResponse groupResponse = new GroupResponse();
-        groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getGroupName());
-        groupResponse.setOwner(groupEntity.getCreateUserId());
-        groupResponse.setLabel(groupEntity.getLabel());
-        return groupResponse;
-    }
-
-    @Override
-    protected GroupEntity buildEntity(GroupRequest groupRequest) {
-        GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setGroupName(groupRequest.getName());
-        groupEntity.setLabel(groupRequest.getLabel());
-        groupEntity.setCreateUserId(groupRequest.getUsername());
-        return groupEntity;
-    }
-
 }

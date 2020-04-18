@@ -7,6 +7,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import win.doyto.query.service.PageList;
+import win.doyto.query.util.BeanUtil;
 import win.doyto.query.validation.CreateGroup;
 import win.doyto.query.web.response.ErrorCode;
 import win.doyto.query.web.response.JsonBody;
@@ -33,13 +34,7 @@ class GroupController implements GroupApi {
     private GroupService groupService;
 
     protected GroupResponse buildResponse(GroupEntity groupEntity) {
-        GroupResponse groupResponse = new GroupResponse();
-        groupResponse.setId(groupEntity.getId());
-        groupResponse.setName(groupEntity.getGroupName());
-        groupResponse.setOwner(groupEntity.getCreateUserId());
-        groupResponse.setLabel(groupEntity.getLabel());
-        groupResponse.setCreateTime(groupEntity.getCreateTime());
-        return groupResponse;
+        return BeanUtil.convertTo(groupEntity, GroupResponse.class);
     }
 
     @GetMapping
@@ -72,8 +67,8 @@ class GroupController implements GroupApi {
     @PostMapping
     public void create(@RequestBody @Validated(CreateGroup.class) GroupRequest groupRequest) {
         GroupEntity groupEntity = new GroupEntity();
-        groupEntity.setCreateUserId(groupRequest.getUsername());
-        groupEntity.setGroupName(groupRequest.getName());
+        groupEntity.setCreateUserId(groupRequest.getCreateUserId());
+        groupEntity.setName(groupRequest.getName());
         groupEntity.setLabel(groupRequest.getLabel());
         groupEntity.setValid(true);
         groupEntity.setDeleted(false);

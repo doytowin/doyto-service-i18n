@@ -35,7 +35,6 @@ public class I18nXlsxView extends AbstractXlsxView {
         List<Map<String, Object>> data = (List<Map<String, Object>>) model.get("data");
 
         String groupName = (String) model.get("group");
-        String filename = "国际化_" + groupName;
         Sheet sheet = workbook.createSheet(groupName);
         sheet.setDefaultColumnWidth(10);
         sheet.setDefaultRowHeight((short) 300);
@@ -68,6 +67,7 @@ public class I18nXlsxView extends AbstractXlsxView {
             }
         }
 
+        String filename = "i18n_" + groupName + ".xlsx";
         setResponseFilename(filename, request, response);
     }
 
@@ -86,15 +86,10 @@ public class I18nXlsxView extends AbstractXlsxView {
     }
 
     private void setResponseFilename(String filename, HttpServletRequest request, HttpServletResponse response) {
-        if (filename != null && filename.length() > 0) {
-            if (!filename.endsWith(".xls") || !filename.endsWith(".xlsx")) {
-                filename = filename + ".xlsx";
-            }
-            String userAgent = request.getHeader("User-Agent");
-            byte[] bytes = userAgent.contains("MSIE") ? filename.getBytes() : filename.getBytes(StandardCharsets.UTF_8); // filename.getBytes("UTF-8")处理safari的乱码问题
-            filename = new String(bytes, StandardCharsets.ISO_8859_1); // 各浏览器基本都支持ISO编码
-            response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", filename)); // 文件名外的双引号处理firefox的空格截断问题
-        }
+        String userAgent = request.getHeader("User-Agent");
+        byte[] bytes = userAgent.contains("MSIE") ? filename.getBytes() : filename.getBytes(StandardCharsets.UTF_8); // filename.getBytes("UTF-8")处理safari的乱码问题
+        filename = new String(bytes, StandardCharsets.ISO_8859_1); // 各浏览器基本都支持ISO编码
+        response.setHeader("Content-disposition", String.format("attachment; filename=\"%s\"", filename)); // 文件名外的双引号处理firefox的空格截断问题
     }
 }
 

@@ -94,7 +94,7 @@ public class I18nController {
             i18nView.setUser(username);
             i18nView.setGroup(group);
             i18nView.setLocale(locale);
-            if (StringUtils.isNotBlank(i18nView.getDefaults()) && StringUtils.isBlank(i18nView.getValue())) {
+            if (StringUtils.isNotBlank(i18nView.getDefaults()) && StringUtils.isEmpty(i18nView.getValue())) {
                 BaiduTranResponse baiduTranResponse = baiduTranService.translate(i18nView.getDefaults(), "auto", to);
                 if (baiduTranResponse.success()) {
                     if (baiduTranResponse.getTransResult() != null) {

@@ -1,5 +1,6 @@
 package win.doyto.i18n.module.group;
 
+import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -16,6 +17,7 @@ public class GroupResponse {
 
     private Integer id;
 
+    @JsonAlias("createUserId")
     private String owner;
 
     private String name;

@@ -38,7 +38,7 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
     @Override
     public void afterCreate(GroupEntity groupEntity) {
         String owner = groupEntity.getCreateUserId();
-        String group = groupEntity.getGroupName();
+        String group = groupEntity.getName();
         this.createGroupTable(owner, group);
         this.insertZhCn(owner, group);
     }

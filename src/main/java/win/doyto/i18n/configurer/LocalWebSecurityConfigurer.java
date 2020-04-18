@@ -27,6 +27,7 @@ import static win.doyto.query.web.util.HttpUtil.writeJson;
  */
 @Profile({"local", "test", "demo"})
 @Configuration
+@SuppressWarnings({"java:S4834", "java:S4502"})
 public class LocalWebSecurityConfigurer extends WebSecurityConfigurerAdapter {
 
     @Override

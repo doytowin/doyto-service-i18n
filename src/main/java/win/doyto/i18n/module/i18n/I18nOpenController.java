@@ -7,12 +7,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 import win.doyto.i18n.module.locale.LocaleApi;
 import win.doyto.i18n.module.locale.LocaleQuery;
 import win.doyto.query.web.response.JsonBody;
 
-import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -30,25 +28,8 @@ public class I18nOpenController {
     private I18nService i18nService;
     private LocaleApi localeApi;
 
-    /**
-     * 导出所有的标签和语言
-     *
-     * @param group 资源分组名称
-     * @return i18n.xlsx
-     */
-    @GetMapping("{user}/{group}.xlsx")
-    public ModelAndView exportAllToExcel(@PathVariable("user") String user, @PathVariable("group") String group) {
-        List<?> data = i18nService.query(user, group);
-        HashMap<String, Object> map = new HashMap<>();
-        map.put("data", data);
-        map.put("group", group);
-        return new ModelAndView(new I18nXlsxView(), map);
-    }
-
-    @GetMapping("{user}/{group}/locale")
-    public Object query(LocaleQuery localeQuery, @PathVariable("user") String user, @PathVariable("group") String group) {
-        localeQuery.setCreateUserId(user);
-        localeQuery.setGroupName(group);
+    @GetMapping("{username}/{group}/locale")
+    public Object query(LocaleQuery localeQuery) {
         return localeApi.list(localeQuery);
     }
 

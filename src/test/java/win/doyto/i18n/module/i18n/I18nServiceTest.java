@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static win.doyto.i18n.common.TestConstant.DEFAULT_GROUP;
 import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
@@ -29,19 +30,23 @@ public class I18nServiceTest extends I18nAppTest {
     public void queryLanguageByLocale() throws Exception {
         List<I18nView> ret = i18nService.queryWithDefault(DEFAULT_USER, DEFAULT_GROUP, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
+        assertThat(ret).hasSize(12);
     }
 
     @Test
     public void queryAllLanguage() throws Exception {
-        List ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP);
+        List<Map> ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP);
+        assertThat(ret).hasSize(12);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
     public void pageAllLanguage() throws Exception {
-        I18nQuery query = I18nQuery.builder().user(DEFAULT_USER).group(DEFAULT_GROUP).build();
-        query.setPageNumber(2);
-        PageList ret = i18nService.page(query);
+        I18nQuery query = I18nQuery.builder().user(DEFAULT_USER).group(DEFAULT_GROUP).pageNumber(1).build();
+        PageList<Map> ret = i18nService.page(query);
+        assertThat(ret.getTotal()).isEqualTo(12);
+        assertThat(ret.getList()).hasSize(2);
+
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
