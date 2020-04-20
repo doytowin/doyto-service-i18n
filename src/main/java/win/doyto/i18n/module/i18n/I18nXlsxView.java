@@ -46,7 +46,7 @@ public class I18nXlsxView extends AbstractXlsxView {
         }
         for (Map<String, Object> result : data) {
             if (row % 100 == 0 && log.isDebugEnabled()) {
-                log.debug("已处理{}行数据", row );
+                log.debug("已处理{}行数据", row);
             }
 
             row++;//数据从第一行开始填充
@@ -73,15 +73,7 @@ public class I18nXlsxView extends AbstractXlsxView {
 
     private void writeCell(Cell cell, Object datum) {
         if (datum != null) {
-            if (datum instanceof Number) {
-                if (datum instanceof Double) {
-                    cell.setCellValue((Double) datum);
-                } else {
-                    cell.setCellValue(Double.parseDouble(String.valueOf(datum)));
-                }
-            } else {
-                cell.setCellValue(String.valueOf(datum));
-            }
+            cell.setCellValue(String.valueOf(datum));
         }
     }
 
