@@ -94,7 +94,7 @@ new Vue({
 
     Util.handleFailure = function (data) {
       if (data && !data.success) {
-        if (data.code === 101) {
+        if (data.code === 1001) {
           if (!location.hash.startsWith('#/?redirect=')) {
             vm.$router.replace('/?redirect=' + encodeURIComponent(location.hash.substring(1)))
           }

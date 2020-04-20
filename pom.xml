@@ -12,7 +12,7 @@
 
     <version>2.2.1</version>
 
-    <groupId>win.doyto.servive</groupId>
+    <groupId>win.doyto.service</groupId>
     <artifactId>doyto-service-i18n</artifactId>
     <description>多语言翻译服务</description>
 

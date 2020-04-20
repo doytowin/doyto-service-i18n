@@ -1,8 +1,8 @@
 doyto-service-i18n
 ---
 [![License](http://img.shields.io/:license-apache-brightgreen.svg)](http://www.apache.org/licenses/LICENSE-2.0.html)
-[![Sonar Stats](https://sonarcloud.io/api/project_badges/measure?project=win.doyto%3Adoyto-service-i18n&metric=alert_status)](https://sonarcloud.io/dashboard?id=win.doyto%3Adoyto-service-i18n)
-[![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=win.doyto%3Adoyto-service-i18n&metric=coverage)](https://sonarcloud.io/component_measures?id=win.doyto%3Adoyto-service-i18n&metric=coverage)
+[![Sonar Stats](https://sonarcloud.io/api/project_badges/measure?project=win.doyto.service%3Adoyto-service-i18n&metric=alert_status)](https://sonarcloud.io/dashboard?id=win.doyto.service%3Adoyto-service-i18n)
+[![Coverage Status](https://sonarcloud.io/api/project_badges/measure?project=win.doyto.service%3Adoyto-service-i18n&metric=coverage)](https://sonarcloud.io/component_measures?id=win.doyto.service%3Adoyto-service-i18n&metric=coverage)
 
 ### 技术架构
 

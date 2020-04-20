@@ -1,0 +1,6 @@
+server:
+  port: @docker.expose@
+
+spring:
+  application:
+    name: @project.artifactId@

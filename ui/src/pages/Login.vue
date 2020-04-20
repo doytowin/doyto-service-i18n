@@ -50,7 +50,7 @@
       const params = new URLSearchParams()
       params.append('username', this.username)
       params.append('password', this.password)
-      params.append('rememberMe', true)
+      params.append('remember-me', true)
       axios.post(Cons.authUrl + 'login', params)
         .then((response) => {
           // console.log(response)
@@ -63,7 +63,7 @@
             }
           } else {
             this.$message({
-              message: (ret && ret.info) || '登录失败',
+              message: (ret && ret.message) || '登录失败',
               type: 'error'
             })
           }

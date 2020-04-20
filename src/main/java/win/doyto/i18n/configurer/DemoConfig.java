@@ -1,8 +1,8 @@
 package win.doyto.i18n.configurer;
 
+import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import win.doyto.i18n.common.HsqldbDialect;
@@ -16,7 +16,7 @@ import javax.sql.DataSource;
  *
  * @author f0rb on 2020-04-18
  */
-@Profile({"demo", "test"})
+@ConditionalOnClass(name = "org.hsqldb.jdbc.JDBCDriver")
 @Configuration
 public class DemoConfig {
 

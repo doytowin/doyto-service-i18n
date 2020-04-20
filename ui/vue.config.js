@@ -13,7 +13,7 @@ let proxy = (host) => {
 module.exports = {
   devServer: {
     proxy: {
-      '/user': proxy('http://localhost:10301/api/'),
+      '/session': proxy(),
       '/login': proxy(),
       '/logout': proxy(),
       '/api': proxy(),

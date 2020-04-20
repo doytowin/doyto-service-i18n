@@ -6,18 +6,6 @@ spring:
       name: i18n
       password: i18n
       roles: i18n, admin
-  sleuth:
-    messaging:
-      enabled: false
-  cloud:
-    bus:
-      enabled: false
-  datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://localhost:3306/local?autoReconnect=true&useSSL=false&allowPublicKeyRetrieval=true
-    username: ${MYSQL_USER:root}
-    password: ${MYSQL_PASSWORD:root}
 
 logging:
   level:
