@@ -13,7 +13,7 @@
         <el-table-column prop="DEFAULTS" :label="$t('默认文本')" width="100" :show-overflow-tooltip="true" fixed/>
         <el-table-column width="140" v-for="(v, k) in crud.p.list[0]" v-if="/^LOCALE_/i.test(k)"
           :key="k" :prop="k" :label="$t(k)" :show-overflow-tooltip="true"/>
-        <el-table-column prop="MEMO" :label="$t('备注')" width="200" :show-overflow-tooltip="true" fixed/>
+        <el-table-column prop="MEMO" :label="$t('备注')" width="200" :show-overflow-tooltip="true" fixed="right"/>
       </el-table>
     </section>
     <footer ref="footer">
