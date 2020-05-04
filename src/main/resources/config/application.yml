@@ -15,3 +15,7 @@ spring:
         no-store: false
         mustRevalidate: false
         max-age: 7d
+
+  mvc:
+    contentnegotiation:
+      favor-path-extension: true

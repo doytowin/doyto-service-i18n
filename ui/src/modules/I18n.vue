@@ -1,7 +1,7 @@
 <template>
   <div class="module-wrapper" ref="wrapper">
     <header ref="header">
-      <a class="el-button el-button--default" :href="exportGroup(group)" style="text-decoration:none"><t>导出</t><t/>Excel</a>
+      <a class="el-button el-button--default" :href="exportGroup()" style="text-decoration:none"><t>导出</t><t/>Excel</a>
       <!--<el-button v-t>打包JSON格式</el-button>
       <el-button v-t>打包Properties格式</el-button>
       <el-button v-t>从Excel文件导入</el-button>-->
@@ -33,8 +33,8 @@
     }
   },
   methods: {
-    exportGroup(group) {
-      return Cons.openApi('i18n/' + group + '.xlsx')
+    exportGroup() {
+      return Cons.api('api/i18n/' + this.$route.params.group + '.xlsx')
     },
     refresh() {
       this.group = this.$route.params.group
