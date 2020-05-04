@@ -30,7 +30,7 @@ public class I18nOpenController {
 
     @GetMapping("{username}/{group}/locale")
     public Object query(LocaleQuery localeQuery) {
-        return localeApi.list(localeQuery);
+        return localeApi.query(localeQuery);
     }
 
     @GetMapping("{user}/{group}/{locale}.json")

@@ -21,29 +21,29 @@ public class LocaleControllerTest {
 
     @BeforeEach
     void setUp() throws Exception {
-        localeController.add(BeanUtil.loadJsonData("/locale.json", new TypeReference<List<LocaleRequest>>() {}));
+        localeController.add(BeanUtil.loadJsonData("/locale.json", new TypeReference<List<LocaleEntity>>() {}));
     }
 
     @Test
     public void page() {
-        PageList<LocaleResponse> page = localeController.page(LocaleQuery.builder().createUserId(TestConstant.DEFAULT_USER).build());
+        PageList<LocaleEntity> page = localeController.page(LocaleQuery.builder().createUserId(TestConstant.DEFAULT_USER).build());
         assertThat(page.getTotal()).isEqualTo(3);
         assertThat(page.getList()).element(0)
                 .hasFieldOrPropertyWithValue("locale", "zh_CN")
                 .hasFieldOrPropertyWithValue("baiduLocale", "zh");
 
-        assertThat(page.getList()).extracting(LocaleResponse::getBaiduLocale)
+        assertThat(page.getList()).extracting(LocaleEntity::getBaiduLocale)
                 .containsExactly("zh", "en", "jp");
     }
 
     @Test
     void update() {
-        LocaleRequest localeRequest = new LocaleRequest();
-        localeRequest.setLocale("zh");
-        localeRequest.setLanguage("Chinese");
-        localeRequest.setBaiduLocale("zh2");
-        localeRequest.setUsername(TestConstant.DEFAULT_USER);
-        localeController.update(1, localeRequest);
+        LocaleEntity localeEntity = new LocaleEntity();
+        localeEntity.setLocale("zh");
+        localeEntity.setLanguage("Chinese");
+        localeEntity.setBaiduLocale("zh2");
+        localeEntity.setCreateUserId(TestConstant.DEFAULT_USER);
+        localeController.update(1, localeEntity);
 
         assertThat(localeController.getById(1))
                 .hasFieldOrPropertyWithValue("locale", "zh_CN")

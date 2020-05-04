@@ -28,6 +28,6 @@ public class LocaleEntity extends CommonEntity<Integer, String> {
 
     private String language;
 
-    private Boolean deleted;
+    private boolean deleted;
 
 }
