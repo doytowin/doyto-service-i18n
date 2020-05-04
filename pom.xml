@@ -7,7 +7,7 @@
     <parent>
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-starter-parent</artifactId>
-         <version>2.2.6.RELEASE</version>
+        <version>2.2.6.RELEASE</version>
     </parent>
 
     <version>2.2.1</version>
@@ -17,10 +17,6 @@
     <description>多语言翻译服务</description>
 
     <properties>
-        <argLine/>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <java.version>1.8</java.version>
-
         <start-class>win.doyto.i18n.I18nApp</start-class>
         <docker.expose>10301</docker.expose>
     </properties>
