@@ -3,6 +3,7 @@ package win.doyto.i18n.module.i18n;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import win.doyto.i18n.common.I18nErrorCode;
 import win.doyto.query.service.AbstractDynamicService;
 import win.doyto.query.service.PageList;
 import win.doyto.query.web.response.ErrorCode;
@@ -73,21 +74,15 @@ public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQ
         try {
             existGroup(user, group);
         } catch (Exception e) {
-            ErrorCode.fail(ErrorCode.build(-1 ,"多语言分组未配置: " + getGroupName(user, group)));
+            ErrorCode.fail(I18nErrorCode.GROUP_NOT_FOUND.build(getGroupName(user, group)));
         }
     }
 
     public void checkGroupAndLocale(String user, String group, String locale) {
-        ErrorCode.assertTrue(existLocale(user, group, locale), ErrorCode.build(-1, "多语言分组[" + getGroupName(user, group) + "]未配置语种: " + locale));
-    }
-
-    private boolean existLocale(String user, String group, String locale) {
         try {
             query(user, group, locale);
-            return true;
         } catch (Exception e) {
-            log.info("多语言分组[{}]不存在语种: {}", getGroupName(user, group), locale);
-            return false;
+            ErrorCode.fail(I18nErrorCode.LOCALE_NOT_FOUND.build(getGroupName(user, group), locale));
         }
     }
 

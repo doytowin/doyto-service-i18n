@@ -14,7 +14,8 @@ public class GroupTest extends I18nAppTest {
 
     @Test
     void create() throws Exception {
-        performGetAndExpectFail("/api/i18n/test2");
+        performGetAndExpectFail("/api/i18n/test2")
+                .andExpect(jsonPath("$.code").value(2001));
         performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test2\",\"label\":\"测试2\"}");
         performGetAndExpectSuccess("/api/i18n/test2")
                 .andExpect(jsonPath($_DATA_TOTAL).value(0));
