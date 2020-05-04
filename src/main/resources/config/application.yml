@@ -4,3 +4,14 @@ server:
 spring:
   application:
     name: @project.artifactId@
+
+  resources:
+    chain:
+      compressed: true
+    cache:
+      period: 1d
+      cachecontrol:
+        no-cache: false
+        no-store: false
+        mustRevalidate: false
+        max-age: 7d
