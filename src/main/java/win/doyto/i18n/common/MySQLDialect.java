@@ -26,7 +26,7 @@ public class MySQLDialect implements TranslationTableDialect {
                 "    defaults VARCHAR(1000) DEFAULT '' NOT NULL,",
                 "    memo VARCHAR(200) DEFAULT '',",
                 "    valid BIT(1) DEFAULT TRUE NOT NULL,",
-                "    CONSTRAINT UNIQUE INDEX i18n_group_i18n_label_index (label)",
+                "    CONSTRAINT UNIQUE INDEX uniq_" + GROUP_FORMAT + "_label (label)",
                 ")"
         }, " ");
     }

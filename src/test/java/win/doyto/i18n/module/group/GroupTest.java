@@ -22,4 +22,11 @@ public class GroupTest extends I18nAppTest {
                 .andExpect(jsonPath("$.success").value(true))
         ;
     }
+
+    @Test
+    void fixUniqIndexConflict() throws Exception {
+        performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test3\",\"label\":\"test3\"}");
+        performGetAndExpectSuccess("/api/i18n/test3")
+                .andExpect(jsonPath($_DATA_TOTAL).value(0));
+    }
 }

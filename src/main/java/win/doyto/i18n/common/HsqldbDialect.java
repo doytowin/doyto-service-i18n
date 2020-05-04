@@ -27,7 +27,7 @@ public class HsqldbDialect implements Dialect, TranslationTableDialect {
                 "    defaults VARCHAR(1000) DEFAULT '' NOT NULL,",
                 "    memo VARCHAR(200) DEFAULT '',",
                 "    valid BIT(1) DEFAULT TRUE NOT NULL,",
-                "    CONSTRAINT uniq_i18n_data_label UNIQUE (label)",
+                "    CONSTRAINT uniq_" + GROUP_FORMAT + "_label UNIQUE (label)",
                 ")"
         }, " ");
     }
