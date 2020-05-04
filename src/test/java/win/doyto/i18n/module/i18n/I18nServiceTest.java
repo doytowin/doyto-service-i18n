@@ -43,7 +43,7 @@ public class I18nServiceTest extends I18nAppTest {
     @Test
     public void pageAllLanguage() throws Exception {
         I18nQuery query = I18nQuery.builder().user(DEFAULT_USER).group(DEFAULT_GROUP).pageNumber(1).build();
-        PageList<Map> ret = i18nService.page(query);
+        PageList<Map> ret = i18nService.paging(query);
         assertThat(ret.getTotal()).isEqualTo(12);
         assertThat(ret.getList()).hasSize(2);
 

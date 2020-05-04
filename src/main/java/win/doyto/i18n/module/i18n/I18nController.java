@@ -46,7 +46,7 @@ public class I18nController {
     @GetMapping("{group}")
     public Object exportAll(Authentication user, I18nQuery i18nQuery) {
         i18nQuery.setUser(user.getName());
-        PageList<?> data = i18nService.page(i18nQuery);
+        PageList<?> data = i18nService.paging(i18nQuery);
         log.info("导出数据: {}条", data.getTotal());
         return data;
     }
