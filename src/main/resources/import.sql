@@ -67,6 +67,7 @@ CREATE TABLE i18n_data_i18n_test
     updateUserId varchar(30) null,
     updateTime TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL,
     valid bit DEFAULT b'1' NOT NULL,
+    locale_zh_CN VARCHAR(1000) DEFAULT '' NOT NULL,
     CONSTRAINT uniq_i18n_data_i18n_test_label UNIQUE (label)
 );
 
@@ -76,6 +77,7 @@ insert into i18n_resource_group (id, groupName, label, createUserId, createTime,
 insert into i18n_resource_locale (groupId, locale, language, baiduLocale, groupName, createUserId, createTime, updateUserId, updateTime, deleted) values (1, 'zh_CN', '简体中文', 'zh', 'i18n', 'i18n', '2019-05-22 14:11:55', 'i18n', '2020-02-20 00:45:47', 0);
 insert into i18n_resource_locale (groupId, locale, language, baiduLocale, groupName, createUserId, createTime, updateUserId, updateTime, deleted) values (1, 'en_US', 'English(US)', 'en', 'i18n', 'i18n', '2019-05-22 14:11:56', 'i18n', '2020-02-20 00:45:48', 0);
 insert into i18n_resource_locale (groupId, locale, language, baiduLocale, groupName, createUserId, createTime, updateUserId, updateTime, deleted) values (1, 'ja_JP', '日本語', 'jp', 'i18n', 'i18n', '2019-05-22 14:11:57', 'i18n', '2020-02-20 00:45:49', 0);
+insert into i18n_resource_locale (groupId, locale, language, baiduLocale, groupName, createUserId, createTime, updateUserId, updateTime, deleted) values (2, 'zh_CN', '简体中文', 'zh', 'test', 'i18n', '2019-05-22 14:11:55', 'i18n', '2020-02-20 00:45:47', 0);
 
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values (' ', '', '不间断空格0xA0', true, '', ' ', '');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values (' ', '', '普通空格0x20', true, '', ' ', '');
@@ -85,7 +87,7 @@ insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, loc
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('取消', '取消', '', true, '取消', 'Cancel', 'キャンセル');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('标签', '标签', '', true, '标签', 'Label', 'ラベル');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('locale_ko', '朝鲜语', '', true, '韩语', 'Korean', '朝鮮語');
-insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('locale_zh_CN', '中文', '', true, '中文', 'Chinese', '中国語');
+insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('locale_zh_cn', '中文', '', true, '中文', 'Chinese', '中国語');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('label', '标签', '', true, '标签', 'Label', 'ラベル');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('语种', '语种', '', true, '语种', 'Locale', '言語');
 insert into i18n_data_i18n_i18n (label, defaults, memo, valid, locale_zh_CN, locale_en_US, locale_ja_JP) values ('管理', '管理', '', true, '管理', '', '管理');

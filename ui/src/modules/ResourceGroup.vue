@@ -43,7 +43,7 @@
   data() {
     return {
       tableHeight: 0,
-      crud: new Crud(this.$resource(Cons.api('api/group/{id}')))
+      crud: new Crud(this.$resource(Cons.api('group{/id}')))
     }
   },
   watch: {

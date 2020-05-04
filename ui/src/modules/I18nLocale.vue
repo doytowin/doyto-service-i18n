@@ -13,11 +13,11 @@
           <template slot-scope="scope" slot="header">
             <el-dropdown @command="changeLocale">
               <span class="el-dropdown-link">
-                <t>locale_{{locale}}</t>
+                <t>locale_{{locale.toLowerCase()}}</t>
                 <i class="el-icon-arrow-down el-icon--right"/>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="item.locale" v-for="(item) in locales" v-t>locale_{{item.locale}}</el-dropdown-item>
+                <el-dropdown-item :command="item.locale" v-for="(item) in locales" v-t>locale_{{item.locale.toLowerCase()}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -39,9 +39,6 @@
       <el-form label-width="100px">
         <el-form-item :label="$t('标签')">
           <el-input v-model="lastAdd.label" ref="newLabel"/>
-        </el-form-item>
-        <el-form-item :label="$t('默认文本')">
-          <el-input v-model="lastAdd.defaults"/>
         </el-form-item>
         <el-form-item :label="$t('翻译')">
           <el-input v-model="lastAdd.value"/>
@@ -104,18 +101,17 @@ export default {
     '$route': 'init'
   },
   methods: {
-    init () {
+    url(uri = '') {
+      return Cons.api('i18n/' + this.group + '/' + this.locale + uri)
+    },
+    init() {
       // this.console = console
       this.$root.$emit('loading')
 
       this.group = this.$route.params.group
       this.locale = this.$route.params.locale
-      var url = '{host}api/i18n/{group}/{locale}'
-        .replace(/{host}/, Cons.apiHost)
-        .replace(/{group}/, this.group)
-        .replace(/{locale}/, this.locale)
 
-      axios.get(url).then(
+      axios.get(this.url()).then(
         response => {
           // get body data
           let json = response.data
@@ -132,13 +128,9 @@ export default {
           }
           this.$root.$emit('loaded')
         },
-        response => {
-          // error callback
-          // let json = response.data
-          this.$root.$emit('loaded')
-        }
+        this.$root.handleError
       )
-      axios.get(Cons.api('api/locale?group=' + this.group)).then(
+      axios.get(Cons.api('locale?group=' + this.group)).then(
         response => {
           let json = response.data
           if (json.success) {
@@ -157,37 +149,27 @@ export default {
       let params = {}
       params[r.label] = r.value
 
-      let url = Cons.api('api/i18n/{group}/{locale}')
-        .replace(/{group}/, this.group)
-        .replace(/{locale}/, this.locale)
-      axios.post(url, params).then(response => {
-        // get body data
-        let json = response.data
-        bus.$emit('loaded')
-        if (!json.success) {
-          return Util.handleFailure(json)
-        }
+      axios.post(this.url(), params).then(response => {
+          // get body data
+          let json = response.data
+          bus.$emit('loaded')
+          if (!json.success) {
+            return Util.handleFailure(json)
+          }
 
-        let data = json.data
-        _recordOrigin(data)
-        this.list = data
-        // 重新加载列表后清理上次编辑的记录
-        this.lastEdit = undefined
-        bus.$emit('alert', {
-          content: '标签保存成功: ' + r.label,
-          state: 'success',
-          timeout: 1
-        })
-      }, response => {
-        // error callback
-        // console.log(response)
-        bus.$emit('loaded')
-        bus.$emit('alert', {
-          content: '保存失败[' + r.label + ']',
-          state: 'warning',
-          timeout: 1
-        })
-      })
+          let data = json.data
+          _recordOrigin(data)
+          this.list = data
+          // 重新加载列表后清理上次编辑的记录
+          this.lastEdit = undefined
+          bus.$emit('alert', {
+            content: '标签保存成功: ' + r.label,
+            state: 'success',
+            timeout: 1
+          })
+        },
+        this.$root.handleError
+      )
     },
     beforeAdd () {
       this.lastAdd = {}
@@ -203,19 +185,13 @@ export default {
     },
     baiduTranslate () {
       this.$root.$emit('loading')
-      let url = '{host}api/i18n/{group}/{locale}/auto'
-        .replace(/{host}/, Cons.apiHost)
-        .replace(/{group}/, this.group)
-        .replace(/{locale}/, this.locale)
-      axios.post(url).then(
+      axios.post(this.url("/auto")).then(
         response => {
           let json = response.data
           this.list = json.data
           this.$root.$emit('loaded')
         },
-        response => {
-          this.$root.$emit('loaded')
-        }
+        this.$root.handleError
       )
     },
     changeLocale: (command, vm) => {

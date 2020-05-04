@@ -1,7 +1,7 @@
 <template>
   <div class="module-wrapper" ref="wrapper">
     <header ref="header">
-      <el-button type="success" @click="crud.record={'group':group};crud.adding=true"><t>添加</t>{{$t(' ')}}<t>语种</t></el-button>
+      <el-button type="success" @click="crud.record={'groupName':$route.params.group};crud.adding=true"><t>添加</t>{{$t(' ')}}<t>语种</t></el-button>
     </header>
     <section>
       <el-table :data="crud.p.list" stripe style="width: 100%" fixed>
@@ -178,21 +178,15 @@ export default {
           value: 'vie'
         }
       ],
-      group: this.$route.params.group,
-      crud: new Crud(this.$resource(this.getUrl()))
+      crud: undefined
     }
   },
   created() {
     this.refresh()
   },
   methods: {
-    getUrl () {
-      let group = this.$route.params.group
-      return ('{host}api/locale/{id}?group=' + group).replace(/{host}/, Cons.apiHost)
-    },
     refresh () {
-      this.group = this.$route.params.group
-      this.crud = new Crud(this.$resource(this.getUrl()))
+      this.crud = new Crud(this.$resource(Cons.api('locale{/id}?group=' + this.$route.params.group)))
     }
   },
   watch: {

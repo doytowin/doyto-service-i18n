@@ -77,6 +77,11 @@ new Vue({
       languages: [],
       system: {
         name: '多语言管理系统'
+      },
+      handleError: err => {
+        let rsp = err.response;
+        Util.alert(rsp.status + ': ' + rsp.statusText)
+        this.$emit('loaded')
       }
     }
   },
@@ -85,9 +90,9 @@ new Vue({
     window.addEventListener('resize', function () {
       vm.$emit('resize')
     })
-    Util.alert = function (o) {
+    Util.alert = function (msg) {
       vm.$message({
-        message: o,
+        message: msg,
         type: 'error'
       })
     }
@@ -102,7 +107,7 @@ new Vue({
           Util.alert(data.message || '服务访问出错')
         }
       } else {
-        location.href = Cons.api('#/?redirect=' + encodeURIComponent(location.hash.substring(1)))
+        location.href = Cons.host('#/?redirect=' + encodeURIComponent(location.hash.substring(1)))
       }
     }
   },
@@ -123,13 +128,13 @@ new Vue({
     switchLocale (lang) {
       this.$emit('loading')
       axios.get(Cons.openApi('i18n/i18n/' + lang + '.json')).then(res => {
-        i18n.locale = lang
-        i18n.setLocaleMessage(lang, res.data.data)
-        this.lang = localStorage.lang = lang
-        this.$emit('loaded')
-      }, res => {
-        this.$emit('loaded')
-      })
+          i18n.locale = lang
+          i18n.setLocaleMessage(lang, res.data.data)
+          this.lang = localStorage.lang = lang
+          this.$emit('loaded')
+        },
+        this.handleError
+      )
     }
   },
   router,

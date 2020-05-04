@@ -38,7 +38,7 @@ export default{
     }
   },
   created () {
-    axios.get(Cons.api('api/group')).then(rsp => {
+    axios.get(Cons.api('group')).then(rsp => {
       let data = rsp.data
       if (data.success) {
         this.i18nGroups = data.data.list
