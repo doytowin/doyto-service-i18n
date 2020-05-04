@@ -25,7 +25,7 @@ public class GroupRequest implements UsernameAware {
     private String name;
 
     @NotNull
-    @Pattern(regexp = "\\w+")
+    @Pattern(regexp = "[\\W\\w]+")
     private String label;
 
     private String createUserId;

@@ -3,9 +3,7 @@ package win.doyto.i18n.module.group;
 import org.junit.jupiter.api.Test;
 import win.doyto.i18n.I18nAppTest;
 
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * GroupTest
@@ -16,11 +14,10 @@ public class GroupTest extends I18nAppTest {
 
     @Test
     void create() throws Exception {
-        performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test2\",\"label\":\"test2\"}")
-                .andDo(print())
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("$.success").value(true))
-        ;
+        performGetAndExpectFail("/api/i18n/test2");
+        performPostJsonAndExpectSuccess("/api/group/", "{\"name\":\"test2\",\"label\":\"测试2\"}");
+        performGetAndExpectSuccess("/api/i18n/test2")
+                .andExpect(jsonPath($_DATA_TOTAL).value(0));
     }
 
     @Test

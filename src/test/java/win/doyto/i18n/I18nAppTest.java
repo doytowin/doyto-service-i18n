@@ -6,7 +6,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -40,7 +39,7 @@ public abstract class I18nAppTest {
     public static final String $_SUCCESS = "$.success";
     public static final String $_DATA = "$.data";
     public static final String $_DATA_TOTAL = $_DATA + ".total";
-    protected static MockHttpSession mockHttpSession;
+    protected MockHttpSession mockHttpSession;
 
     @Resource
     protected MockMvc mockMvc;
@@ -73,6 +72,10 @@ public abstract class I18nAppTest {
         return performAndExpectSuccess(buildGet(url, args).session(mockHttpSession));
     }
 
+    protected ResultActions performGetAndExpectFail(String url, String... args) throws Exception {
+        return performAndExpectFail(buildGet(url, args).session(mockHttpSession));
+    }
+
     protected MockHttpServletRequestBuilder buildGet(String url, String... args) {
         MockHttpServletRequestBuilder requestBuilder = MockMvcRequestBuilders.get(url);
         for (String arg : args) {
@@ -97,10 +100,6 @@ public abstract class I18nAppTest {
 
     protected ResultActions performPostEmptyAndExpectSuccess(String url) throws Exception {
         return performPostJsonAndExpectSuccess(url, null);
-    }
-
-    protected ResultActions performUploadFile(String url, MockMultipartFile file) throws Exception {
-        return mockMvc.perform(MockMvcRequestBuilders.multipart(url).file(file).session(mockHttpSession));
     }
 
 }
