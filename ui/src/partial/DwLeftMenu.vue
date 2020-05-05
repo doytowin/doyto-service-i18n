@@ -8,14 +8,14 @@
       <el-submenu index="translation">
         <template slot="title">
           <i class="el-icon-goods"/>
-          <span slot="title" v-t>资源翻译</span>
+          <span slot="title"><t>资源</t><t></t><t>翻译</t></span>
         </template>
         <el-submenu :router="true" v-for="group in i18nGroups" :key="group.id" :index="'menu-' + group.id" :unique-opened="true" :collapse="$root.isCollapse">
           <template slot="title">
             <i class="el-icon-s-grid"/>{{group.label || group.name}}
           </template>
           <el-menu-item-group>
-            <el-menu-item :index="'/dashboard/i18n/' + group.name" v-t>
+            <el-menu-item :index="'/dashboard/i18n/' + group.name">
               <t>概览</t>
             </el-menu-item>
             <el-menu-item :index="'/dashboard/resource/' + group.name +'/locale'">
