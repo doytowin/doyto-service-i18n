@@ -104,7 +104,7 @@ public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQ
                 addList.add(i18nView);
             }
         }
-        int ret = batchInsert(addList);
+        int ret = create(addList);
         log.info("保存翻译完毕: {} / {}", ret, i18nViewList.size());
     }
 

@@ -10,7 +10,6 @@ import org.springframework.web.servlet.ModelAndView;
 import win.doyto.i18n.module.baidu.BaiduTranResponse;
 import win.doyto.i18n.module.baidu.BaiduTranService;
 import win.doyto.i18n.module.locale.LocaleApi;
-import win.doyto.query.service.PageList;
 import win.doyto.query.web.response.JsonBody;
 
 import java.util.HashMap;
@@ -46,9 +45,7 @@ public class I18nController {
     @GetMapping("{group}")
     public Object exportAll(Authentication user, I18nQuery i18nQuery) {
         i18nQuery.setUser(user.getName());
-        PageList<?> data = i18nService.paging(i18nQuery);
-        log.info("导出数据: {}条", data.getTotal());
-        return data;
+        return i18nService.paging(i18nQuery);
     }
 
     @GetMapping("{group}/{locale}")

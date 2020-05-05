@@ -57,7 +57,7 @@ public class GroupControllerTest {
     @BeforeEach
     public void setUp() {
         GroupService groupService = new GroupService();
-        groupService.batchInsert(initGroups());
+        groupService.create(initGroups());
         groupController = new GroupController(groupService);
     }
 
