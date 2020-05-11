@@ -19,4 +19,8 @@ import win.doyto.query.web.response.JsonBody;
 @PreAuthorize("hasAnyRole('admin', 'admin:i18n')")
 public class GroupAdminController extends AbstractRestController<GroupEntity, Integer, GroupQuery, GroupRequest, GroupResponse> {
 
+    public GroupAdminController(GroupService groupService) {
+        super(groupService);
+    }
+
 }
