@@ -3,12 +3,14 @@ package win.doyto.i18n.module.locale;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
+import win.doyto.query.entity.UserIdProvider;
 import win.doyto.query.web.controller.AbstractIQEEController;
 import win.doyto.query.web.response.ErrorCode;
 import win.doyto.query.web.response.JsonBody;
 import win.doyto.query.web.response.PresetErrorCode;
 
 import java.util.Objects;
+import javax.annotation.Resource;
 import javax.validation.Valid;
 
 /**
@@ -23,6 +25,9 @@ import javax.validation.Valid;
 @PreAuthorize("hasAnyRole('i18n')")
 class LocaleController extends AbstractIQEEController<LocaleEntity, Integer, LocaleQuery> implements LocaleApi {
 
+    @Resource
+    UserIdProvider<String> userIdProvider;
+
     @SuppressWarnings("java:S4684")
     @Override
     @PutMapping("{id}")
@@ -32,7 +37,7 @@ class LocaleController extends AbstractIQEEController<LocaleEntity, Integer, Loc
     ) {
         LocaleEntity origin = get(id);
         ErrorCode.assertNotNull(origin, PresetErrorCode.ENTITY_NOT_FOUND);
-        ErrorCode.assertTrue(Objects.equals(update.getCreateUserId(), origin.getCreateUserId()), PresetErrorCode.ENTITY_NOT_FOUND);
+        ErrorCode.assertTrue(Objects.equals(userIdProvider.getUserId(), origin.getCreateUserId()), PresetErrorCode.ENTITY_NOT_FOUND);
         origin.setLanguage(update.getLanguage());
         origin.setBaiduLocale(update.getBaiduLocale());
         update(origin);
