@@ -23,11 +23,11 @@
 
     <el-dialog :title="$t('添加') + $t(' ') + $t('语种')" :visible.sync="crud.adding" :modal-append-to-body="false">
       <el-form label-width="100px">
-        <el-form-item :label="$t('语种')">
-          <el-input v-model="crud.record.locale"/>
+        <el-form-item :label="$t('语种代码')">
+          <el-input v-model="crud.record.locale" placeholder="如: zh_CN, en_US"/>
         </el-form-item>
         <el-form-item :label="$t('语言本称')">
-          <el-input v-model="crud.record.language"/>
+          <el-input v-model="crud.record.language" placeholder="如: 简体中文, English(US)"/>
         </el-form-item>
         <el-form-item :label="$t('百度翻译') + $t('语言')">
           <el-select v-model="crud.record.baiduLocale" placeholder="请选择">
@@ -44,8 +44,8 @@
 
     <el-dialog :title="$t('编辑') + $t(' ') + $t('语种')" :visible.sync="crud.editing" :modal-append-to-body="false">
       <el-form label-width="100px">
-        <el-form-item :label="$t('语种')">
-          <el-input v-model="crud.record.locale"/>
+        <el-form-item :label="$t('语种代码')">
+          <el-input v-model="crud.record.locale" disabled/>
         </el-form-item>
         <el-form-item :label="$t('语言本称')">
           <el-input v-model="crud.record.language"/>
