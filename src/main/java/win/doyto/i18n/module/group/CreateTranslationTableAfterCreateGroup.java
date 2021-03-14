@@ -1,6 +1,7 @@
 package win.doyto.i18n.module.group;
 
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.stereotype.Component;
 import win.doyto.i18n.common.CommonUtils;
@@ -16,6 +17,7 @@ import java.util.HashMap;
  *
  * @author f0rb on 2020-02-09
  */
+@Slf4j
 @AllArgsConstructor
 @Component
 public class CreateTranslationTableAfterCreateGroup implements EntityAspect<GroupEntity> {
@@ -45,6 +47,7 @@ public class CreateTranslationTableAfterCreateGroup implements EntityAspect<Grou
 
     public void createGroupTable(String owner, String group) {
         String sql = translationTableDialect.buildTranslationTableDDL();
+        log.info("创建数据表: {}", sql);
         HashMap<String, String> params = new HashMap<>();
         params.put("user", owner);
         params.put("group", group);
