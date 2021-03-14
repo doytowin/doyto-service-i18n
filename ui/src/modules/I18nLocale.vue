@@ -10,14 +10,14 @@
         <el-table-column prop="label" :label="$t('标签')" width="140"/>
         <el-table-column prop="defaults" :label="$t('默认文本')" width="140"/>
         <el-table-column>
-          <template slot-scope="scope" slot="header">
+          <template slot-scope="{}" slot="header">
             <el-dropdown @command="changeLocale">
               <span class="el-dropdown-link">
-                <t>locale_{{locale.toLowerCase()}}</t>
-                <i class="el-icon-arrow-down el-icon--right"/>
+                <t>locale_{{locale}}</t>
+                <em class="el-icon-arrow-down el-icon--right"/>
               </span>
               <el-dropdown-menu slot="dropdown">
-                <el-dropdown-item :command="item.locale" v-for="(item) in locales" v-t>locale_{{item.locale.toLowerCase()}}</el-dropdown-item>
+                <el-dropdown-item :command="item.locale" v-for="(item) in locales" :key="item.locale" v-t>locale_{{item.locale}}</el-dropdown-item>
               </el-dropdown-menu>
             </el-dropdown>
           </template>
@@ -134,7 +134,7 @@ export default {
         response => {
           let json = response.data
           if (json.success) {
-            this.locales = json.data
+            this.locales = json.data.list
           }
         }
       )
