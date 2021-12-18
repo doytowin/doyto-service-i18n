@@ -16,36 +16,40 @@ import static org.assertj.core.api.Assertions.assertThat;
  *
  * @author f0rb on 2018-08-27.
  */
-public class LocaleControllerTest {
+class LocaleControllerTest {
     private final LocaleController localeController = new LocaleController();
 
     @BeforeEach
     void setUp() throws Exception {
-        localeController.add(BeanUtil.loadJsonData("/locale.json", new TypeReference<List<LocaleEntity>>() {}));
+        localeController.create(BeanUtil.loadJsonData("/locale.json", new TypeReference<List<LocaleEntity>>() {}));
+        localeController.setUserIdProvider(() -> TestConstant.DEFAULT_USER);
     }
 
     @Test
-    public void page() {
+    void page() {
         PageList<LocaleEntity> page = localeController.page(LocaleQuery.builder().createUserId(TestConstant.DEFAULT_USER).build());
         assertThat(page.getTotal()).isEqualTo(3);
-        assertThat(page.getList()).element(0)
+        assertThat(page.getList())
+                .element(0)
                 .hasFieldOrPropertyWithValue("locale", "zh_CN")
                 .hasFieldOrPropertyWithValue("baiduLocale", "zh");
 
-        assertThat(page.getList()).extracting(LocaleEntity::getBaiduLocale)
+        assertThat(page.getList())
+                .extracting(LocaleEntity::getBaiduLocale)
                 .containsExactly("zh", "en", "jp");
     }
 
     @Test
     void update() {
         LocaleEntity localeEntity = new LocaleEntity();
+        localeEntity.setId(1);
         localeEntity.setLocale("zh");
         localeEntity.setLanguage("Chinese");
         localeEntity.setBaiduLocale("zh2");
         localeEntity.setCreateUserId(TestConstant.DEFAULT_USER);
-        localeController.update(1, localeEntity);
+        localeController.update(localeEntity);
 
-        assertThat(localeController.getById(1))
+        assertThat(localeController.get(1))
                 .hasFieldOrPropertyWithValue("locale", "zh_CN")
                 .hasFieldOrPropertyWithValue("language", "Chinese")
                 .hasFieldOrPropertyWithValue("baiduLocale", "zh2");

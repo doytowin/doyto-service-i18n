@@ -10,7 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
  *
  * @author f0rb on 2020-02-18
  */
-public class GroupTest extends I18nAppTest {
+class GroupTest extends I18nAppTest {
 
     @Test
     void create() throws Exception {

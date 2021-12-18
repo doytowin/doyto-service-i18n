@@ -22,27 +22,27 @@ import static win.doyto.i18n.common.TestConstant.DEFAULT_USER;
  * @author f0rb on 2017-03-31.
  */
 @Slf4j
-public class I18nServiceTest extends I18nAppTest {
+ class I18nServiceTest extends I18nAppTest {
     @Resource
     private I18nService i18nService;
 
     @Test
-    public void queryLanguageByLocale() throws Exception {
+     void queryLanguageByLocale() throws Exception {
         List<I18nView> ret = i18nService.queryWithDefault(DEFAULT_USER, DEFAULT_GROUP, "zh_CN");
         log.info("结果\n{}", JSON.toJSONString(ret, true));
         assertThat(ret).hasSize(12);
     }
 
     @Test
-    public void queryAllLanguage() throws Exception {
+     void queryAllLanguage() throws Exception {
         List<Map> ret = i18nService.query(DEFAULT_USER, DEFAULT_GROUP);
         assertThat(ret).hasSize(12);
         log.info("结果\n{}", JSON.toJSONString(ret, true));
     }
 
     @Test
-    public void pageAllLanguage() throws Exception {
-        I18nQuery query = I18nQuery.builder().user(DEFAULT_USER).group(DEFAULT_GROUP).pageNumber(1).build();
+     void pageAllLanguage() throws Exception {
+        I18nQuery query = I18nQuery.builder().user(DEFAULT_USER).group(DEFAULT_GROUP).pageNumber(2).build();
         PageList<Map> ret = i18nService.paging(query);
         assertThat(ret.getTotal()).isEqualTo(12);
         assertThat(ret.getList()).hasSize(2);
@@ -51,7 +51,7 @@ public class I18nServiceTest extends I18nAppTest {
     }
 
     @Test
-    public void testSaveTranslation() throws Exception {
+     void testSaveTranslation() throws Exception {
         String user = DEFAULT_USER;
         String group = DEFAULT_GROUP;
 

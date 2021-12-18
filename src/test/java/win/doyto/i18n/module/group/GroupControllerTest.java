@@ -18,17 +18,17 @@ import static org.junit.jupiter.api.Assertions.fail;
  *
  * @author f0rb on 2018-08-17.
  */
-public class GroupControllerTest {
+class GroupControllerTest {
 
-    public static final Integer INIT_I18N_SIZE = 8;
-    public static final String NOISE_USER = "noise";
+    static final Integer INIT_I18N_SIZE = 8;
+    static final String NOISE_USER = "noise";
     private static final String FIELD_MESSAGE = "message";
 
     static {
         initGroups();
     }
 
-    public static List<GroupEntity> initGroups() {
+    static List<GroupEntity> initGroups() {
         List<GroupEntity> groupEntities = new ArrayList<>();
         for (int i = 0; i < INIT_I18N_SIZE; i++) {
             groupEntities.add(newGroup(i + ""));
@@ -55,17 +55,16 @@ public class GroupControllerTest {
     }
 
     @BeforeEach
-    public void setUp() {
+    void setUp() {
         GroupService groupService = new GroupService();
         groupService.create(initGroups());
         groupController = new GroupController(groupService);
     }
 
     @Test
-    public void test_page() {
+    void test_page() {
         int pageSize = 3;
-        GroupQuery groupQuery = GroupQuery.builder().build();
-        groupQuery.setPageNumber(1).setPageSize(pageSize);
+        GroupQuery groupQuery = GroupQuery.builder().pageNumber(1).pageSize(pageSize).build();
         PageList<GroupResponse> page = groupController.page(TestConstant.DEFAULT_USER, groupQuery);
         assertThat(page.getTotal()).isEqualTo((long) INIT_I18N_SIZE);
         assertThat(page.getList())
@@ -81,7 +80,7 @@ public class GroupControllerTest {
     }
 
     @Test
-    public void test_updateLabel() {
+    void test_updateLabel() {
         GroupRequest groupRequest = new GroupRequest();
         groupRequest.setId(1);
         String newLabelName = "test label";
@@ -97,7 +96,7 @@ public class GroupControllerTest {
     }
 
     @Test
-    public void test_updateLabel_by_nonexistent_id() {
+    void test_updateLabel_by_nonexistent_id() {
         GroupRequest groupRequest = new GroupRequest();
         groupRequest.setId(-1);
         groupRequest.setLabel("test label");
@@ -109,13 +108,13 @@ public class GroupControllerTest {
             assertThat(e.getErrorCode())
                 .hasFieldOrPropertyWithValue("success", false)
                 .hasFieldOrPropertyWithValue("code", 9)
-                .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
+                .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "ENTITY_NOT_FOUND");
         }
 
     }
 
     @Test
-    public void test_delete() {
+    void test_delete() {
         groupController.delete("i18n", 1);
 
         try {
@@ -123,9 +122,9 @@ public class GroupControllerTest {
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
-                .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 9)
-                .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
+                    .hasFieldOrPropertyWithValue("success", false)
+                    .hasFieldOrPropertyWithValue("code", 9)
+                    .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "ENTITY_NOT_FOUND");
         }
 
         GroupQuery groupQuery = GroupQuery.builder().build();
@@ -134,15 +133,15 @@ public class GroupControllerTest {
     }
 
     @Test
-    public void test_delete_by_nonexistent_id() {
+    void test_delete_by_nonexistent_id() {
         try {
             groupController.delete("i18n", -1);
             fail();
         } catch (ErrorCodeException e) {
             assertThat(e.getErrorCode())
-                .hasFieldOrPropertyWithValue("success", false)
-                .hasFieldOrPropertyWithValue("code", 9)
-                .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "查询记录不存在");
+                    .hasFieldOrPropertyWithValue("success", false)
+                    .hasFieldOrPropertyWithValue("code", 9)
+                    .hasFieldOrPropertyWithValue(FIELD_MESSAGE, "ENTITY_NOT_FOUND");
         }
     }
 

@@ -2,7 +2,7 @@ package win.doyto.i18n.module.i18n;
 
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.query.entity.IntegerId;
+import win.doyto.query.entity.AbstractPersistable;
 
 import javax.persistence.Column;
 import javax.persistence.Table;
@@ -18,7 +18,7 @@ import static win.doyto.i18n.module.i18n.I18nView.GROUP_FORMAT;
 @Getter
 @Setter
 @Table(name = GROUP_FORMAT)
-public class I18nView extends IntegerId {
+public class I18nView extends AbstractPersistable<Integer> {
     public static final String GROUP_FORMAT = "i18n_data_${user}_${group}";
 
     @Transient
