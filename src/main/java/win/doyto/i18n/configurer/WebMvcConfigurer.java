@@ -3,11 +3,14 @@ package win.doyto.i18n.configurer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.jdbc.core.JdbcOperations;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import win.doyto.query.jdbc.DatabaseOperations;
+import win.doyto.query.jdbc.DatabaseTemplate;
 import win.doyto.query.web.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.HttpServletRequest;
@@ -40,6 +43,11 @@ public class WebMvcConfigurer extends WebMvcConfigurerAdapter {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(logInterceptor()).addPathPatterns("/**");
+    }
+
+    @Bean
+    public DatabaseOperations databaseOperations(JdbcOperations jdbcOperations) {
+        return new DatabaseTemplate(jdbcOperations);
     }
 
 }

@@ -41,6 +41,6 @@ public class I18nQuery extends PageQuery {
 
     @Override
     public I18nIdWrapper toIdWrapper() {
-        return new I18nIdWrapper(null, user, group, locale);
+        return new I18nIdWrapper(user, group);
     }
 }
