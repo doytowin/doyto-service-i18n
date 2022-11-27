@@ -4,8 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import win.doyto.i18n.common.I18nErrorCode;
+import win.doyto.query.core.PageList;
 import win.doyto.query.service.AbstractDynamicService;
-import win.doyto.query.service.PageList;
 import win.doyto.query.web.response.ErrorCode;
 
 import java.util.ArrayList;

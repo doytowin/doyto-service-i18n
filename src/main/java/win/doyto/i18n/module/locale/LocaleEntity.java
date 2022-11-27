@@ -2,10 +2,9 @@ package win.doyto.i18n.module.locale;
 
 import lombok.Getter;
 import lombok.Setter;
-import win.doyto.query.entity.CommonEntity;
+import win.doyto.query.entity.AbstractCommonEntity;
 
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
 /**
  * LocaleEntity
@@ -14,9 +13,8 @@ import javax.persistence.Table;
  */
 @Getter
 @Setter
-@Entity
-@Table(name = "i18n_resource_locale")
-public class LocaleEntity extends CommonEntity<Integer, String> {
+@Entity(name = "i18n_resource_locale")
+public class LocaleEntity extends AbstractCommonEntity<Integer, String> {
 
     private static final long serialVersionUID = 1L;
 

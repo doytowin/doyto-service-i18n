@@ -1,6 +1,6 @@
 package win.doyto.i18n.module.group;
 
-import win.doyto.query.service.PageList;
+import win.doyto.query.core.PageList;
 
 /**
  * GroupApi

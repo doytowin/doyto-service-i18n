@@ -6,14 +6,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import win.doyto.query.service.PageList;
+import win.doyto.query.core.PageList;
 import win.doyto.query.util.BeanUtil;
 import win.doyto.query.validation.CreateGroup;
 import win.doyto.query.web.response.ErrorCode;
 import win.doyto.query.web.response.JsonBody;
 import win.doyto.query.web.response.PresetErrorCode;
 
-import java.util.Date;
 import javax.annotation.Resource;
 import javax.validation.Valid;
 
@@ -47,7 +46,6 @@ class GroupController implements GroupApi {
         GroupEntity origin = groupService.get(group.getId());
         ErrorCode.assertNotNull(origin, PresetErrorCode.ENTITY_NOT_FOUND);
         origin.setLabel(group.getLabel());
-        origin.setUpdateTime(new Date());
         groupService.update(origin);
     }
 

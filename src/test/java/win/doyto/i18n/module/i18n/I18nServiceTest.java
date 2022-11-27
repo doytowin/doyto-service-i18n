@@ -4,7 +4,7 @@ import com.alibaba.fastjson.JSON;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import win.doyto.i18n.I18nAppTest;
-import win.doyto.query.service.PageList;
+import win.doyto.query.core.PageList;
 
 import java.util.HashMap;
 import java.util.List;

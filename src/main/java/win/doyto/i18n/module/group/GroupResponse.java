@@ -4,7 +4,7 @@ import com.fasterxml.jackson.annotation.JsonAlias;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 /**
  * GroupResponse
@@ -24,6 +24,6 @@ public class GroupResponse {
 
     private String label;
 
-    private Date createTime;
+    private LocalDateTime createTime;
 
 }

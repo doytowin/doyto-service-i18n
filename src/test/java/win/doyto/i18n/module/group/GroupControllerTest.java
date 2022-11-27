@@ -3,11 +3,10 @@ package win.doyto.i18n.module.group;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import win.doyto.i18n.common.TestConstant;
-import win.doyto.query.service.PageList;
+import win.doyto.query.core.PageList;
 import win.doyto.query.web.response.ErrorCodeException;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -48,7 +47,6 @@ class GroupControllerTest {
         groupEntity.setCreateUserId(owner);
         groupEntity.setName("i18n" + suffix);
         groupEntity.setLabel("i18n多语言" + suffix);
-        groupEntity.setCreateTime(new Date());
         groupEntity.setValid(true);
         groupEntity.setDeleted(false);
         return groupEntity;
