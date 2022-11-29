@@ -16,6 +16,7 @@
     "core-js": "^2.6.11",
     "element-ui": "^2.13.1",
     "run": "^1.4.0",
+    "sass": "^1.56.1",
     "vue": "^2.6.11",
     "vue-i18n": "^7.4.0",
     "vue-resource": "^1.5.3",
@@ -25,13 +26,12 @@
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.12.1",
-    "@vue/cli-plugin-e2e-nightwatch": "^5.0.8",
-    "@vue/cli-plugin-eslint": "^5.0.8",
-    "@vue/cli-service": "^5.0.8",
+    "@vue/cli-plugin-e2e-nightwatch": "^4.3.1",
+    "@vue/cli-plugin-eslint": "^3.12.1",
+    "@vue/cli-service": "^4.3.1",
     "babel-eslint": "^10.1.0",
     "eslint": "^5.16.0",
     "eslint-plugin-vue": "^5.2.3",
-    "node-sass": "^7.0.3",
     "sass-loader": "^7.3.1",
     "vue-template-compiler": "^2.6.11"
   },
@@ -44,7 +44,9 @@
       "plugin:vue/essential",
       "eslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+      "no-console": "off"
+    },
     "parserOptions": {
       "parser": "babel-eslint"
     },
