@@ -30,9 +30,9 @@
   </div>
 </template>
 <script type="text/javascript">
-  import Page from '../components/Page'
+import Page from '../components/Page'
 
-  export default {
+export default {
   name: 'DwPage',
   props: {
     p: {
@@ -40,6 +40,7 @@
       default: null,
       required: true,
       validator: function (value) {
+        console.log("Validating:" + value)
         return true
       }
     },

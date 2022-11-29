@@ -11,8 +11,9 @@
         <el-table-column type="index" width="40" fixed align="center"/>
         <el-table-column prop="LABEL" :label="$t('标签')" width="120" :show-overflow-tooltip="true" fixed/>
         <el-table-column prop="DEFAULTS" :label="$t('默认文本')" width="100" :show-overflow-tooltip="true" fixed/>
-        <el-table-column min-width="140" v-for="(v, k) in crud.p.list[0]" v-if="/^locale_/i.test(k)"
-                         :key="k" :prop="k" :label="$t(k.toLowerCase())" :show-overflow-tooltip="true"/>
+        <template v-for="(v, k) in crud.p.list[0]">
+          <el-table-column min-width="140" v-if="/^locale_/i.test(k)" :key="k" :prop="k" :label="$t(k.toLowerCase())" :show-overflow-tooltip="true"/>
+        </template>
         <el-table-column prop="MEMO" :label="$t('备注')" width="200" :show-overflow-tooltip="true" fixed="right"/>
       </el-table>
     </section>
@@ -22,10 +23,10 @@
   </div>
 </template>
 <script type="text/javascript">
-  import Crud from '../components/Crud'
-  import Cons from '../components/Cons'
+import Crud from '../components/Crud'
+import Cons from '../components/Cons'
 
-  export default {
+export default {
     data() {
       return {
         crud: undefined

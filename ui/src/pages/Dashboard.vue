@@ -12,9 +12,11 @@
         <el-menu default-active="5" mode="horizontal" style="float:right">
           <el-submenu index="5" @select="$root.switchLocale" background-color="#d9edf7">
             <template slot="title">
-              <t v-for="option in $root.languages" v-if="option.locale === $root.lang">{{option.language}}</t>
+              <template v-for="option in $root.languages" >
+                <t :key="option.value" v-if="option.locale === $root.lang">{{option.language}}</t>
+              </template>
             </template>
-            <el-menu-item v-for="(option, $i) in $root.languages" :index="'5-' + $i" @click="$root.switchLocale(option.locale)">{{option.language}}</el-menu-item>
+            <el-menu-item v-for="(option, $i) in $root.languages" :index="'5-' + $i" :key="option.value" @click="$root.switchLocale(option.locale)">{{option.language}}</el-menu-item>
           </el-submenu>
           <el-submenu index="1">
             <template slot="title">{{username}}</template>
@@ -42,10 +44,10 @@
 </template>
 
 <script type="text/javascript">
-  import DwLeftMenu from '../partial/DwLeftMenu'
-  import axios from "axios";
+import DwLeftMenu from '../partial/DwLeftMenu'
+import axios from "axios";
 
-  export default {
+export default {
     name: 'dashboard',
     data() {
       return {
