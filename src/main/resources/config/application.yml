@@ -1,25 +1,31 @@
 server:
   port: @docker.expose@
+  servlet:
+    encoding:
+      force: true
 
 spring:
   application:
     name: @project.artifactId@
 
-  resources:
-    chain:
-      compressed: true
-    cache:
-      period: 1d
-      cachecontrol:
-        no-cache: false
-        no-store: false
-        mustRevalidate: false
-        max-age: 7d
-
-  http:
-    encoding:
-      force: true
+  web:
+    resources:
+      chain:
+        compressed: true
+      cache:
+        period: 1d
+        cachecontrol:
+          no-cache: false
+          no-store: false
+          mustRevalidate: false
+          max-age: 7d
 
   mvc:
     contentnegotiation:
       favor-path-extension: true
+
+doyto:
+  query:
+    config:
+      dialect: win.doyto.i18n.common.HsqldbDialect
+      map-camel-case-to-underscore: false

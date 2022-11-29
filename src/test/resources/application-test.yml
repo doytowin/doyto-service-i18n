@@ -14,4 +14,3 @@ doyto:
   query:
     config:
       dialect: win.doyto.i18n.common.HsqldbDialect
-      map-camel-case-to-underscore: false

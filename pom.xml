@@ -19,7 +19,7 @@
     <properties>
         <start-class>win.doyto.i18n.I18nApp</start-class>
         <docker.expose>10301</docker.expose>
-        <doyto-query.version>1.0.0-M2</doyto-query.version>
+        <doyto-query.version>1.0.0</doyto-query.version>
     </properties>
 
     <dependencies>
