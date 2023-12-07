@@ -1,5 +1,7 @@
 package win.doyto.i18n.module.locale;
 
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,8 +16,6 @@ import win.doyto.query.web.response.JsonBody;
 import win.doyto.query.web.response.PresetErrorCode;
 
 import java.util.Objects;
-import javax.annotation.Resource;
-import javax.validation.Valid;
 
 /**
  * LocaleController

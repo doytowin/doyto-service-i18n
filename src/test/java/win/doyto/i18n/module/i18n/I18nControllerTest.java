@@ -32,7 +32,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
                 .header(HttpHeaders.USER_AGENT, "AppleWebKit/537.36 (KHTML, like Gecko)");
         mockMvc.perform(requestBuilder)
                .andExpect(status().isOk())
-               .andExpect(content().contentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"));
+               .andExpect(content().contentType("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8"));
 
     }
 

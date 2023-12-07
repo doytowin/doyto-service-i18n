@@ -6,9 +6,8 @@ import lombok.Getter;
 import lombok.Setter;
 import lombok.experimental.Accessors;
 import lombok.experimental.SuperBuilder;
+import win.doyto.query.annotation.Transient;
 import win.doyto.query.core.PageQuery;
-
-import javax.persistence.Transient;
 
 /**
  * I18nQuery

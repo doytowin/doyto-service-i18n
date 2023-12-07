@@ -2,11 +2,10 @@ package win.doyto.i18n.module.i18n;
 
 import lombok.Getter;
 import lombok.Setter;
+import win.doyto.query.annotation.Column;
+import win.doyto.query.annotation.Entity;
+import win.doyto.query.annotation.Transient;
 import win.doyto.query.entity.AbstractPersistable;
-
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Transient;
 
 
 /**

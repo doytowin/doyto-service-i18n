@@ -1,5 +1,6 @@
 package win.doyto.i18n.configurer;
 
+import jakarta.annotation.Resource;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -8,7 +9,6 @@ import org.springframework.jdbc.datasource.init.ResourceDatabasePopulator;
 import win.doyto.i18n.common.HsqldbDialect;
 import win.doyto.i18n.common.TranslationTableDialect;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 /**

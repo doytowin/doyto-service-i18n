@@ -1,12 +1,11 @@
 package win.doyto.i18n.module.group;
 
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
 import lombok.Setter;
 import win.doyto.i18n.common.UsernameAware;
 import win.doyto.query.validation.UpdateGroup;
-
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Pattern;
 
 /**
  * GroupRequest
@@ -25,7 +24,7 @@ public class GroupRequest implements UsernameAware {
     private String name;
 
     @NotNull
-    @Pattern(regexp = "[\\W\\w]+")
+    @Pattern(regexp = ".+")
     private String label;
 
     private String createUserId;

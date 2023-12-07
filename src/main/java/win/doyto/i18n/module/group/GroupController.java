@@ -1,5 +1,7 @@
 package win.doyto.i18n.module.group;
 
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -13,9 +15,6 @@ import win.doyto.query.web.response.ErrorCode;
 import win.doyto.query.web.response.JsonBody;
 import win.doyto.query.web.response.PresetErrorCode;
 
-import javax.annotation.Resource;
-import javax.validation.Valid;
-
 /**
  * GroupController
  *
@@ -24,7 +23,7 @@ import javax.validation.Valid;
 @Slf4j
 @JsonBody
 @RestController
-@RequestMapping("/api/group")
+@RequestMapping("/api/group/")
 @PreAuthorize("hasAnyRole('i18n')")
 @AllArgsConstructor
 class GroupController implements GroupApi {

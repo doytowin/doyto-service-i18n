@@ -1,5 +1,6 @@
 package win.doyto.i18n.module.i18n;
 
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -15,7 +16,6 @@ import win.doyto.query.web.response.JsonBody;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import javax.annotation.Resource;
 
 /**
  * I18nController

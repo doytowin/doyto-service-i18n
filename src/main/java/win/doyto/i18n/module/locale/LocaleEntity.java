@@ -2,9 +2,8 @@ package win.doyto.i18n.module.locale;
 
 import lombok.Getter;
 import lombok.Setter;
+import win.doyto.query.annotation.Entity;
 import win.doyto.query.entity.AbstractCommonEntity;
-
-import javax.persistence.Entity;
 
 /**
  * LocaleEntity

@@ -1,5 +1,7 @@
 package win.doyto.i18n.module.i18n;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -11,8 +13,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import static org.apache.commons.lang3.ArrayUtils.EMPTY_STRING_ARRAY;
 
@@ -28,7 +28,7 @@ public class I18nXlsxView extends AbstractXlsxView {
 
     private static final int TITLE_ROW_IDX = 0;
 
-    private String[] ignoreColumns = new String[] {"id", "valid", "createUserId", "createTime", "updateUserId", "updateTime"};
+    private final String[] ignoreColumns = new String[] {"id", "valid", "createUserId", "createTime", "updateUserId", "updateTime"};
 
     @Override
     @SuppressWarnings("unchecked")
