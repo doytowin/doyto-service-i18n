@@ -17,5 +17,5 @@ jobs:
     secrets: inherit
     with:
       java-version: 17
-      sonar-project-name: 'doyto-query'
-      sonar-project-key: 'win.doyto:doyto-query'
+      sonar-project-name: 'doyto-service-i18n'
+      sonar-project-key: 'win.doyto.service:doyto-service-i18n'
