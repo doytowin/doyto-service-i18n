@@ -19,8 +19,8 @@ public class AuthUserIdProvider implements UserIdProvider<String> {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication != null) {
             Object principal = authentication.getPrincipal();
-            if (principal instanceof User) {
-                return ((User) principal).getUsername();
+            if (principal instanceof User user) {
+                return user.getUsername();
             }
         }
         return null;

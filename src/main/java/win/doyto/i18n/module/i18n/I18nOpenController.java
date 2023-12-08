@@ -65,9 +65,7 @@ public class I18nOpenController {
             parent.put(params[deep], arg);
             return;
         }
-        if (!parent.containsKey(param)) {
-            parent.put(param, new JSONObject());
-        }
+        parent.computeIfAbsent(param, k -> new JSONObject());
         nestedJson(parent.getJSONObject(param), params, deep + 1, arg);
     }
 

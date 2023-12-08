@@ -108,6 +108,7 @@ public class I18nService extends AbstractDynamicService<I18nView, Integer, I18nQ
         log.info("保存翻译完毕: {} / {}", ret, i18nViewList.size());
     }
 
+    @SuppressWarnings("java:S6809")
     @Transactional
     public void saveTranslation(String user, String group, String locale, Map<String, String> translationMap) {
         List<I18nView> i18nViewList = new ArrayList<>(translationMap.size());
